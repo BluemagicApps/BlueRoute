@@ -1,0 +1,395 @@
+@import "tailwindcss";
+
+/* ============================================================
+   BLUE ROUTE LOGISTICS — DESIGN SYSTEM
+   Theme: NORDIC FROST — light, crisp, Swiss-minimal.
+   White surfaces, generous whitespace, a single cobalt accent.
+   Token names are kept stable; only their VALUES changed, so the
+   whole component library re-themes from here.
+   ============================================================ */
+
+@theme {
+  /* --- Surfaces (light) --- */
+  --color-abyss: #f7f9fc; /* page background */
+  --color-deep: #ffffff; /* card surface */
+  --color-navy: #edf2fb; /* tinted light surface (gradients) */
+  --color-steel: #e4e9f0; /* borders / dividers */
+  --color-slate-ink: #dce3ec;
+
+  /* --- Accent (cobalt) + text --- */
+  --color-cyan: #1e5bff; /* brand accent (primary) */
+  --color-aqua: #5b8cff; /* lighter accent */
+  --color-glow: #1e5bff;
+  --color-foam: #0b1b2b; /* primary text ink */
+  --color-mist: #5c6b7b; /* muted text */
+
+  /* --- Accent spectrum (radiant, professional) --- */
+  --color-indigo: #6e4bff;
+  --color-teal: #06b6d4;
+  --color-emerald: #10b981;
+  --color-amber: #f59e0b;
+  --color-rose: #ec4899;
+
+  /* --- Typography (Manrope, set via next/font on <html>) --- */
+  --font-display: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+
+  /* --- Easing --- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+/* ------------------------------------------------------------
+   Base
+   ------------------------------------------------------------ */
+:root {
+  --background: #f7f9fc;
+  --foreground: #0b1b2b;
+  color-scheme: light;
+}
+
+* {
+  border-color: color-mix(in srgb, var(--color-steel) 90%, transparent);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background:
+    radial-gradient(
+      1000px 720px at 88% -10%,
+      color-mix(in srgb, var(--color-indigo) 20%, transparent),
+      transparent 55%
+    ),
+    radial-gradient(
+      900px 680px at -8% 2%,
+      color-mix(in srgb, var(--color-cyan) 18%, transparent),
+      transparent 55%
+    ),
+    radial-gradient(
+      820px 620px at 50% 118%,
+      color-mix(in srgb, var(--color-teal) 14%, transparent),
+      transparent 60%
+    ),
+    linear-gradient(180deg, #ffffff 0%, #eef2fe 100%);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01";
+  overflow-x: hidden;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-cyan) 22%, transparent);
+  color: var(--color-foam);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-abyss);
+}
+::-webkit-scrollbar-thumb {
+  background: #c7d2e0;
+  border-radius: 999px;
+  border: 2px solid var(--color-abyss);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-cyan);
+}
+
+/* ------------------------------------------------------------
+   Reusable utilities
+   ------------------------------------------------------------ */
+@layer utilities {
+  /* Glass surface */
+  .glass {
+    background: color-mix(in srgb, #ffffff 72%, transparent);
+    backdrop-filter: blur(16px) saturate(120%);
+    -webkit-backdrop-filter: blur(16px) saturate(120%);
+    border: 1px solid var(--color-steel);
+    box-shadow: 0 1px 2px rgba(11, 27, 43, 0.04), 0 12px 32px -16px rgba(11, 27, 43, 0.12);
+  }
+
+  /* Headline gradient text — vibrant cobalt → indigo → teal */
+  .text-gradient {
+    background: linear-gradient(
+      100deg,
+      var(--color-cyan) 0%,
+      var(--color-indigo) 48%,
+      var(--color-teal) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Solid brand gradient surface (buttons, badges, panels) */
+  .bg-brand-gradient {
+    background: linear-gradient(120deg, var(--color-cyan), var(--color-indigo) 70%, #8b5cff);
+  }
+
+  /* Vibrant multi-stop gradient for hero accents */
+  .bg-aurora-gradient {
+    background: linear-gradient(
+      120deg,
+      var(--color-cyan),
+      var(--color-indigo) 40%,
+      var(--color-teal) 80%
+    );
+  }
+
+  /* Eco accents (sustainability) */
+  .bg-eco-gradient {
+    background: linear-gradient(120deg, var(--color-emerald), var(--color-teal));
+  }
+  .text-gradient-green {
+    background: linear-gradient(100deg, var(--color-emerald), var(--color-teal));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Glow ring */
+  .glow-cyan {
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--color-cyan) 30%, transparent),
+      0 10px 44px -10px color-mix(in srgb, var(--color-indigo) 55%, transparent);
+  }
+
+  /* Soft colored card shadow for depth on light surfaces */
+  .shadow-soft {
+    box-shadow:
+      0 1px 2px rgba(11, 27, 43, 0.04),
+      0 16px 40px -22px rgba(30, 60, 120, 0.35);
+  }
+
+  /* Subtle film-grain overlay */
+  .grain::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Grid backdrop, masked toward the top */
+  .bg-grid {
+    background-image:
+      linear-gradient(
+        color-mix(in srgb, var(--color-steel) 35%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--color-steel) 35%, transparent) 1px,
+        transparent 1px
+      );
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 80%);
+  }
+
+  .animate-float {
+    animation: br-float 7s var(--ease-in-out-quart) infinite;
+  }
+  .animate-aurora {
+    animation: br-aurora 16s ease-in-out infinite;
+  }
+  .animate-shimmer {
+    background-size: 200% 100%;
+    animation: br-shimmer 6s linear infinite;
+  }
+  .animate-dash {
+    stroke-dasharray: 6 10;
+    animation: br-dash 1.6s linear infinite;
+  }
+  .animate-spin-slow {
+    animation: br-spin 40s linear infinite;
+  }
+  /* Slow elliptical "cruise" for the ambient transport line-art */
+  .animate-cruise {
+    animation: br-cruise 32s ease-in-out infinite;
+  }
+  .animate-cruise-slow {
+    animation: br-cruise 46s ease-in-out infinite;
+  }
+  /* Slow Ken Burns zoom/pan for photographic backdrops */
+  .animate-kenburns {
+    animation: br-kenburns 24s ease-in-out infinite alternate;
+  }
+  /* Horizontal marquee (pairs with a duplicated track) */
+  .animate-marquee {
+    animation: br-marquee 48s linear infinite;
+  }
+}
+
+/* ------------------------------------------------------------
+   Keyframes
+   ------------------------------------------------------------ */
+@keyframes br-float {
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-14px) translateX(6px);
+  }
+}
+
+@keyframes br-aurora {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate3d(4%, -3%, 0) rotate(8deg) scale(1.15);
+    opacity: 0.9;
+  }
+}
+
+@keyframes br-shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes br-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes br-dash {
+  to {
+    stroke-dashoffset: -32;
+  }
+}
+
+@keyframes br-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes br-cruise {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(22px, -8px);
+  }
+  50% {
+    transform: translate(40px, 0);
+  }
+  75% {
+    transform: translate(20px, 8px);
+  }
+}
+
+@keyframes br-kenburns {
+  from {
+    transform: scale(1.06) translate(0, 0);
+  }
+  to {
+    transform: scale(1.2) translate(-2.5%, -2%);
+  }
+}
+
+/* ------------------------------------------------------------
+   Mapbox markers + popups (custom DOM elements)
+   ------------------------------------------------------------ */
+.br-port-marker {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: var(--color-aqua);
+  border: 2px solid var(--color-abyss);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-cyan) 30%, transparent);
+  cursor: pointer;
+}
+
+.br-vessel-marker {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--color-cyan);
+  border: 3px solid var(--color-abyss);
+  box-shadow: 0 0 16px 2px color-mix(in srgb, var(--color-cyan) 80%, transparent);
+  position: relative;
+}
+.br-vessel-marker::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 999px;
+  border: 2px solid var(--color-cyan);
+  animation: br-ping 2.2s ease-out infinite;
+}
+
+@keyframes br-ping {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+/* Warehouse facility markers */
+.br-wh-marker {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: var(--color-cyan);
+  border: 2.5px solid #ffffff;
+  box-shadow: 0 1px 6px rgba(11, 27, 43, 0.35);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.br-wh-marker:hover {
+  transform: scale(1.25);
+}
+.br-wh-marker.is-active {
+  width: 20px;
+  height: 20px;
+  background: var(--color-indigo);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--color-indigo) 25%, transparent);
+}
+
+/* Dark Mapbox popups */
+.mapboxgl-popup-content {
+  background: var(--color-deep) !important;
+  color: var(--color-foam) !important;
+  border: 1px solid color-mix(in srgb, var(--color-aqua) 20%, transparent);
+  border-radius: 12px !important;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  padding: 8px 12px !important;
+}
+.mapboxgl-popup-tip {
+  border-top-color: var(--color-deep) !important;
+  border-bottom-color: var(--color-deep) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
