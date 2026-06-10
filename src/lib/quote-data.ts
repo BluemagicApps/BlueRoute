@@ -136,3 +136,8 @@ export function computeQuotes(input: QuoteInput): QuoteOption[] {
 
   return options;
 }
+
+/** Cargo insurance fee: 1.8% of freight, rounded to the nearest $5. */
+export function computeInsuranceFee(priceUSD: number): number {
+  return Math.round((priceUSD * 0.018) / 5) * 5;
+}
