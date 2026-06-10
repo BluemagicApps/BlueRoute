@@ -3,22 +3,15 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import {
-  Sparkles,
-  Send,
-  Mic,
-  X,
-  Check,
-  ArrowRight,
-  Bot,
-} from "lucide-react";
+import { Sparkles, Send, Mic, X, ArrowRight, Bot } from "lucide-react";
 import { EASE_OUT_EXPO } from "@/lib/motion";
+import { askAdvisor } from "@/app/actions/advisor";
+import type { AdvisorMessage } from "@/lib/ai/types";
 
 type Msg = {
   id: number;
   role: "user" | "assistant";
   content: string;
-  steps?: string[];
   cta?: { label: string; href: string };
 };
 
@@ -35,66 +28,6 @@ const GREETING: Msg = {
   content:
     "Hi, I'm the BlueRoute AI Advisor. I can quote shipments, explain tracking, analyze risk, and plan multi-leg routes. What can I help with?",
 };
-
-/** Rule-based mock of an agentic logistics assistant. */
-function getResponse(text: string): Omit<Msg, "id" | "role"> {
-  const t = text.toLowerCase();
-
-  if (/(plan|optimi|lowest risk|route|asia|europe)/.test(t)) {
-    return {
-      steps: [
-        "Analyzing 14 candidate routings across 3 alliances",
-        "Scoring weather, port congestion & geopolitical risk",
-        "Optimizing cost vs. transit vs. emissions",
-      ],
-      content:
-        "Recommended: Shanghai → Singapore → Suez → Rotterdam on the ANE service. 28-day transit, 99% on-time confidence, and 26% lower emissions than the express alternative. I've flagged a congestion-avoiding backup lane in case Suez slows.",
-      cta: { label: "Get this quote", href: "/quote" },
-    };
-  }
-  if (/(red sea|suez|disrupt|risk|war|strike|delay)/.test(t)) {
-    return {
-      steps: [
-        "Checking live disruption signals on your lanes",
-        "Simulating Cape of Good Hope reroute",
-      ],
-      content:
-        "If the Red Sea is disrupted, I'd reroute via the Cape of Good Hope: +9 days transit but risk drops to 'very low'. For time-critical cargo I'd split the shipment and air-expedite the priority SKUs. Want me to model the cost difference?",
-      cta: { label: "Open risk dashboard", href: "/tracking" },
-    };
-  }
-  if (/(warehouse|storage|space|lease|facility)/.test(t)) {
-    return {
-      content:
-        "Near Rotterdam, my top match is Rotterdam Smart Hub A — 84,000 ft², 12 m clear height, 18 docks, solar + automated racking, available now at $11.50/ft²/yr. It pairs well with the ANE ocean service for fast inbound.",
-      cta: { label: "Explore facilities", href: "/warehousing" },
-    };
-  }
-  if (/(quote|price|rate|cost|book)/.test(t)) {
-    return {
-      content:
-        "I can generate an AI-optimized quote in seconds — I'll compare express, balanced, and low-carbon routes with live rates and a carbon estimate. Just tell me origin, destination, and container type, or open the quote wizard.",
-      cta: { label: "Start a quote", href: "/quote" },
-    };
-  }
-  if (/(track|where|container|shipment|eta)/.test(t)) {
-    return {
-      content:
-        "Share a container #, B/L, or booking reference and I'll pull the live position, predicted ETA with confidence, and any active exceptions. I proactively flag risks before they become delays.",
-      cta: { label: "Track a shipment", href: "/tracking" },
-    };
-  }
-  if (/(hi|hello|hey|help)/.test(t)) {
-    return {
-      content:
-        "Happy to help! I can quote, track, analyze risk, plan routes, or recommend warehouse space. Try one of the suggestions below.",
-    };
-  }
-  return {
-    content:
-      "I can help with quotes, tracking, risk analysis, route planning, and warehouse matching. Could you give me a bit more detail — e.g. origin/destination, a container number, or what you're optimizing for?",
-  };
-}
 
 export function AiAssistant() {
   const [open, setOpen] = useState(false);
@@ -115,20 +48,28 @@ export function AiAssistant() {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, thinking, open]);
 
-  const send = (text: string) => {
+  const send = async (text: string) => {
     const value = text.trim();
     if (!value || thinking) return;
     const userMsg: Msg = { id: idRef.current++, role: "user", content: value };
-    setMessages((m) => [...m, userMsg]);
+    const next = [...messages, userMsg];
+    setMessages(next);
     setInput("");
     setThinking(true);
 
-    const res = getResponse(value);
-    const delay = 700 + (res.steps ? res.steps.length * 450 : 0);
-    window.setTimeout(() => {
-      setMessages((m) => [...m, { id: idRef.current++, role: "assistant", ...res }]);
-      setThinking(false);
-    }, delay);
+    // Send the conversation (minus the canned greeting) to the model.
+    const history: AdvisorMessage[] = next
+      .filter((m) => m.id !== 0)
+      .map((m) => ({ role: m.role, content: m.content }));
+
+    const res = await askAdvisor(history);
+    setThinking(false);
+    setMessages((m) => [
+      ...m,
+      res.ok
+        ? { id: idRef.current++, role: "assistant", content: res.content, cta: res.cta }
+        : { id: idRef.current++, role: "assistant", content: res.error },
+    ]);
   };
 
   return (
@@ -253,16 +194,7 @@ function Bubble({ msg }: { msg: Msg }) {
             : "max-w-[88%] rounded-2xl rounded-bl-sm border border-steel/70 bg-white px-3.5 py-2.5 text-sm text-foam shadow-soft"
         }
       >
-        {msg.steps && (
-          <ul className="mb-2 space-y-1 border-b border-steel/50 pb-2">
-            {msg.steps.map((s) => (
-              <li key={s} className="flex items-start gap-1.5 text-[0.78rem] text-mist">
-                <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald" /> {s}
-              </li>
-            ))}
-          </ul>
-        )}
-        <p className="leading-relaxed">{msg.content}</p>
+        <p className="whitespace-pre-wrap leading-relaxed">{msg.content}</p>
         {msg.cta && (
           <Link
             href={msg.cta.href}
