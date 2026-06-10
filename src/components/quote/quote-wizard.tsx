@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useActionState, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowRight,
@@ -21,6 +21,7 @@ import {
   PORTS,
   CONTAINERS,
   computeQuotes,
+  computeInsuranceFee,
   estimateDistanceKm,
   type Port,
   type ContainerType,
@@ -29,6 +30,8 @@ import {
 } from "@/lib/quote-data";
 import { EASE_OUT_EXPO } from "@/lib/motion";
 import { cn } from "@/lib/utils";
+import { submitBooking } from "@/app/actions/leads";
+import type { BookingState } from "@/lib/leads/types";
 
 const STEPS = ["Route", "Cargo", "Rates", "Confirm"];
 
@@ -60,11 +63,16 @@ export function QuoteWizard() {
   );
   const selected = quotes.find((q) => q.id === selectedOptionId)!;
 
-  const insuranceFee = Math.round((selected.priceUSD * 0.018) / 5) * 5;
+  const insuranceFee = computeInsuranceFee(selected.priceUSD);
   const total = selected.priceUSD + (insurance ? insuranceFee : 0);
   const bookingRef = useMemo(
     () => makeRef(originCode, destCode, containerId, selectedOptionId),
     [originCode, destCode, containerId, selectedOptionId]
+  );
+
+  const [bookingState, bookingAction, bookingPending] = useActionState<BookingState, FormData>(
+    submitBooking,
+    { status: "idle" },
   );
 
   const canNext = step === 0 ? !samePort : true;
@@ -144,6 +152,14 @@ export function QuoteWizard() {
                   insuranceFee={insuranceFee}
                   total={total}
                   bookingRef={bookingRef}
+                  originCode={originCode}
+                  destCode={destCode}
+                  containerId={containerId}
+                  weight={weight}
+                  readyDate={readyDate}
+                  bookingState={bookingState}
+                  bookingAction={bookingAction}
+                  bookingPending={bookingPending}
                 />
               )}
             </motion.div>
@@ -511,7 +527,39 @@ function ConfirmStep(props: {
   insuranceFee: number;
   total: number;
   bookingRef: string;
+  originCode: string;
+  destCode: string;
+  containerId: string;
+  weight: string;
+  readyDate: string;
+  bookingState: BookingState;
+  bookingAction: (formData: FormData) => void;
+  bookingPending: boolean;
 }) {
+  const { bookingState } = props;
+  const fieldErrors = bookingState.status === "error" ? bookingState.fieldErrors ?? {} : {};
+
+  if (bookingState.status === "success") {
+    return (
+      <div className="text-center">
+        <span className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-emerald/15 text-emerald">
+          <CircleCheck className="h-8 w-8" />
+        </span>
+        <h2
+          className="mt-4 text-2xl font-semibold text-foam"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
+          Booking request received
+        </h2>
+        <p className="mt-1 text-sm text-mist">
+          Reference{" "}
+          <span className="font-semibold text-aqua">{bookingState.bookingRef}</span>. We&apos;ve
+          emailed you a confirmation — our team will confirm availability and next steps.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="text-center">
       <span className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-cyan/15 text-cyan">
@@ -521,7 +569,7 @@ function ConfirmStep(props: {
         className="mt-4 text-2xl font-semibold text-foam"
         style={{ fontFamily: "var(--font-display)" }}
       >
-        Booking ready to confirm
+        Review &amp; request booking
       </h2>
       <p className="mt-1 text-sm text-mist">
         Reference{" "}
@@ -555,20 +603,66 @@ function ConfirmStep(props: {
         </div>
       </div>
 
-      <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-        <button className="inline-flex items-center gap-2 rounded-full bg-cyan px-6 py-3 text-sm font-semibold text-white shadow-[0_8px_30px_-6px_rgba(30,91,255,0.6)] transition-transform active:scale-95">
-          Confirm booking <ArrowRight className="h-4 w-4" />
-        </button>
-        <a
-          href="/contact"
-          className="inline-flex items-center gap-2 rounded-full border border-aqua/30 px-6 py-3 text-sm font-medium text-foam transition-colors hover:bg-aqua/10"
-        >
-          Talk to an expert
-        </a>
-      </div>
-      <p className="mt-4 text-xs text-mist">
-        This is a demo flow — no payment is taken.
-      </p>
+      <form action={props.bookingAction} className="mx-auto mt-6 max-w-md text-left">
+        {/* Honeypot */}
+        <div aria-hidden className="hidden">
+          <input type="text" name="company_url" tabIndex={-1} autoComplete="off" />
+        </div>
+        {/* Hidden selection — server re-prices from these. */}
+        <input type="hidden" name="originCode" value={props.originCode} />
+        <input type="hidden" name="destCode" value={props.destCode} />
+        <input type="hidden" name="mode" value={props.mode} />
+        <input type="hidden" name="containerId" value={props.containerId} />
+        <input type="hidden" name="optionId" value={props.selected.id} />
+        <input type="hidden" name="insurance" value={props.insurance ? "true" : "false"} />
+        <input type="hidden" name="weight" value={props.weight} />
+        <input type="hidden" name="readyDate" value={props.readyDate} />
+
+        <div className="grid gap-3 sm:grid-cols-2">
+          <label className="block">
+            <span className="mb-1.5 block text-sm font-medium text-foam">Full name *</span>
+            <input
+              name="name"
+              placeholder="Jane Shipper"
+              className="h-12 w-full rounded-2xl border border-steel/60 bg-abyss/60 px-4 text-sm text-foam outline-none transition-colors focus:border-cyan/60"
+            />
+            {fieldErrors.name && <span className="mt-1 block text-xs text-rose">{fieldErrors.name}</span>}
+          </label>
+          <label className="block">
+            <span className="mb-1.5 block text-sm font-medium text-foam">Work email *</span>
+            <input
+              type="email"
+              name="email"
+              placeholder="jane@acme.com"
+              className="h-12 w-full rounded-2xl border border-steel/60 bg-abyss/60 px-4 text-sm text-foam outline-none transition-colors focus:border-cyan/60"
+            />
+            {fieldErrors.email && <span className="mt-1 block text-xs text-rose">{fieldErrors.email}</span>}
+          </label>
+        </div>
+
+        {bookingState.status === "error" && (
+          <p className="mt-3 text-sm text-rose">{bookingState.error}</p>
+        )}
+
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <button
+            type="submit"
+            disabled={props.bookingPending}
+            className="inline-flex items-center gap-2 rounded-full bg-cyan px-6 py-3 text-sm font-semibold text-white shadow-[0_8px_30px_-6px_rgba(30,91,255,0.6)] transition-transform active:scale-95 disabled:opacity-40"
+          >
+            {props.bookingPending ? "Sending…" : "Request booking"} <ArrowRight className="h-4 w-4" />
+          </button>
+          <a
+            href="/contact"
+            className="inline-flex items-center gap-2 rounded-full border border-aqua/30 px-6 py-3 text-sm font-medium text-foam transition-colors hover:bg-aqua/10"
+          >
+            Talk to an expert
+          </a>
+        </div>
+        <p className="mt-4 text-center text-xs text-mist">
+          No payment is taken now — our team confirms availability and next steps by email.
+        </p>
+      </form>
     </div>
   );
 }
