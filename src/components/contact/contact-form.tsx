@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useActionState, useState } from "react";
 import { motion } from "framer-motion";
 import { CircleCheck, Send } from "lucide-react";
 import { EASE_OUT_EXPO } from "@/lib/motion";
 import { OpenAdvisorButton } from "@/components/ai/open-advisor-button";
+import { submitContact } from "@/app/actions/leads";
+import type { ContactState } from "@/lib/leads/types";
 
 const TOPICS = [
   "Sales & quoting",
@@ -14,25 +16,16 @@ const TOPICS = [
   "Other",
 ];
 
-function makeTicket(name: string, email: string) {
-  const seed = `${name}${email}`;
-  let h = 0;
-  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0;
-  return `BR-INQ-${(h % 90000) + 10000}`;
-}
+const INITIAL: ContactState = { status: "idle" };
 
 export function ContactForm() {
+  const [state, formAction, pending] = useActionState(submitContact, INITIAL);
   const [name, setName] = useState("");
-  const [company, setCompany] = useState("");
   const [email, setEmail] = useState("");
-  const [topic, setTopic] = useState(TOPICS[0]);
-  const [message, setMessage] = useState("");
-  const [sent, setSent] = useState(false);
 
-  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const valid = name.trim() && emailValid && message.trim();
+  const fieldErrors = state.status === "error" ? state.fieldErrors ?? {} : {};
 
-  if (sent) {
+  if (state.status === "success") {
     return (
       <motion.div
         initial={{ opacity: 0, y: 16 }}
@@ -47,35 +40,24 @@ export function ContactForm() {
           className="mt-4 text-2xl font-semibold text-foam"
           style={{ fontFamily: "var(--font-display)" }}
         >
-          Thanks, {name.split(" ")[0]}!
+          Thanks{name ? `, ${name.split(" ")[0]}` : ""}!
         </h2>
         <p className="mt-2 text-sm text-mist">
           Your inquiry is logged as{" "}
-          <span className="font-semibold text-cyan">{makeTicket(name, email)}</span>.
-          A specialist will reply within 2 business hours.
+          <span className="font-semibold text-cyan">{state.ticketRef}</span>. A
+          specialist will reply within 2 business hours, and a confirmation is on
+          its way to your inbox.
         </p>
         <p className="mt-4 text-sm text-mist">Need an answer right now?</p>
         <div className="mt-3 flex justify-center">
           <OpenAdvisorButton>Ask the AI Advisor</OpenAdvisorButton>
         </div>
-        <button
-          onClick={() => setSent(false)}
-          className="mt-4 text-sm font-medium text-mist underline-offset-4 hover:text-foam hover:underline"
-        >
-          Send another message
-        </button>
       </motion.div>
     );
   }
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (valid) setSent(true);
-      }}
-      className="glass rounded-3xl p-6 md:p-8"
-    >
+    <form action={formAction} className="glass rounded-3xl p-6 md:p-8">
       <h2
         className="text-xl font-semibold text-foam"
         style={{ fontFamily: "var(--font-display)" }}
@@ -87,9 +69,18 @@ export function ContactForm() {
         expert.
       </p>
 
+      {/* Honeypot — hidden from humans, bots fill it. */}
+      <div aria-hidden className="hidden">
+        <label>
+          Company URL
+          <input type="text" name="company_url" tabIndex={-1} autoComplete="off" />
+        </label>
+      </div>
+
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
-        <Field label="Full name" required>
+        <Field label="Full name" required error={fieldErrors.name}>
           <input
+            name="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Jane Shipper"
@@ -97,34 +88,23 @@ export function ContactForm() {
           />
         </Field>
         <Field label="Company">
-          <input
-            value={company}
-            onChange={(e) => setCompany(e.target.value)}
-            placeholder="Acme Trading Co."
-            className={inputCls}
-          />
+          <input name="company" placeholder="Acme Trading Co." className={inputCls} />
         </Field>
       </div>
 
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
-        <Field label="Work email" required>
+        <Field label="Work email" required error={fieldErrors.email}>
           <input
             type="email"
+            name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="jane@acme.com"
             className={inputCls}
           />
-          {email && !emailValid && (
-            <span className="mt-1 block text-xs text-rose">Enter a valid email.</span>
-          )}
         </Field>
         <Field label="Topic">
-          <select
-            value={topic}
-            onChange={(e) => setTopic(e.target.value)}
-            className={inputCls}
-          >
+          <select name="topic" defaultValue={TOPICS[0]} className={inputCls}>
             {TOPICS.map((t) => (
               <option key={t}>{t}</option>
             ))}
@@ -133,10 +113,9 @@ export function ContactForm() {
       </div>
 
       <div className="mt-4">
-        <Field label="Message" required>
+        <Field label="Message" required error={fieldErrors.message}>
           <textarea
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            name="message"
             rows={4}
             placeholder="Origin, destination, cargo, timeline — or your question."
             className={`${inputCls} resize-none py-3`}
@@ -144,12 +123,16 @@ export function ContactForm() {
         </Field>
       </div>
 
+      {state.status === "error" && !Object.keys(fieldErrors).length && (
+        <p className="mt-4 text-sm text-rose">{state.error}</p>
+      )}
+
       <button
         type="submit"
-        disabled={!valid}
+        disabled={pending}
         className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-br from-cyan to-indigo px-6 py-3.5 text-sm font-semibold text-white shadow-[0_10px_30px_-8px_rgba(30,91,255,0.65)] transition-transform active:scale-95 disabled:opacity-40"
       >
-        Send message <Send className="h-4 w-4" />
+        {pending ? "Sending…" : "Send message"} <Send className="h-4 w-4" />
       </button>
       <p className="mt-3 text-center text-xs text-mist">
         Prefer instant answers? The AI Advisor is in the corner 24/7.
@@ -164,10 +147,12 @@ const inputCls =
 function Field({
   label,
   required,
+  error,
   children,
 }: {
   label: string;
   required?: boolean;
+  error?: string;
   children: React.ReactNode;
 }) {
   return (
@@ -177,6 +162,7 @@ function Field({
         {required && <span className="text-cyan"> *</span>}
       </span>
       {children}
+      {error && <span className="mt-1 block text-xs text-rose">{error}</span>}
     </label>
   );
 }
