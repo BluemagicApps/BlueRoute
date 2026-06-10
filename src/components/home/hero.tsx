@@ -26,13 +26,6 @@ export function Hero() {
       <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 lg:grid-cols-[1.05fr_0.95fr] lg:px-8">
         {/* Copy */}
         <motion.div variants={container} initial="hidden" animate="show">
-          <motion.div variants={item}>
-            <span className="inline-flex items-center gap-2 rounded-full border border-cyan/25 bg-cyan/5 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-cyan">
-              <Sparkles className="h-3.5 w-3.5" />
-              AI-Powered Logistics Platform
-            </span>
-          </motion.div>
-
           <motion.h1
             variants={item}
             className="mt-6 text-balance text-4xl font-semibold leading-[1.02] tracking-tight text-foam sm:text-5xl lg:text-6xl"
@@ -48,7 +41,8 @@ export function Hero() {
           >
             Door-to-door container shipping to and from any country — with
             predictive ETAs, proactive risk mitigation, and smart warehouse
-            leasing. The AI Edge that MSC and Maersk can&apos;t match.
+            leasing, so your supply chain keeps moving and surprises stay out
+            of it.
           </motion.p>
 
           {/* Track bar */}

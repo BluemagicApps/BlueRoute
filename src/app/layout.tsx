@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     title: "Blue Route Logistics",
     description: "Intelligent Global Shipping. AI-Powered Precision.",
   },
-  icons: { icon: "/favicon.ico" },
+  // Tab icon is provided by the src/app/icon.svg file convention (Next 16).
 };
 
 export const viewport: Viewport = {

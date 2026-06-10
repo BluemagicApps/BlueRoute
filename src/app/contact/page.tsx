@@ -22,30 +22,54 @@ const CHANNELS = [
     icon: Mail,
     color: "cyan",
     label: "Sales & quoting",
-    value: "sales@blueroute.example.com",
+    value: "sales@blueroute.com",
     note: "Replies within 2 business hours",
   },
   {
     icon: MessageSquare,
     color: "indigo",
     label: "Customer support",
-    value: "support@blueroute.example.com",
+    value: "support@blueroute.com",
     note: "24/7 for active shipments",
   },
   {
     icon: Phone,
     color: "teal",
-    label: "Phone (global)",
-    value: "+31 10 000 0000",
-    note: "Mon–Fri, 08:00–20:00 CET",
+    label: "Phone",
+    value: "+1 (323) 484 8030",
+    note: "Mon–Fri, 08:00–18:00 CT",
   },
 ];
 
 const OFFICES = [
-  { city: "Rotterdam", country: "Netherlands", role: "Global HQ", tz: "CET" },
-  { city: "Singapore", country: "Singapore", role: "APAC hub", tz: "SGT" },
-  { city: "Dubai", country: "UAE", role: "MEA hub", tz: "GST" },
-  { city: "Los Angeles", country: "USA", role: "Americas hub", tz: "PST" },
+  {
+    city: "Houston",
+    country: "USA",
+    role: "Global HQ",
+    tz: "CT",
+    address: "3229 Hadley St, Houston, TX 77004",
+  },
+  {
+    city: "Los Angeles",
+    country: "USA",
+    role: "Americas hub",
+    tz: "PT",
+    address: "1200 W 7th St, Los Angeles, CA 90017",
+  },
+  {
+    city: "Rotterdam",
+    country: "Netherlands",
+    role: "Europe hub",
+    tz: "CET",
+    address: "Wilhelminakade 909, 3072 AP Rotterdam",
+  },
+  {
+    city: "Singapore",
+    country: "Singapore",
+    role: "APAC hub",
+    tz: "SGT",
+    address: "1 Maritime Square, Singapore 099253",
+  },
 ];
 
 const CHIP: Record<string, string> = {
@@ -142,6 +166,7 @@ export default function ContactPage() {
                         <MapPin className="h-3.5 w-3.5 text-cyan" /> {o.city}
                       </p>
                       <p className="text-xs text-mist">{o.country}</p>
+                      <p className="mt-1 text-[0.7rem] leading-snug text-mist">{o.address}</p>
                       <p className="mt-1 flex items-center gap-1 text-[0.7rem] text-mist">
                         <Clock className="h-3 w-3" /> {o.role} · {o.tz}
                       </p>

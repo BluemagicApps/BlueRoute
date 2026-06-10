@@ -186,36 +186,6 @@ export default function AiEdgePage() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="relative py-16 lg:py-24">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
-          <div className="bg-aurora-gradient relative overflow-hidden rounded-3xl p-10 text-center shadow-soft md:p-14">
-            <div className="absolute -right-10 -top-10 h-48 w-48 rounded-full bg-white/25 blur-3xl" />
-            <div className="absolute -bottom-16 -left-10 h-48 w-48 rounded-full bg-white/15 blur-3xl" />
-            <div className="relative mx-auto max-w-xl">
-              <h2
-                className="text-3xl font-semibold tracking-tight text-white md:text-4xl"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                Experience the AI Edge yourself
-              </h2>
-              <p className="mt-3 text-white/85">
-                Ask the BlueRoute AI Advisor to plan a route, analyze a risk, or
-                quote a shipment — right now.
-              </p>
-              <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-                <OpenAdvisorButton variant="light">Try the AI Advisor</OpenAdvisorButton>
-                <Link
-                  href="/quote"
-                  className="inline-flex h-[3.25rem] items-center justify-center gap-2 rounded-full border border-white/50 px-7 text-base font-medium text-white transition-colors hover:bg-white/10"
-                >
-                  Get a quote
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
     </>
   );
 }

@@ -3,7 +3,6 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { SERVICES, type ServiceColor } from "@/lib/services-data";
 import { Reveal } from "@/components/ui/reveal";
-import { Button } from "@/components/ui/button";
 import { TransportBackdrop } from "@/components/ui/transport-backdrop";
 
 export const metadata: Metadata = {
@@ -105,27 +104,6 @@ export default function ServicesPage() {
           </Reveal>
         </div>
 
-        {/* CTA */}
-        <div className="mt-14 flex flex-col items-center gap-4 rounded-3xl border border-steel/60 bg-gradient-to-r from-white/60 to-navy/40 p-8 text-center">
-          <h2
-            className="text-2xl font-semibold text-foam"
-            style={{ fontFamily: "var(--font-display)" }}
-          >
-            Not sure which service fits?
-          </h2>
-          <p className="max-w-md text-mist">
-            Tell us your route and cargo — the AI Advisor or our team will map the
-            optimal mix in minutes.
-          </p>
-          <div className="flex flex-wrap justify-center gap-3">
-            <Button href="/quote" variant="primary" size="lg">
-              Get a quote
-            </Button>
-            <Button href="/contact" variant="outline" size="lg">
-              Talk to an expert
-            </Button>
-          </div>
-        </div>
       </div>
     </section>
   );

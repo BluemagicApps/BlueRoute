@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronDown, Menu, X, Search, MapPin, ArrowRight } from "lucide-react";
+import { ChevronDown, Menu, X, Search, MapPin, ArrowRight, Phone } from "lucide-react";
 import { NAV, type NavLink } from "@/lib/navigation";
 import { Logo } from "@/components/brand/logo";
 import { Button } from "@/components/ui/button";
@@ -55,16 +55,25 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        {/* Desktop CTAs */}
-        <div className="hidden items-center gap-2 lg:flex">
-          <Button href="/tracking" variant="ghost" size="sm">
-            <MapPin className="h-4 w-4" />
-            Track
-          </Button>
-          <Button href="/quote" variant="primary" size="sm">
-            Get Quote
-            <ArrowRight className="h-4 w-4" />
-          </Button>
+        {/* Desktop CTAs — phone sits just above the Get Quote button */}
+        <div className="hidden flex-col items-end gap-1.5 lg:flex">
+          <a
+            href="tel:+13234848030"
+            className="inline-flex items-center gap-1.5 text-sm font-bold text-foam transition-colors hover:text-cyan"
+          >
+            <Phone className="h-3.5 w-3.5 text-cyan" />
+            +1 (323) 484-8030
+          </a>
+          <div className="flex items-center gap-2">
+            <Button href="/tracking" variant="ghost" size="sm">
+              <MapPin className="h-4 w-4" />
+              Track
+            </Button>
+            <Button href="/quote" variant="primary" size="sm">
+              Get Quote
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
 
         {/* Mobile toggle */}
@@ -144,7 +153,7 @@ function MegaPanel({ item, onClose }: { item: NavLink; onClose: () => void }) {
       className="absolute inset-x-0 top-full"
     >
       <div className="mx-auto max-w-7xl px-5 pb-4 lg:px-8">
-        <div className="glass overflow-hidden rounded-3xl p-6 shadow-2xl">
+        <div className="overflow-hidden rounded-3xl border border-steel bg-deep p-6 shadow-2xl ring-1 ring-foam/5">
           <div className="grid gap-8 md:grid-cols-[1fr_1fr_0.8fr]">
             {item.mega!.map((group) => (
               <div key={group.heading}>

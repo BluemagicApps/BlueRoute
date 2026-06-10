@@ -6,7 +6,6 @@ import {
   ShieldCheck,
   Sparkles,
   Heart,
-  Globe2,
   Quote,
   ArrowRight,
   Anchor,
@@ -293,37 +292,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="relative py-16 lg:py-24">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
-          <div className="bg-aurora-gradient relative overflow-hidden rounded-3xl p-10 text-center shadow-soft md:p-14">
-            <div className="absolute -right-10 -top-10 h-48 w-48 rounded-full bg-white/25 blur-3xl" />
-            <div className="relative mx-auto max-w-xl">
-              <Globe2 className="mx-auto h-10 w-10 text-white" />
-              <h2
-                className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-4xl"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                Ship with a partner that thinks ahead
-              </h2>
-              <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-                <Link
-                  href="/quote"
-                  className="inline-flex h-[3.25rem] items-center justify-center rounded-full bg-white px-7 text-base font-semibold text-cyan shadow-lg transition-transform hover:-translate-y-0.5"
-                >
-                  Get an instant quote
-                </Link>
-                <Link
-                  href="/contact"
-                  className="inline-flex h-[3.25rem] items-center justify-center rounded-full border border-white/50 px-7 text-base font-medium text-white transition-colors hover:bg-white/10"
-                >
-                  Talk to us
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
     </>
   );
 }

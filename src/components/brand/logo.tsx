@@ -55,12 +55,12 @@ export function Logo({
       {withWordmark && (
         <span className="flex flex-col leading-none">
           <span
-            className="text-[1.05rem] font-semibold tracking-tight text-foam"
+            className="text-xl font-extrabold tracking-[-0.01em] text-foam"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Blue Route
+            Blue<span className="text-cyan"> Route</span>
           </span>
-          <span className="text-[0.62rem] font-medium uppercase tracking-[0.28em] text-mist">
+          <span className="text-[0.64rem] font-bold uppercase tracking-[0.34em] text-mist">
             Logistics
           </span>
         </span>

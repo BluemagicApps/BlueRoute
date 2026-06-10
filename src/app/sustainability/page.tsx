@@ -202,35 +202,6 @@ export default function SustainabilityPage() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="relative py-16 lg:py-24">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
-          <div className="bg-eco-gradient relative overflow-hidden rounded-3xl p-10 text-center shadow-soft md:p-14">
-            <div className="absolute -right-10 -top-10 h-48 w-48 rounded-full bg-white/25 blur-3xl" />
-            <div className="relative mx-auto max-w-xl">
-              <Leaf className="mx-auto h-10 w-10 text-white" />
-              <h2
-                className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-4xl"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                Ship greener on your next route
-              </h2>
-              <p className="mt-3 text-white/85">
-                Every quote shows its carbon footprint — choose the Green Route in
-                seconds.
-              </p>
-              <div className="mt-7 flex justify-center">
-                <Link
-                  href="/quote"
-                  className="inline-flex h-[3.25rem] items-center justify-center rounded-full bg-white px-7 text-base font-semibold text-emerald shadow-lg transition-transform hover:-translate-y-0.5"
-                >
-                  Get a green quote
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
     </>
   );
 }

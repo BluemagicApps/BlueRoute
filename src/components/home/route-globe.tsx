@@ -48,7 +48,7 @@ export function RouteGlobe({ className }: { className?: string }) {
 
       {/* Globe body */}
       <g className="animate-float">
-        <circle cx="290" cy="280" r="180" fill="url(#globeFill)" stroke="#cdd9ec" strokeWidth="1.5" />
+        <circle cx="290" cy="280" r="180" fill="url(#globeFill)" stroke="#1e5bff" strokeWidth="2.4" />
 
         {/* Longitude / latitude grid */}
         <g stroke="#c4d3e8" strokeWidth="1" fill="none" opacity="0.7">

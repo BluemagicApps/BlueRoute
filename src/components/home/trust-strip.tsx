@@ -1,3 +1,4 @@
+import { ShieldCheck, BadgeCheck, Headphones, Globe2 } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
 
 const STATS = [
@@ -7,14 +8,12 @@ const STATS = [
   { value: "60s", label: "To an optimized quote" },
 ];
 
-const PARTNERS = [
-  "OCEANIC",
-  "PORTLINK",
-  "VANTA FREIGHT",
-  "NORDSTAR",
-  "MERIDIAN",
-  "CARGOWORKS",
-  "HELIOS TRADE",
+// Neutral, non-brand trust signals (no third-party company names).
+const SIGNALS = [
+  { icon: ShieldCheck, label: "Licensed & bonded freight operations" },
+  { icon: BadgeCheck, label: "Cargo insured end-to-end" },
+  { icon: Headphones, label: "24/7 live shipment monitoring" },
+  { icon: Globe2, label: "Coverage across 180+ countries" },
 ];
 
 export function TrustStrip() {
@@ -36,21 +35,27 @@ export function TrustStrip() {
           ))}
         </div>
 
-        {/* Marquee */}
-        <div className="relative mt-12 overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_12%,#000_88%,transparent)]">
-          <p className="mb-5 text-center text-xs uppercase tracking-[0.25em] text-mist/70">
-            Trusted by global shippers &amp; freight teams
+        {/* Trust signals */}
+        <div className="mt-12">
+          <p className="mb-6 text-center text-xs uppercase tracking-[0.25em] text-mist/70">
+            Trusted by shippers &amp; freight teams worldwide
           </p>
-          <div className="flex w-max animate-[br-marquee_28s_linear_infinite] items-center gap-12">
-            {[...PARTNERS, ...PARTNERS].map((p, i) => (
-              <span
-                key={i}
-                className="whitespace-nowrap text-lg font-semibold tracking-tight text-mist/50"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                {p}
-              </span>
-            ))}
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {SIGNALS.map((s, i) => {
+              const Icon = s.icon;
+              return (
+                <Reveal key={s.label} delay={i * 0.06}>
+                  <div className="flex items-center gap-3 rounded-2xl border border-steel/70 bg-deep px-4 py-3.5 shadow-soft">
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-cyan/10 text-cyan">
+                      <Icon className="h-5 w-5" />
+                    </span>
+                    <span className="text-sm font-medium leading-snug text-foam">
+                      {s.label}
+                    </span>
+                  </div>
+                </Reveal>
+              );
+            })}
           </div>
         </div>
       </div>
