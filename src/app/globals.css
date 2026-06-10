@@ -306,7 +306,7 @@ body {
 }
 
 /* ------------------------------------------------------------
-   Mapbox markers + popups (custom DOM elements)
+   MapLibre markers + popups (custom DOM elements)
    ------------------------------------------------------------ */
 .br-port-marker {
   width: 12px;
@@ -368,8 +368,8 @@ body {
   box-shadow: 0 0 0 6px color-mix(in srgb, var(--color-indigo) 25%, transparent);
 }
 
-/* Dark Mapbox popups */
-.mapboxgl-popup-content {
+/* Dark MapLibre popups */
+.maplibregl-popup-content {
   background: var(--color-deep) !important;
   color: var(--color-foam) !important;
   border: 1px solid color-mix(in srgb, var(--color-aqua) 20%, transparent);
@@ -378,7 +378,7 @@ body {
   font-size: 0.8rem;
   padding: 8px 12px !important;
 }
-.mapboxgl-popup-tip {
+.maplibregl-popup-tip {
   border-top-color: var(--color-deep) !important;
   border-bottom-color: var(--color-deep) !important;
 }
