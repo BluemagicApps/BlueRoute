@@ -12,6 +12,7 @@ import {
   Download,
   ArrowRight,
   TrendingUp,
+  LogOut,
 } from "lucide-react";
 import {
   PORTAL_USER,
@@ -44,8 +45,17 @@ const STATUS: Record<Shipment["status"], string> = {
 const TABS = ["Overview", "Shipments", "Invoices", "Inventory"] as const;
 type Tab = (typeof TABS)[number];
 
-export function PortalDashboard() {
+export function PortalDashboard({
+  userEmail,
+}: {
+  userEmail?: string | null;
+}) {
   const [tab, setTab] = useState<Tab>("Overview");
+  const displayName = userEmail ?? PORTAL_USER.name;
+  const initials = (
+    userEmail ? userEmail.replace(/@.*$/, "").slice(0, 2) : PORTAL_USER.initials
+  ).toUpperCase();
+  const subline = userEmail ? "Blue Route customer" : PORTAL_USER.company;
 
   return (
     <section className="relative pt-24 pb-20 lg:pt-28">
@@ -61,7 +71,7 @@ export function PortalDashboard() {
                 className="grid h-14 w-14 place-items-center rounded-2xl bg-white/20 text-lg font-bold backdrop-blur"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                {PORTAL_USER.initials}
+                {initials}
               </span>
               <div>
                 <p className="text-sm text-white/80">Welcome back</p>
@@ -69,9 +79,9 @@ export function PortalDashboard() {
                   className="text-2xl font-semibold md:text-3xl"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                  {PORTAL_USER.name}
+                  {displayName}
                 </h1>
-                <p className="text-sm text-white/85">{PORTAL_USER.company}</p>
+                <p className="text-sm text-white/85">{subline}</p>
               </div>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -84,6 +94,14 @@ export function PortalDashboard() {
               <Link href="/warehousing" className="inline-flex items-center gap-1.5 rounded-full border border-white/50 px-4 py-2.5 text-sm font-medium text-white hover:bg-white/10">
                 <Warehouse className="h-4 w-4" /> Lease
               </Link>
+              <form action="/auth/signout" method="POST">
+                <button
+                  type="submit"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-white/50 px-4 py-2.5 text-sm font-medium text-white hover:bg-white/10"
+                >
+                  <LogOut className="h-4 w-4" /> Sign out
+                </button>
+              </form>
             </div>
           </div>
         </div>
