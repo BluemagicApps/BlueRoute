@@ -150,17 +150,27 @@ analytics/auditing of AI-agent interactions.
   `ai_interactions`, `app_settings`, `warehouses`, `contacts`. RLS protects admin data;
   public read only through controlled API routes. Built to extend with your future features.
 
-### 13. Professional public tracking page — ⏳
-- Rebuild `/tracking` per 14–17.png: branded "Tracking Result" hero, consignment summary,
-  receiver/sender details, origin/destination/dates, **animated progress bar**, a backdated
-  **tracking-log table** (status, current location, country, date/time, comments), notice
-  banner, and a **MapLibre map with an animated route line**.
-- **3-second loading animation / progress report** after the Track button is clicked, before
-  results render. Data pulled from Supabase by tracking number via `api/track/[number]`.
+### 13. Professional public tracking page — ✅ done (live core E2E green 2026-06-12)
+- Rebuilt `/tracking` per 14–17.png on **real Supabase data**: "Tracking Result" hero,
+  Code 128B barcode of the tracking number, receiver/sender/consignment detail tables,
+  origin/destination/dates + costs rows, **animated progress bar**, backdated
+  **tracking-log table**, amber notice banner, and a **MapLibre animated route line**
+  (`src/components/ui/route-map.tsx`, great-circle, draws itself in).
+- **3-second staged loader** after Track is clicked. Data via `GET /api/track/[number]`
+  (`src/lib/tracking/payload.ts` sanitizes; costs public per Timi's call; per-IP rate limit).
+- **Print shipping invoice** button → print stylesheet (costs included).
+- ⛔ **One manual step left:** paste `supabase/tracking-migration.sql` in the Supabase SQL
+  editor (adds 4 origin/destination coord columns) so the map draws the full route line.
+  Until then the map degrades to a current-position pin. Re-run `scripts/verify-tracking-e2e.mjs`
+  after pasting to confirm the route. Admin create/edit forms gain a "Find coordinates"
+  geocode assist (Open-Meteo) to fill those columns.
 
-### 14. Portal: animated trip line on the map — ⏳
-- Clicking an active shipment in `src/components/portal/portal-dashboard.tsx` opens the shared
-  `RouteMap` showing the **real animated line of the trip** (same component as tracking).
+### 14. Portal: animated trip line on the map — ✅ done (2026-06-12)
+- Each shipment row in `portal-dashboard.tsx` now has a "View route" button opening a modal
+  (`src/components/portal/route-modal.tsx`) with the shared `RouteMap` and the trip's animated
+  line (same component as tracking). The "open in tracking" link is preserved alongside it.
+  Portal still runs on mock data (`portal-data.ts` gained per-lane coords) — wiring it to real
+  Supabase shipments is a later effort, but the shared map component is done.
 
 ### 15. Auto-translate by IP on first load — ⏳
 - `next-intl`, **top 10 languages** (English, Mandarin, Hindi, Spanish, French, Arabic,
@@ -183,10 +193,11 @@ analytics/auditing of AI-agent interactions.
    door-to-door, project-cargo, cold-chain, customs; public routes moved into the
    `(site)` route group so `/admin` is chrome-free).
 2. ~~Supabase foundation~~ ✅ done (admins table/roles, `/admin/login` + guard).
-3. ~~Admin backend (12)~~ ✅ done 2026-06-12 (schema applied, super admin seeded,
-   live E2E green). **Tracking (13)** + **portal map (14)** on real data. ◀ NEXT
-   (Tracking + warehousing maps already swapped to MapLibre/CARTO, token-free.)
-4. **Bookings (6, 8)** — per-service quote forms + warehouse wizard → Supabase.
+3. ~~Admin backend (12)~~ ✅ done 2026-06-12 (schema applied, super admin seeded, live E2E green).
+3b. ~~Tracking (13) + portal map (14)~~ ✅ done 2026-06-12 on real data (core E2E green;
+   `branch feat/public-tracking`). ⛔ one manual step: paste `supabase/tracking-migration.sql`
+   for the full route line.
+4. **Bookings (6, 8)** — per-service quote forms + warehouse wizard → Supabase. ◀ NEXT
 5. **Real AI (5)** + **voice (16)**.
 6. **i18n (15)** rollout.
 7. **Company content (9)** with supplied photos.
@@ -204,9 +215,14 @@ analytics/auditing of AI-agent interactions.
 - Deploy to Vercel; re-verify geo/email/AI in production.
 
 ## Completed so far
-- Items **1, 2, 4, 7, 10, 11, 12** done.
+- Items **1, 2, 4, 7, 10, 11, 12, 13, 14** done.
 - **Item 3 Checkpoint 2** done (Variant 1 Cobalt Duotone, productized; rollout to remaining pages pending).
 - **Backend sub-projects merged to `main`** (specs/plans in `docs/superpowers/`):
   real forms → Supabase + Resend (2026-06-10) · live Groq AI advisor (2026-06-10) ·
   MapLibre map swap (2026-06-10) · `/portal` magic-link auth + Supabase SMTP via Resend (2026-06-11).
-- Build green (42 Vitest tests, tsc, eslint, 29 routes). NOT yet pushed to origin / deployed.
+- **Public tracking (13) + portal route map (14)** built on branch `feat/public-tracking`
+  (2026-06-12, spec+plan in `docs/superpowers/`): great-circle `RouteMap`, Code 128B barcode,
+  3s loader, `GET /api/track/[number]`, admin geocode assist. Live core E2E green
+  (`scripts/verify-tracking-e2e.mjs`, demo `BRL-TEST0001`). ⛔ paste `tracking-migration.sql`
+  for the route line.
+- Build green (73 Vitest tests, tsc, eslint, 32 routes). NOT yet pushed to origin / deployed.
