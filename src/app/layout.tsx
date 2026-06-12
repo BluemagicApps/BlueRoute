@@ -1,9 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Manrope } from "next/font/google";
 import "./globals.css";
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
-import { AiAssistant } from "@/components/ai/ai-assistant";
 
 // Nordic Frost uses Manrope for both display and body.
 const manrope = Manrope({
@@ -61,12 +58,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${manrope.variable} h-full antialiased`}>
-      <body className="grain min-h-full flex flex-col">
-        <SiteHeader />
-        <main className="relative z-[2] flex-1">{children}</main>
-        <SiteFooter />
-        <AiAssistant />
-      </body>
+      <body className="grain min-h-full flex flex-col">{children}</body>
     </html>
   );
 }
