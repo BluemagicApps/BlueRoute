@@ -157,6 +157,67 @@ export async function addShipmentEvent(
   return { ok: true };
 }
 
+export type ShipmentUpdateInput = {
+  /** New location address — becomes the log entry's location AND the shipment's current location. */
+  location: string;
+  city?: string;
+  country?: string;
+  status: string;
+  deliveryPct?: string;
+  comment?: string;
+};
+
+/**
+ * The "Update shipment status" modal (mockup flow): one call adds a tracking-log
+ * entry (occurred_at = now) and moves the shipment itself forward.
+ */
+export async function addShipmentUpdate(
+  shipmentId: string,
+  u: ShipmentUpdateInput,
+): Promise<ShipmentActionResult> {
+  await requireAdmin("shipments");
+  if (!u.location.trim() || !u.status.trim())
+    return { ok: false, error: "New location and status are required." };
+  let deliveryPct: number | null = null;
+  if (u.deliveryPct && u.deliveryPct.trim() !== "") {
+    deliveryPct = Number(u.deliveryPct);
+    if (!Number.isInteger(deliveryPct) || deliveryPct < 0 || deliveryPct > 100)
+      return { ok: false, error: "Delivery % must be a whole number 0–100." };
+  }
+
+  const supabase = getSupabaseAdmin();
+  const { error: evError } = await supabase.from("shipment_events").insert({
+    shipment_id: shipmentId,
+    status: u.status.trim(),
+    location: u.location.trim(),
+    country: u.country?.trim() || null,
+    comment: u.comment?.trim() || null,
+    occurred_at: new Date().toISOString(),
+  });
+  if (evError) {
+    console.error("[shipments] add update failed:", evError.message);
+    return { ok: false, error: "Could not save the update." };
+  }
+
+  const { error: shError } = await supabase
+    .from("shipments")
+    .update({
+      status: u.status.trim(),
+      current_location: u.location.trim(),
+      ...(u.city?.trim() ? { current_city: u.city.trim() } : {}),
+      ...(deliveryPct !== null ? { delivery_pct: deliveryPct } : {}),
+    })
+    .eq("id", shipmentId);
+  if (shError) {
+    console.error("[shipments] update after event failed:", shError.message);
+    return { ok: false, error: "Update logged, but the shipment did not refresh." };
+  }
+
+  revalidatePath("/admin/shipments");
+  revalidatePath(`/admin/shipments/${shipmentId}`);
+  return { ok: true };
+}
+
 export async function updateShipmentEvent(
   id: string,
   shipmentId: string,
