@@ -12,17 +12,20 @@ export async function GET(
     return Response.json({ error: "rate_limited" }, { status: 429 });
   }
 
+  // Next delivers params already URL-decoded; don't decode again.
   const { number } = await ctx.params;
-  const trackingNumber = decodeURIComponent(number).trim();
+  const trackingNumber = number.trim();
   if (!trackingNumber || trackingNumber.length > 40) {
     return Response.json({ error: "not_found" }, { status: 404 });
   }
+  // Escape LIKE wildcards so ilike is a case-insensitive EXACT match.
+  const pattern = trackingNumber.replace(/[\\%_]/g, (c) => `\\${c}`);
 
   const supabase = getSupabaseAdmin();
   const { data: shipment, error } = await supabase
     .from("shipments")
     .select("*")
-    .ilike("tracking_number", trackingNumber) // no wildcards => case-insensitive exact
+    .ilike("tracking_number", pattern)
     .maybeSingle();
   if (error || !shipment) {
     return Response.json({ error: "not_found" }, { status: 404 });
