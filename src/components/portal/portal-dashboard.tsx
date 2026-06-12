@@ -26,6 +26,7 @@ import {
 } from "@/lib/portal-data";
 import { EASE_OUT_EXPO } from "@/lib/motion";
 import { cn } from "@/lib/utils";
+import { RouteModal } from "./route-modal";
 
 const KPI_COLOR: Record<string, string> = {
   cyan: "text-cyan",
@@ -51,6 +52,7 @@ export function PortalDashboard({
   userEmail?: string | null;
 }) {
   const [tab, setTab] = useState<Tab>("Overview");
+  const [routeShipment, setRouteShipment] = useState<Shipment | null>(null);
   const displayName = userEmail ?? PORTAL_USER.name;
   const initials = (
     userEmail ? userEmail.replace(/@.*$/, "").slice(0, 2) : PORTAL_USER.initials
@@ -148,20 +150,24 @@ export function PortalDashboard({
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.3, ease: EASE_OUT_EXPO }}
             >
-              {tab === "Overview" && <Overview onSeeAll={() => setTab("Shipments")} />}
-              {tab === "Shipments" && <Shipments />}
+              {tab === "Overview" && <Overview onSeeAll={() => setTab("Shipments")} onViewRoute={setRouteShipment} />}
+              {tab === "Shipments" && <Shipments onViewRoute={setRouteShipment} />}
               {tab === "Invoices" && <Invoices />}
               {tab === "Inventory" && <Inventory />}
             </motion.div>
           </AnimatePresence>
         </div>
       </div>
+
+      {routeShipment && (
+        <RouteModal shipment={routeShipment} onClose={() => setRouteShipment(null)} />
+      )}
     </section>
   );
 }
 
 /* ---------- Overview ---------- */
-function Overview({ onSeeAll }: { onSeeAll: () => void }) {
+function Overview({ onSeeAll, onViewRoute }: { onSeeAll: () => void; onViewRoute: (s: Shipment) => void }) {
   return (
     <div className="grid gap-4 lg:grid-cols-[1.4fr_1fr]">
       <Card>
@@ -172,7 +178,7 @@ function Overview({ onSeeAll }: { onSeeAll: () => void }) {
         </CardHead>
         <div className="space-y-3">
           {SHIPMENTS.slice(0, 4).map((s) => (
-            <ShipmentRow key={s.ref} s={s} />
+            <ShipmentRow key={s.ref} s={s} onViewRoute={onViewRoute} />
           ))}
         </div>
       </Card>
@@ -199,7 +205,7 @@ function Overview({ onSeeAll }: { onSeeAll: () => void }) {
 }
 
 /* ---------- Shipments ---------- */
-function Shipments() {
+function Shipments({ onViewRoute }: { onViewRoute: (s: Shipment) => void }) {
   return (
     <Card>
       <CardHead title="All shipments">
@@ -209,19 +215,16 @@ function Shipments() {
       </CardHead>
       <div className="space-y-3">
         {SHIPMENTS.map((s) => (
-          <ShipmentRow key={s.ref} s={s} detailed />
+          <ShipmentRow key={s.ref} s={s} detailed onViewRoute={onViewRoute} />
         ))}
       </div>
     </Card>
   );
 }
 
-function ShipmentRow({ s, detailed }: { s: Shipment; detailed?: boolean }) {
+function ShipmentRow({ s, detailed, onViewRoute }: { s: Shipment; detailed?: boolean; onViewRoute: (s: Shipment) => void }) {
   return (
-    <Link
-      href={`/tracking?ref=${s.ref}`}
-      className="group block rounded-2xl border border-steel/60 bg-abyss p-4 transition-colors hover:border-cyan/40"
-    >
+    <div className="group block rounded-2xl border border-steel/60 bg-abyss p-4 transition-colors hover:border-cyan/40">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-3">
           <span className="grid h-9 w-9 place-items-center rounded-xl bg-cyan/10 text-cyan">
@@ -236,7 +239,21 @@ function ShipmentRow({ s, detailed }: { s: Shipment; detailed?: boolean }) {
           <span className={cn("rounded-full px-2.5 py-0.5 text-xs font-semibold", STATUS[s.status])}>
             {s.status}
           </span>
-          <ArrowRight className="h-4 w-4 text-mist transition-transform group-hover:translate-x-1" />
+          <button
+            type="button"
+            onClick={() => onViewRoute(s)}
+            aria-label="View route on map"
+            className="grid h-8 w-8 place-items-center rounded-full border border-steel text-mist transition-colors hover:border-cyan/50 hover:text-cyan"
+          >
+            <MapPin className="h-4 w-4" />
+          </button>
+          <Link
+            href={`/tracking?ref=${s.ref}`}
+            aria-label="Open in tracking"
+            className="grid h-8 w-8 place-items-center rounded-full border border-steel text-mist transition-colors hover:border-cyan/50 hover:text-cyan"
+          >
+            <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
       </div>
       <div className="mt-3 flex items-center gap-3">
@@ -247,7 +264,7 @@ function ShipmentRow({ s, detailed }: { s: Shipment; detailed?: boolean }) {
           ETA {s.eta}{detailed ? ` · ${s.confidence}% conf.` : ""}
         </span>
       </div>
-    </Link>
+    </div>
   );
 }
 
