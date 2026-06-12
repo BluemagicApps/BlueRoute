@@ -4,6 +4,7 @@ export type AdminMenu =
   | "dashboard"
   | "shipments"
   | "create"
+  | "bookings"
   | "email"
   | "admins"
   | "settings"
@@ -13,6 +14,7 @@ export const ALL_MENUS: AdminMenu[] = [
   "dashboard",
   "shipments",
   "create",
+  "bookings",
   "email",
   "admins",
   "settings",
