@@ -57,12 +57,13 @@ export function RouteMap({
         const el = document.createElement("div");
         el.className = cls;
         el.title = p.name;
+        // Build the popup via DOM text (not setHTML) so place names can't inject markup.
+        const label = document.createElement("strong");
+        label.textContent = p.name;
         new maplibregl.Marker({ element: el })
           .setLngLat([p.lng, p.lat])
           .setPopup(
-            new maplibregl.Popup({ offset: 14, closeButton: false }).setHTML(
-              `<strong>${p.name}</strong>`,
-            ),
+            new maplibregl.Popup({ offset: 14, closeButton: false }).setDOMContent(label),
           )
           .addTo(map);
       };

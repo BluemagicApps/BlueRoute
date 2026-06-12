@@ -22,6 +22,27 @@ function formToRaw(form: FormData): Record<string, unknown> {
   return raw;
 }
 
+const COORD_KEYS = [
+  "origin_lng",
+  "origin_lat",
+  "destination_lng",
+  "destination_lat",
+] as const;
+
+/**
+ * Drops coordinate keys that are null so a shipment still saves before
+ * `supabase/tracking-migration.sql` is applied (those columns may not exist
+ * yet — PostgREST rejects writes that name a missing column). Once the
+ * migration is in, set coordinates flow through normally.
+ */
+function omitNullCoords<T extends Record<string, unknown>>(data: T): Partial<T> {
+  const out: Record<string, unknown> = { ...data };
+  for (const k of COORD_KEYS) {
+    if (out[k] == null) delete out[k];
+  }
+  return out as Partial<T>;
+}
+
 /** Uploads the optional photo; returns its public URL or null. Best-effort. */
 async function uploadPhoto(form: FormData, shipmentId: string): Promise<string | null> {
   const file = form.get("photo");
@@ -49,7 +70,7 @@ export async function createShipment(form: FormData): Promise<ShipmentActionResu
   const supabase = getSupabaseAdmin();
   const { data, error } = await supabase
     .from("shipments")
-    .insert({ ...parsed.data, tracking_number: trackingNumber })
+    .insert({ ...omitNullCoords(parsed.data), tracking_number: trackingNumber })
     .select("id")
     .single();
   if (error) {
@@ -87,7 +108,7 @@ export async function updateShipment(id: string, form: FormData): Promise<Shipme
   const photoUrl = await uploadPhoto(form, id);
   const { error } = await supabase
     .from("shipments")
-    .update({ ...parsed.data, ...(photoUrl ? { photo_url: photoUrl } : {}) })
+    .update({ ...omitNullCoords(parsed.data), ...(photoUrl ? { photo_url: photoUrl } : {}) })
     .eq("id", id);
   if (error) {
     console.error("[shipments] update failed:", error.message);
