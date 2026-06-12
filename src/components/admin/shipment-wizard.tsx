@@ -13,6 +13,7 @@ import {
 import { createShipment } from "@/app/actions/shipments";
 import { FREIGHT_TYPES, SHIPMENT_STATUSES } from "@/lib/admin/shipment-validate";
 import { cn } from "@/lib/utils";
+import { CoordFields } from "./coord-fields";
 
 const STEPS = ["Recipient", "Sender", "Shipping", "Review"] as const;
 
@@ -34,6 +35,10 @@ const INITIAL: Values = {
   sender_country: "",
   origin: "",
   destination: "",
+  origin_lng: "",
+  origin_lat: "",
+  destination_lng: "",
+  destination_lat: "",
   freight_type: "Sea Freight",
   content_type: "",
   weight_kg: "",
@@ -68,6 +73,8 @@ export function ShipmentWizard() {
 
   const set = (key: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
     setValues((v) => ({ ...v, [key]: e.target.value }));
+
+  const setMany = (patch: Record<string, string>) => setValues((v) => ({ ...v, ...patch }));
 
   function next() {
     const missing = (REQUIRED[step] ?? []).filter((k) => !values[k].trim());
@@ -211,6 +218,18 @@ export function ShipmentWizard() {
           <Grid>
             <L label="Origin (take-off point) *"><input value={values.origin} onChange={set("origin")} className={inputCls} /></L>
             <L label="Final destination *"><input value={values.destination} onChange={set("destination")} className={inputCls} /></L>
+            <CoordFields
+              prefix="origin"
+              label="Origin coordinates (public tracking map)"
+              getQuery={() => values.origin}
+              onChange={(lng, lat) => setMany({ origin_lng: lng, origin_lat: lat })}
+            />
+            <CoordFields
+              prefix="destination"
+              label="Destination coordinates (public tracking map)"
+              getQuery={() => values.destination}
+              onChange={(lng, lat) => setMany({ destination_lng: lng, destination_lat: lat })}
+            />
             <L label="Freight type">
               <select value={values.freight_type} onChange={set("freight_type")} className={inputCls}>
                 {FREIGHT_TYPES.map((t) => <option key={t}>{t}</option>)}

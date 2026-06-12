@@ -1,10 +1,11 @@
 ﻿"use client";
 
-import { useState, useTransition, type ReactNode } from "react";
+import { useRef, useState, useTransition, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { Save, Check, AlertCircle } from "lucide-react";
 import { updateShipment } from "@/app/actions/shipments";
 import { FREIGHT_TYPES, SHIPMENT_STATUSES } from "@/lib/admin/shipment-validate";
+import { CoordFields } from "./coord-fields";
 
 export type ShipmentRecord = {
   id: string;
@@ -31,6 +32,10 @@ export type ShipmentRecord = {
   expected_delivery: string | null;
   current_location: string | null;
   current_city: string | null;
+  origin_lng: number | null;
+  origin_lat: number | null;
+  destination_lng: number | null;
+  destination_lat: number | null;
   shipment_cost: number | null;
   clearance_cost: number | null;
   delivery_pct: number;
@@ -78,6 +83,8 @@ export function ShipmentEditor({ shipment }: { shipment: ShipmentRecord }) {
   const [pending, startTransition] = useTransition();
   const [message, setMessage] = useState<{ ok: boolean; text: string } | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const originRef = useRef<HTMLInputElement>(null);
+  const destinationRef = useRef<HTMLInputElement>(null);
 
   function submitDetails(formData: FormData) {
     startTransition(async () => {
@@ -144,10 +151,10 @@ export function ShipmentEditor({ shipment }: { shipment: ShipmentRecord }) {
         <Section title="Shipping">
           <div className="grid gap-4 md:grid-cols-2">
             <Field label="Origin (take-off point)" error={errors.origin}>
-              <input name="origin" defaultValue={shipment.origin} className={inputCls} />
+              <input ref={originRef} name="origin" defaultValue={shipment.origin} className={inputCls} />
             </Field>
             <Field label="Final destination" error={errors.destination}>
-              <input name="destination" defaultValue={shipment.destination} className={inputCls} />
+              <input ref={destinationRef} name="destination" defaultValue={shipment.destination} className={inputCls} />
             </Field>
             <Field label="Freight type" error={errors.freight_type}>
               <select name="freight_type" defaultValue={shipment.freight_type} className={inputCls}>
@@ -171,6 +178,22 @@ export function ShipmentEditor({ shipment }: { shipment: ShipmentRecord }) {
             <Field label="Expected delivery">
               <input type="date" name="expected_delivery" defaultValue={shipment.expected_delivery ?? ""} className={inputCls} />
             </Field>
+            <CoordFields
+              prefix="origin"
+              label="Origin coordinates (public tracking map)"
+              getQuery={() => originRef.current?.value ?? ""}
+              defaultLng={shipment.origin_lng}
+              defaultLat={shipment.origin_lat}
+              error={errors.origin_lng ?? errors.origin_lat}
+            />
+            <CoordFields
+              prefix="destination"
+              label="Destination coordinates (public tracking map)"
+              getQuery={() => destinationRef.current?.value ?? ""}
+              defaultLng={shipment.destination_lng}
+              defaultLat={shipment.destination_lat}
+              error={errors.destination_lng ?? errors.destination_lat}
+            />
             <div className="md:col-span-2">
               <Field label="Brief description">
                 <textarea name="description" defaultValue={shipment.description ?? ""} rows={2} className={inputCls} />
