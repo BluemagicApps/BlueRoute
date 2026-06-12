@@ -1,11 +1,15 @@
 const WINDOW_MS = 60_000;
-const LIMIT = 8;
+const DEFAULT_LIMIT = 8;
 const hits = new Map<string, number[]>();
 
 /** Sliding-window limiter. Returns true if the call is allowed. */
-export function checkRateLimit(key: string, now: number = Date.now()): boolean {
+export function checkRateLimit(
+  key: string,
+  now: number = Date.now(),
+  limit: number = DEFAULT_LIMIT,
+): boolean {
   const recent = (hits.get(key) ?? []).filter((t) => now - t < WINDOW_MS);
-  if (recent.length >= LIMIT) {
+  if (recent.length >= limit) {
     hits.set(key, recent);
     return false;
   }

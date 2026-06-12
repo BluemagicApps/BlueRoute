@@ -20,4 +20,9 @@ describe("checkRateLimit", () => {
     expect(checkRateLimit("ip-c", 0)).toBe(false);
     expect(checkRateLimit("ip-d", 0)).toBe(true);
   });
+  it("honors a custom limit", () => {
+    __resetRateLimit();
+    for (let i = 0; i < 20; i++) expect(checkRateLimit("k20", 1000, 20)).toBe(true);
+    expect(checkRateLimit("k20", 1000, 20)).toBe(false);
+  });
 });
