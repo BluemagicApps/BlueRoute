@@ -393,3 +393,15 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* Print: the tracking page prints as a clean shipping invoice. */
+@media print {
+  header,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #ffffff !important;
+  }
+}

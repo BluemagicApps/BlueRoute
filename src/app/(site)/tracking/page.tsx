@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { TrackingExperience } from "@/components/tracking/tracking-experience";
 
 export const metadata: Metadata = {
-  title: "Live Tracking",
+  title: "Track Your Shipment",
   description:
-    "Track any shipment in real time — live vessel position, AI-predicted ETAs, IoT telemetry, documents, and proactive exception management.",
+    "Enter your Blue Route tracking number to see your consignment's live route, current status, and full tracking log.",
 };
 
 export default async function TrackingPage({
