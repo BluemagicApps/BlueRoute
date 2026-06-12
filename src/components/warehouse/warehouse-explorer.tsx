@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import {
   Sparkles,
@@ -392,9 +393,12 @@ function LeasingCalculator({
         </Row>
       </div>
 
-      <button className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-br from-cyan to-indigo px-5 py-3 text-sm font-semibold text-white shadow-[0_10px_30px_-8px_rgba(30,91,255,0.65)] transition-transform active:scale-95">
+      <Link
+        href={`/warehousing/book?facility=${facility.id}`}
+        className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-br from-cyan to-indigo px-5 py-3 text-sm font-semibold text-white shadow-[0_10px_30px_-8px_rgba(30,91,255,0.65)] transition-transform active:scale-95"
+      >
         Request this space <ArrowRight className="h-4 w-4" />
-      </button>
+      </Link>
     </div>
   );
 }
