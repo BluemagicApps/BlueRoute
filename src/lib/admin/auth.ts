@@ -2,36 +2,9 @@ import "server-only";
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getSupabaseAdmin } from "@/lib/supabase/admin";
+import { ALL_MENUS, type AdminMenu, type AdminProfile } from "@/lib/admin/menus";
 
-export type AdminMenu =
-  | "dashboard"
-  | "shipments"
-  | "create"
-  | "email"
-  | "admins"
-  | "settings"
-  | "ai-audit";
-
-export const ALL_MENUS: AdminMenu[] = [
-  "dashboard",
-  "shipments",
-  "create",
-  "email",
-  "admins",
-  "settings",
-  "ai-audit",
-];
-
-export type AdminProfile = {
-  user_id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone: string | null;
-  role: "super_admin" | "manager";
-  menus: AdminMenu[];
-  status: "active" | "disabled";
-};
+export { ALL_MENUS, type AdminMenu, type AdminProfile };
 
 /** The signed-in user's admin profile, or null (not signed in / not an admin / disabled). */
 export async function getAdmin(): Promise<AdminProfile | null> {

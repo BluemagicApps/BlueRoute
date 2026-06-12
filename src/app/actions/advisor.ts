@@ -6,6 +6,27 @@ import { chat } from "@/lib/ai/groq";
 import { extractCta } from "@/lib/ai/cta";
 import { checkRateLimit } from "@/lib/ai/rate-limit";
 import type { AdvisorMessage, AdvisorResult } from "@/lib/ai/types";
+import { getSupabaseAdmin } from "@/lib/supabase/admin";
+
+/** Best-effort audit log — must never break the assistant. */
+async function logInteraction(entry: {
+  question: string;
+  answer: string | null;
+  cta_path: string | null;
+  duration_ms: number;
+  ok: boolean;
+}): Promise<void> {
+  try {
+    await getSupabaseAdmin()
+      .from("ai_interactions")
+      .insert({
+        ...entry,
+        model: process.env.GROQ_MODEL ?? "llama-3.3-70b-versatile",
+      });
+  } catch (err) {
+    console.error("[advisor] audit log failed:", err);
+  }
+}
 
 const MAX_LEN = 2000;
 const MAX_HISTORY = 12;
@@ -35,13 +56,37 @@ export async function askAdvisor(messages: AdvisorMessage[]): Promise<AdvisorRes
     .filter((m) => m.content.trim())
     .map((m) => ({ role: m.role, content: m.content.slice(0, MAX_LEN) }));
 
+  const started = Date.now();
   try {
     const reply = await chat([{ role: "system", content: buildSystemPrompt() }, ...history]);
-    if (!reply) return { ok: false, error: FALLBACK };
+    if (!reply) {
+      await logInteraction({
+        question: last.content,
+        answer: null,
+        cta_path: null,
+        duration_ms: Date.now() - started,
+        ok: false,
+      });
+      return { ok: false, error: FALLBACK };
+    }
     const { content, cta } = extractCta(reply);
+    await logInteraction({
+      question: last.content,
+      answer: content,
+      cta_path: cta?.href ?? null,
+      duration_ms: Date.now() - started,
+      ok: true,
+    });
     return { ok: true, content, cta };
   } catch (err) {
     console.error("[advisor] groq error:", err);
+    await logInteraction({
+      question: last.content,
+      answer: null,
+      cta_path: null,
+      duration_ms: Date.now() - started,
+      ok: false,
+    });
     return { ok: false, error: FALLBACK };
   }
 }

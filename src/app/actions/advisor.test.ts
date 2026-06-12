@@ -1,13 +1,17 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-const { chat, checkRateLimit } = vi.hoisted(() => ({
+const { chat, checkRateLimit, auditInsert } = vi.hoisted(() => ({
   chat: vi.fn(),
   checkRateLimit: vi.fn(() => true),
+  auditInsert: vi.fn().mockResolvedValue({ error: null }),
 }));
 
 vi.mock("@/lib/ai/groq", () => ({ chat }));
 vi.mock("@/lib/ai/rate-limit", () => ({ checkRateLimit }));
 vi.mock("@/lib/ai/system-prompt", () => ({ buildSystemPrompt: () => "SYSTEM" }));
+vi.mock("@/lib/supabase/admin", () => ({
+  getSupabaseAdmin: () => ({ from: () => ({ insert: auditInsert }) }),
+}));
 vi.mock("next/headers", () => ({
   headers: async () => ({ get: () => "1.2.3.4" }),
 }));
