@@ -5,16 +5,19 @@ import type { TrackPayload, TrackEvent } from "@/lib/tracking/payload";
 import { Barcode } from "@/components/ui/barcode";
 import { RouteMap } from "@/components/ui/route-map";
 
-const fmtDate = (iso: string | null, withTime = false) =>
-  iso
-    ? new Date(iso).toLocaleString("en-US", {
-        weekday: "short",
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-        ...(withTime ? { hour: "numeric", minute: "2-digit" } : {}),
-      })
-    : "—";
+const fmtDate = (iso: string | null, withTime = false) => {
+  if (!iso) return "—";
+  // Bare DB `date` values ("2026-05-12") must parse as local midnight, not UTC,
+  // or western viewers see the previous day. Full timestamps parse as-is.
+  const d = /^\d{4}-\d{2}-\d{2}$/.test(iso) ? new Date(`${iso}T00:00:00`) : new Date(iso);
+  return d.toLocaleString("en-US", {
+    weekday: "short",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    ...(withTime ? { hour: "numeric", minute: "2-digit" } : {}),
+  });
+};
 
 const fmtMoney = (v: number | null) =>
   v == null ? "—" : `$${v.toLocaleString("en-US", { maximumFractionDigits: 2 })}`;
