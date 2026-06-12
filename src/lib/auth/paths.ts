@@ -7,3 +7,9 @@ export function isProtectedPath(pathname: string): boolean {
     (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
   );
 }
+
+/** /admin pages need an admin session; /admin/login is the way in. */
+export function isAdminPath(pathname: string): boolean {
+  if (pathname === "/admin/login") return false;
+  return pathname === "/admin" || pathname.startsWith("/admin/");
+}

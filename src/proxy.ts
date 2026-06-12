@@ -1,12 +1,19 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { updateSession } from "@/lib/supabase/proxy-session";
-import { isProtectedPath } from "@/lib/auth/paths";
+import { isProtectedPath, isAdminPath } from "@/lib/auth/paths";
 
 export async function proxy(request: NextRequest) {
   const { response, user } = await updateSession(request);
 
-  // Optimistic redirect only — the /portal server component is the
-  // authoritative gate (it calls getUser() itself).
+  // Optimistic redirects only — the /portal and /admin server components are
+  // the authoritative gates (they call getUser()/requireAdmin() themselves).
+  if (!user && isAdminPath(request.nextUrl.pathname)) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/admin/login";
+    url.search = "";
+    return NextResponse.redirect(url);
+  }
+
   if (!user && isProtectedPath(request.nextUrl.pathname)) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";

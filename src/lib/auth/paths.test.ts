@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { isProtectedPath } from "./paths";
+import { isProtectedPath, isAdminPath } from "./paths";
 
 describe("isProtectedPath", () => {
   it("protects /portal exactly", () => {
@@ -18,5 +18,19 @@ describe("isProtectedPath", () => {
     expect(isProtectedPath("/")).toBe(false);
     expect(isProtectedPath("/login")).toBe(false);
     expect(isProtectedPath("/tracking")).toBe(false);
+  });
+});
+
+describe("isAdminPath", () => {
+  it("matches /admin and nested", () => {
+    expect(isAdminPath("/admin")).toBe(true);
+    expect(isAdminPath("/admin/shipments/abc")).toBe(true);
+  });
+  it("excludes the admin login page itself", () => {
+    expect(isAdminPath("/admin/login")).toBe(false);
+  });
+  it("ignores lookalikes and public routes", () => {
+    expect(isAdminPath("/administration")).toBe(false);
+    expect(isAdminPath("/portal")).toBe(false);
   });
 });
