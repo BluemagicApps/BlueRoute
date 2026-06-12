@@ -61,7 +61,9 @@ type EventRow = {
 const s = (r: ShipmentRow, k: string) => (r[k] as string | null) ?? null;
 const n = (r: ShipmentRow, k: string) => {
   const v = r[k];
-  return typeof v === "number" ? v : v == null ? null : Number(v);
+  if (v == null) return null;
+  const num = typeof v === "number" ? v : Number(v);
+  return Number.isFinite(num) ? num : null;
 };
 
 function point(r: ShipmentRow, name: string | null, lngKey: string, latKey: string): TrackPoint | null {
