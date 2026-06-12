@@ -11,6 +11,7 @@ const NAV: { key: AdminMenu; label: string; href: string }[] = [
   { key: "dashboard", label: "Dashboard", href: "/admin" },
   { key: "shipments", label: "Manage Shipments", href: "/admin/shipments" },
   { key: "create", label: "Create Shipment", href: "/admin/shipments/new" },
+  { key: "bookings", label: "Bookings", href: "/admin/bookings" },
   { key: "email", label: "Email Services", href: "/admin/email" },
   { key: "admins", label: "Administrators", href: "/admin/admins" },
   { key: "settings", label: "App Settings", href: "/admin/settings" },
