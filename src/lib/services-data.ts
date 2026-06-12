@@ -34,6 +34,8 @@ export type Service = {
   icon: LucideIcon;
   color: ServiceColor;
   heroVehicle?: HeroVehicle;
+  /** Scene photo (in /public/scenes) for services without a heroVehicle. */
+  heroScene?: string;
   intro: string;
   highlights: string[];
   features: { icon: LucideIcon; title: string; body: string }[];
@@ -120,6 +122,7 @@ export const SERVICES: Service[] = [
     tagline: "One accountable contract from origin pickup to final-mile delivery.",
     icon: Route,
     color: "indigo",
+    heroScene: "/scenes/door-to-door.jpg",
     intro:
       "Hand us the whole journey. We manage pickup, export, ocean, import, and last-mile delivery under a single contract and a single point of accountability — with one timeline you can actually trust.",
     highlights: [
@@ -189,6 +192,7 @@ export const SERVICES: Service[] = [
     tagline: "Engineered handling for oversized, breakbulk, and out-of-gauge loads.",
     icon: Boxes,
     color: "amber",
+    heroScene: "/scenes/project-cargo.jpg",
     intro:
       "When cargo won't fit a box, our project team engineers the move — from route surveys and lifting plans to permits and specialized equipment for oversized, heavy, and breakbulk shipments.",
     highlights: [
@@ -223,6 +227,7 @@ export const SERVICES: Service[] = [
     tagline: "Temperature-controlled, IoT-monitored integrity from dock to door.",
     icon: Snowflake,
     color: "teal",
+    heroScene: "/scenes/cold-chain.jpg",
     intro:
       "Protect temperature-sensitive cargo end to end. Reefer equipment, IoT monitoring, and instant alerts keep pharma, food, and perishables in spec across the entire journey.",
     highlights: [
@@ -257,6 +262,7 @@ export const SERVICES: Service[] = [
     tagline: "Automated clearance with predictive duty and documentation checks.",
     icon: FileCheck2,
     color: "emerald",
+    heroScene: "/scenes/customs.jpg",
     intro:
       "Clear borders faster. We automate documentation, classify goods, and pre-file against predicted arrival — catching duty and compliance issues before they cause costly holds.",
     highlights: [

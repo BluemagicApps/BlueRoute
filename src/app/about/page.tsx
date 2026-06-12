@@ -13,6 +13,7 @@ import {
 import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Button } from "@/components/ui/button";
+import { TransportPhoto } from "@/components/ui/transport-photo";
 
 export const metadata: Metadata = {
   title: "About",
@@ -81,9 +82,11 @@ export default function AboutPage() {
     <>
       {/* Hero */}
       <section className="relative overflow-hidden pt-32 pb-16 lg:pt-40">
-        <div className="bg-grid absolute inset-0 -z-10 h-96" />
-        <div className="absolute -left-32 top-10 -z-10 h-[30rem] w-[30rem] rounded-full bg-cyan/20 blur-[120px] animate-aurora" />
-        <div className="absolute -right-24 top-24 -z-10 h-[28rem] w-[28rem] rounded-full bg-indigo/20 blur-[130px] animate-aurora" />
+        <TransportPhoto
+          src="/scenes/port.jpg"
+          className="h-[30rem]"
+          scrim="from-abyss/85 via-abyss/65 to-abyss/85"
+        />
 
         <div className="mx-auto max-w-3xl px-5 text-center lg:px-8">
           <span className="inline-flex items-center gap-2 rounded-full border border-cyan/25 bg-cyan/5 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-cyan">

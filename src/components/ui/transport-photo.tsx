@@ -23,12 +23,16 @@ const PHOTO: Record<Vehicle, string> = {
 
 export function TransportPhoto({
   vehicle = "ship",
+  /* Any /public photo path; takes precedence over `vehicle`. Lets non-transport
+     pages (warehousing, customs, about, …) reuse the same duotone treatment. */
+  src,
   className,
   /* Tailwind gradient stops for the readability scrim. Defaults to a strong
      left wash fading right; pass a custom value for darker/lighter heroes. */
   scrim = "from-abyss via-abyss/75 to-abyss/10",
 }: {
   vehicle?: Vehicle;
+  src?: string;
   className?: string;
   scrim?: string;
 }) {
@@ -41,7 +45,7 @@ export function TransportPhoto({
       )}
     >
       <img
-        src={PHOTO[vehicle]}
+        src={src ?? PHOTO[vehicle]}
         alt=""
         className="animate-kenburns absolute inset-0 h-full w-full object-cover [filter:grayscale(1)_contrast(1.05)]"
       />

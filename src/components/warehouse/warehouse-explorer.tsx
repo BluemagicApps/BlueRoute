@@ -24,6 +24,7 @@ import {
   type FacilityFeature,
 } from "@/lib/warehouse-data";
 import { WarehouseMap } from "./warehouse-map";
+import { TransportPhoto } from "@/components/ui/transport-photo";
 import { EASE_OUT_EXPO } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -63,9 +64,12 @@ export function WarehouseExplorer() {
     );
 
   return (
-    <section className="relative pt-28 pb-20 lg:pt-32">
-      <div className="bg-grid absolute inset-0 -z-10 h-80" />
-      <div className="absolute -right-32 top-10 -z-10 h-[26rem] w-[26rem] rounded-full bg-indigo/20 blur-[120px] animate-aurora" />
+    <section className="relative overflow-hidden pt-28 pb-20 lg:pt-32">
+      <TransportPhoto
+        src="/scenes/warehouse.jpg"
+        className="h-[26rem]"
+        scrim="from-abyss/85 via-abyss/60 to-abyss/30"
+      />
 
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         {/* Header */}

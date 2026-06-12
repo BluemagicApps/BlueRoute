@@ -58,6 +58,8 @@ export default async function ServiceDetailPage({
       <section className="relative overflow-hidden pt-32 pb-12 lg:pt-40">
         {s.heroVehicle ? (
           <TransportPhoto vehicle={s.heroVehicle} />
+        ) : s.heroScene ? (
+          <TransportPhoto src={s.heroScene} />
         ) : (
           <>
             <div className="bg-grid absolute inset-0 -z-10 h-96" />
