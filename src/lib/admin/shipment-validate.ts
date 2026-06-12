@@ -37,6 +37,10 @@ export type ShipmentInput = {
   expected_delivery: string | null;
   current_location: string | null;
   current_city: string | null;
+  origin_lng: number | null;
+  origin_lat: number | null;
+  destination_lng: number | null;
+  destination_lat: number | null;
   shipment_cost: number | null;
   clearance_cost: number | null;
   delivery_pct: number;
@@ -67,6 +71,23 @@ function optNum(
   const n = Number(s);
   if (!Number.isFinite(n) || n < 0) {
     errors[key] = "Must be a non-negative number.";
+    return null;
+  }
+  return n;
+}
+
+function optCoord(
+  raw: Raw,
+  key: string,
+  errors: Record<string, string>,
+  min: number,
+  max: number,
+): number | null {
+  const s = str(raw, key);
+  if (s === "") return null;
+  const n = Number(s);
+  if (!Number.isFinite(n) || n < min || n > max) {
+    errors[key] = `Must be a number between ${min} and ${max}.`;
     return null;
   }
   return n;
@@ -120,6 +141,21 @@ export function validateShipmentInput(
   if (!Number.isInteger(delivery_pct) || delivery_pct < 0 || delivery_pct > 100)
     errors.delivery_pct = "Must be a whole number between 0 and 100.";
 
+  const origin_lng = optCoord(raw, "origin_lng", errors, -180, 180);
+  const origin_lat = optCoord(raw, "origin_lat", errors, -90, 90);
+  const destination_lng = optCoord(raw, "destination_lng", errors, -180, 180);
+  const destination_lat = optCoord(raw, "destination_lat", errors, -90, 90);
+  for (const [a, b] of [
+    ["origin_lng", "origin_lat"],
+    ["destination_lng", "destination_lat"],
+  ] as const) {
+    const hasA = str(raw, a) !== "";
+    const hasB = str(raw, b) !== "";
+    if (hasA !== hasB) {
+      errors[hasA ? b : a] = "Both longitude and latitude are required.";
+    }
+  }
+
   if (Object.keys(errors).length) return { ok: false, errors };
 
   return {
@@ -147,6 +183,10 @@ export function validateShipmentInput(
       expected_delivery: optStr(raw, "expected_delivery"),
       current_location: optStr(raw, "current_location"),
       current_city: optStr(raw, "current_city"),
+      origin_lng,
+      origin_lat,
+      destination_lng,
+      destination_lat,
       shipment_cost,
       clearance_cost,
       delivery_pct,

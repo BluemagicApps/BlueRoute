@@ -70,3 +70,52 @@ describe("validateShipmentInput", () => {
     }
   });
 });
+
+describe("coordinates", () => {
+  const base = {
+    receiver_name: "R",
+    sender_name: "S",
+    origin: "Hamburg",
+    destination: "Phnom Penh",
+  };
+
+  it("accepts a full valid coordinate set", () => {
+    const res = validateShipmentInput({
+      ...base,
+      origin_lng: "9.99",
+      origin_lat: "53.55",
+      destination_lng: "104.92",
+      destination_lat: "11.56",
+    });
+    expect(res.ok).toBe(true);
+    if (res.ok) {
+      expect(res.data.origin_lng).toBeCloseTo(9.99);
+      expect(res.data.destination_lat).toBeCloseTo(11.56);
+    }
+  });
+
+  it("treats empty coords as null", () => {
+    const res = validateShipmentInput(base);
+    expect(res.ok).toBe(true);
+    if (res.ok) {
+      expect(res.data.origin_lng).toBeNull();
+      expect(res.data.destination_lat).toBeNull();
+    }
+  });
+
+  it("rejects a lng without its lat", () => {
+    const res = validateShipmentInput({ ...base, origin_lng: "9.99" });
+    expect(res.ok).toBe(false);
+    if (!res.ok) expect(res.errors.origin_lat).toBeTruthy();
+  });
+
+  it("rejects out-of-range values", () => {
+    const res = validateShipmentInput({
+      ...base,
+      origin_lng: "200",
+      origin_lat: "10",
+    });
+    expect(res.ok).toBe(false);
+    if (!res.ok) expect(res.errors.origin_lng).toBeTruthy();
+  });
+});
