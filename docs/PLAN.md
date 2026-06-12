@@ -123,7 +123,11 @@ truth for the upgrade. Status is tracked per item.
   **+1 (323) 484 8030**; Head office **3229 Hadley St, Houston, TX 77004**; plausible street
   addresses added to every global office.
 
-### 12. Professional admin backend — ⏳ (Supabase)
+### 12. Professional admin backend — 🟡 CODE DONE (2026-06-11) — awaiting schema apply + live E2E
+All of a–g built per the mockups (and the shipment-detail screenshots Timi supplied:
+detail view + Actions menu + "Update shipment status" modal + printable invoice).
+`supabase/admin-schema.sql` must be run in the SQL editor, then `node scripts/seed-admin.mjs`
+seeds the first super admin. Deferred: logo/favicon upload in App Settings.
 A full `/admin` area mirroring the supplied mockups, rebuilt in Next 16 + Supabase, plus
 analytics/auditing of AI-agent interactions.
 - **a. Dashboard** (5.png): totals, shipments chart, latest shipments, quick actions.
@@ -173,11 +177,12 @@ analytics/auditing of AI-agent interactions.
 ---
 
 ## Build order (remaining)
-1. **Backgrounds (item 3)** — finish the rollout: scene photos for the remaining pages. ◀ NEXT
-2. **Supabase foundation** — 🟡 mostly done: schema + RLS, admin/SSR clients, Next 16 proxy
-   (`src/proxy.ts`), `/portal` magic-link auth (`/login`, `/auth/confirm`, `/auth/signout`).
-   Remaining: `admins` table/roles + `/admin` guard.
-3. **Admin backend (12)** + **tracking (13)** + **portal map (14)** on real data.
+1. ~~Backgrounds (item 3) rollout~~ ✅ done 2026-06-11 (scenes on warehousing, about,
+   door-to-door, project-cargo, cold-chain, customs; public routes moved into the
+   `(site)` route group so `/admin` is chrome-free).
+2. ~~Supabase foundation~~ ✅ done (admins table/roles, `/admin/login` + guard).
+3. **Admin backend (12)** — 🟡 code done; ⛔ apply `admin-schema.sql` + seed admin + E2E.
+   Then **tracking (13)** + **portal map (14)** on real data. ◀ NEXT
    (Tracking + warehousing maps already swapped to MapLibre/CARTO, token-free.)
 4. **Bookings (6, 8)** — per-service quote forms + warehouse wizard → Supabase.
 5. **Real AI (5)** + **voice (16)**.
