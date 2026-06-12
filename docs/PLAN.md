@@ -123,11 +123,13 @@ truth for the upgrade. Status is tracked per item.
   **+1 (323) 484 8030**; Head office **3229 Hadley St, Houston, TX 77004**; plausible street
   addresses added to every global office.
 
-### 12. Professional admin backend — 🟡 CODE DONE (2026-06-11) — awaiting schema apply + live E2E
+### 12. Professional admin backend — ✅ done (live E2E green 2026-06-12)
 All of a–g built per the mockups (and the shipment-detail screenshots Timi supplied:
 detail view + Actions menu + "Update shipment status" modal + printable invoice).
-`supabase/admin-schema.sql` must be run in the SQL editor, then `node scripts/seed-admin.mjs`
-seeds the first super admin. Deferred: logo/favicon upload in App Settings.
+`admin-schema.sql` applied, super admin seeded (`roberthorton2167@gmail.com`), and a
+13-step HTTP E2E (`scripts/verify-admin-e2e.mjs`) passed: unauth redirect, login,
+all 6 panel pages render, bogus-id 404, non-admin user bounced.
+Deferred: logo/favicon upload in App Settings.
 A full `/admin` area mirroring the supplied mockups, rebuilt in Next 16 + Supabase, plus
 analytics/auditing of AI-agent interactions.
 - **a. Dashboard** (5.png): totals, shipments chart, latest shipments, quick actions.
@@ -181,8 +183,8 @@ analytics/auditing of AI-agent interactions.
    door-to-door, project-cargo, cold-chain, customs; public routes moved into the
    `(site)` route group so `/admin` is chrome-free).
 2. ~~Supabase foundation~~ ✅ done (admins table/roles, `/admin/login` + guard).
-3. **Admin backend (12)** — 🟡 code done; ⛔ apply `admin-schema.sql` + seed admin + E2E.
-   Then **tracking (13)** + **portal map (14)** on real data. ◀ NEXT
+3. ~~Admin backend (12)~~ ✅ done 2026-06-12 (schema applied, super admin seeded,
+   live E2E green). **Tracking (13)** + **portal map (14)** on real data. ◀ NEXT
    (Tracking + warehousing maps already swapped to MapLibre/CARTO, token-free.)
 4. **Bookings (6, 8)** — per-service quote forms + warehouse wizard → Supabase.
 5. **Real AI (5)** + **voice (16)**.
@@ -202,7 +204,7 @@ analytics/auditing of AI-agent interactions.
 - Deploy to Vercel; re-verify geo/email/AI in production.
 
 ## Completed so far
-- Items **1, 2, 4, 7, 10, 11** done.
+- Items **1, 2, 4, 7, 10, 11, 12** done.
 - **Item 3 Checkpoint 2** done (Variant 1 Cobalt Duotone, productized; rollout to remaining pages pending).
 - **Backend sub-projects merged to `main`** (specs/plans in `docs/superpowers/`):
   real forms → Supabase + Resend (2026-06-10) · live Groq AI advisor (2026-06-10) ·
