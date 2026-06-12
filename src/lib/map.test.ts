@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { BASEMAP_STYLE, splitRouteAtVessel, greatCircle, buildTripPath } from "./map";
-import type { LngLat } from "@/lib/tracking-data";
+import { BASEMAP_STYLE, splitRouteAtVessel, greatCircle, buildTripPath, type LngLat } from "./map";
 
 const route: LngLat[] = [
   [0, 0],
