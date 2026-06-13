@@ -10,12 +10,20 @@ import {
   buildBookingDetails,
   type WarehouseBookingInput,
 } from "@/lib/bookings/validate";
-import { formatWarehouseRef } from "@/lib/bookings/refs";
+import { formatWarehouseRef, formatServiceRef } from "@/lib/bookings/refs";
 import {
   warehouseBookingTeamEmail,
   warehouseBookingAckEmail,
   warehouseDecisionEmail,
+  serviceQuoteTeamEmail,
+  serviceQuoteAckEmail,
 } from "@/lib/email/booking-templates";
+import { getServiceQuoteConfig } from "@/lib/quote/service-fields";
+import {
+  validateServiceQuote,
+  buildServiceDetails,
+  type ServiceQuoteInput,
+} from "@/lib/quote/validate";
 
 const HONEYPOT = "company_url";
 const GENERIC = "Something went wrong — please try again or email us directly.";
@@ -124,4 +132,76 @@ export async function setBookingStatus(
 
   revalidatePath("/admin/bookings");
   return { ok: true };
+}
+
+export type ServiceQuoteState =
+  | { status: "idle" }
+  | { status: "success"; bookingRef: string }
+  | { status: "error"; error: string; fieldErrors?: Record<string, string> };
+
+export async function submitServiceQuote(
+  _prev: ServiceQuoteState,
+  formData: FormData,
+): Promise<ServiceQuoteState> {
+  if (str(formData, HONEYPOT)) {
+    return { status: "success", bookingRef: formatServiceRef(crypto.randomUUID()) };
+  }
+
+  const slug = str(formData, "serviceSlug");
+  const config = getServiceQuoteConfig(slug);
+  if (!config) {
+    return { status: "error", error: "Unknown service — please start from a service page." };
+  }
+
+  const values: Record<string, string | string[]> = {};
+  for (const f of config.fields) {
+    values[f.name] =
+      f.type === "multiselect"
+        ? formData.getAll(f.name).map((v) => String(v))
+        : str(formData, f.name);
+  }
+
+  const input: ServiceQuoteInput = {
+    slug,
+    values,
+    name: str(formData, "name"),
+    email: str(formData, "email"),
+    company: str(formData, "company"),
+    phone: str(formData, "phone"),
+  };
+
+  const fieldErrors = validateServiceQuote(config, input);
+  if (Object.keys(fieldErrors).length) {
+    return { status: "error", error: "Please fix the fields below.", fieldErrors };
+  }
+
+  const bookingRef = formatServiceRef(crypto.randomUUID());
+
+  try {
+    const { error } = await getSupabaseAdmin().from("bookings").insert({
+      type: "service",
+      service_slug: slug,
+      name: input.name,
+      email: input.email,
+      phone: input.phone || null,
+      company: input.company || null,
+      details: buildServiceDetails(config, input),
+      status: "new",
+      booking_ref: bookingRef,
+    });
+    if (error) {
+      console.error("[service-quote] insert failed:", error);
+      return { status: "error", error: GENERIC };
+    }
+  } catch (err) {
+    console.error("[service-quote] insert threw:", err);
+    return { status: "error", error: GENERIC };
+  }
+
+  await sendEmails([
+    { to: team(), replyTo: input.email, ...serviceQuoteTeamEmail(config, input, bookingRef) },
+    { to: input.email, ...serviceQuoteAckEmail(config, input, bookingRef) },
+  ]);
+
+  return { status: "success", bookingRef };
 }
