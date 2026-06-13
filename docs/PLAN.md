@@ -193,11 +193,16 @@ analytics/auditing of AI-agent interactions.
   it only auto-forces on the genuine first visit. Static UI from pre-built catalogs; dynamic
   data via `api/ai/translate` (Groq).
 
-### 16. Voice mode in the AI Advisor — ⏳
-- Wire the existing mic button — `src/components/ai/ai-assistant.tsx`: native Web Speech API
-  (`SpeechRecognition` + `speechSynthesis`) so the user talks and the AI talks back, with a
-  **Groq Whisper STT fallback** (`api/ai/stt`) for browsers without native recognition
-  (Firefox, iOS Safari). Works web + mobile.
+### 16. Voice mode in the AI Advisor — ✅ done (2026-06-13)
+- Wired the mic button — `src/components/ai/ai-assistant.tsx`: native Web Speech API via
+  `useSpeechToText` (`src/components/ai/use-speech-to-text.ts`) so the user talks and, via
+  `useSpeech` (`speechSynthesis`, `src/components/ai/use-speech.ts`), the AI talks back. A
+  **Groq Whisper STT fallback** (`POST /api/ai/stt` → `src/lib/voice/stt.ts`) covers browsers
+  without native recognition (Firefox, iOS Safari); mode resolved by `resolveSttMode`.
+- UI: mic toggles listening (red `MicOff` while recording, spinner while transcribing, hidden
+  when unsupported); header `Volume2`/`VolumeX` toggle controls spoken replies (only voice-asked
+  questions are read aloud); closing the panel cancels speech + stops the mic; mic-permission
+  failures show a "you can type instead" hint. Works web + mobile. tsc/eslint/build/119 tests green.
 
 ---
 
@@ -218,8 +223,9 @@ analytics/auditing of AI-agent interactions.
    `/admin/bookings`; CTAs preselect; live E2E green; `branch feat/warehouse-booking`).
 5. ~~Real AI (5)~~ ✅ done 2026-06-13 — AI-Edge tool pages live (predictive-insights,
    route-optimizer, proactive-resolution) on Groq + Open-Meteo; `branch feat/warehouse-booking`.
-   **Voice (16)** next. ◀ NEXT
-6. **i18n (15)** rollout.
+5b. ~~Voice (16)~~ ✅ done 2026-06-13 — mic + spoken replies wired into the advisor
+   (Web Speech + Groq Whisper fallback); `branch feat/warehouse-booking`.
+6. **i18n (15)** rollout. ◀ NEXT
 7. **Company content (9)** with supplied photos.
 8. **Deploy to Vercel** + full end-to-end verification.
 
@@ -235,7 +241,7 @@ analytics/auditing of AI-agent interactions.
 - Deploy to Vercel; re-verify geo/email/AI in production.
 
 ## Completed so far
-- Items **1, 2, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14** done.
+- Items **1, 2, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 16** done.
 - **Item 3 Checkpoint 2** done (Variant 1 Cobalt Duotone, productized; rollout to remaining pages pending).
 - **Backend sub-projects merged to `main`** (specs/plans in `docs/superpowers/`):
   real forms → Supabase + Resend (2026-06-10) · live Groq AI advisor (2026-06-10) ·
@@ -258,4 +264,8 @@ analytics/auditing of AI-agent interactions.
   (`/ai-edge/{predictive-insights,route-optimizer,proactive-resolution}`) on a shared
   `<AiToolConsole>`; AI figures labeled estimates; logged to `ai_interactions`. Live E2E green
   (`scripts/verify-ai-edge-e2e.mjs`).
-- Build green (115 Vitest tests, tsc, eslint). NOT yet pushed to origin / deployed.
+- **Voice mode (item 16)** built on branch `feat/warehouse-booking` (2026-06-13): native Web
+  Speech `SpeechRecognition` + `speechSynthesis` hooks (`use-speech-to-text.ts`, `use-speech.ts`)
+  wired into the advisor, with a Groq Whisper fallback (`POST /api/ai/stt`, `src/lib/voice/stt.ts`)
+  for Firefox/iOS. Mic + spoken-reply toggle in `ai-assistant.tsx`.
+- Build green (119 Vitest tests, tsc, eslint). NOT yet pushed to origin / deployed.
