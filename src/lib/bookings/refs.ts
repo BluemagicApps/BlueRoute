@@ -8,3 +8,7 @@ function hashSeed(seed: string): number {
 export function formatWarehouseRef(seed: string): string {
   return `BR-WH-${(hashSeed(seed) % 90000) + 10000}`;
 }
+
+export function formatServiceRef(seed: string): string {
+  return `BR-SV-${(hashSeed(seed) % 90000) + 10000}`;
+}
