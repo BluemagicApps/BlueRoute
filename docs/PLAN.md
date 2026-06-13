@@ -84,16 +84,19 @@ truth for the upgrade. Status is tracked per item.
   Route Optimizer (weather-aware lane optimizer), Proactive Resolution (exception detection
   → auto-reroute suggestion). Detailed, exploratory pages.
 
-### 6. Unique per-service quote/booking forms — 🟡 (persistence layer done)
+### 6. Unique per-service quote/booking forms — ✅ done (live E2E green 2026-06-13)
 - ✅ Quote "Request booking" + contact form persist to Supabase (`quote_requests`,
   `contact_inquiries`, RLS deny-all public) with server-side re-pricing, honeypot, and
   Resend team/customer emails (`src/app/actions/leads.ts`).
-- Make the quote wizard **service-aware** — `src/components/quote/quote-wizard.tsx`: each
-  service (ocean, air, land, door-to-door, project-cargo, cold-chain, customs, warehouse)
-  gets a tailored field set that collects maximum booking data.
-- Each service detail page gets a "Get a quote for X" entry that preselects the service.
-- Submissions persist to Supabase `bookings`/`quotes` (no payment) and notify staff. Schema
-  built to absorb the **extra data points you'll share later**.
+- ✅ The quote wizard is now **service-aware** via `/quote?service=<slug>`: ocean-freight &
+  door-to-door keep the live-priced `quote-wizard.tsx`; air, land, project-cargo, cold-chain,
+  and customs each get a tailored, config-driven request form
+  (`src/components/quote/service-quote-wizard.tsx` + `src/lib/quote/service-fields.ts`).
+- ✅ Every service detail page's "Get a quote" CTA preselects the service (`?service=<slug>`).
+- ✅ Service quote requests persist to Supabase `bookings` (type='service') via
+  `submitServiceQuote`, notify staff + ack the customer (Resend), and appear in the
+  `/admin/bookings` review queue with a summary. Pure libs unit-tested; live E2E green
+  (`scripts/verify-service-quotes-e2e.mjs`).
 
 ### 7. Fix invisible dropdown menu (web + mobile) — ✅ done
 - Mega-menu panel is now a solid white surface with border + shadow (was see-through glass)
@@ -208,9 +211,10 @@ analytics/auditing of AI-agent interactions.
 4. ~~Warehouse booking (8)~~ ✅ done 2026-06-13 (dataset → ~36; `/warehousing/book` wizard
    → `bookings`; admin `/admin/bookings` approve/reject + email; live E2E green;
    `branch feat/warehouse-booking`).
-4b. **Service-aware quote forms (rest of 6)** — make `quote-wizard.tsx` per-service field sets;
-   each service detail page preselects the service. ◀ NEXT
-5. **Real AI (5)** + **voice (16)**.
+4b. ~~Service-aware quote forms (rest of 6)~~ ✅ done 2026-06-13 (`/quote?service=` routing;
+   air/land/project-cargo/cold-chain/customs request forms → `bookings` (type='service') →
+   `/admin/bookings`; CTAs preselect; live E2E green; `branch feat/warehouse-booking`).
+5. **Real AI (5)** + **voice (16)**. ◀ NEXT
 6. **i18n (15)** rollout.
 7. **Company content (9)** with supplied photos.
 8. **Deploy to Vercel** + full end-to-end verification.
@@ -227,7 +231,7 @@ analytics/auditing of AI-agent interactions.
 - Deploy to Vercel; re-verify geo/email/AI in production.
 
 ## Completed so far
-- Items **1, 2, 4, 7, 8, 10, 11, 12, 13, 14** done.
+- Items **1, 2, 4, 6, 7, 8, 10, 11, 12, 13, 14** done.
 - **Item 3 Checkpoint 2** done (Variant 1 Cobalt Duotone, productized; rollout to remaining pages pending).
 - **Backend sub-projects merged to `main`** (specs/plans in `docs/superpowers/`):
   real forms → Supabase + Resend (2026-06-10) · live Groq AI advisor (2026-06-10) ·
@@ -241,4 +245,8 @@ analytics/auditing of AI-agent interactions.
   spec+plan in `docs/superpowers/`): ~36-facility dataset, 3-step `/warehousing/book` wizard
   → Supabase `bookings` + Resend emails, admin `/admin/bookings` approve/reject. Live E2E
   green (`scripts/verify-bookings-e2e.mjs`).
-- Build green (84 Vitest tests, tsc, eslint). NOT yet pushed to origin / deployed.
+- **Service-aware quote forms (item 6)** built on branch `feat/warehouse-booking` (2026-06-13,
+  spec+plan in `docs/superpowers/`): `/quote?service=` routing, config-driven request forms for
+  air/land/project-cargo/cold-chain/customs → Supabase `bookings` (type='service') + Resend
+  emails, surfaced in `/admin/bookings`. Live E2E green (`scripts/verify-service-quotes-e2e.mjs`).
+- Build green (95 Vitest tests, tsc, eslint). NOT yet pushed to origin / deployed.
