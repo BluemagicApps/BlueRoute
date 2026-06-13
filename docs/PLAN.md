@@ -99,12 +99,20 @@ truth for the upgrade. Status is tracked per item.
 - Mega-menu panel is now a solid white surface with border + shadow (was see-through glass)
   — `src/components/site-header.tsx`. Mobile drawer already solid; verified.
 
-### 8. Warehousing: more listings + booking wizard — ⏳
-- Expand `src/lib/warehouse-data.ts` to ~30–40 realistic facilities across regions.
-- Add a **no-payment booking wizard** (multi-step info collection) → Supabase `bookings`
-  (type=warehouse) → routed to a Blue staff agent for approval + approval email; payment
-  handled offline. (No free public warehouse-inventory API exists; dataset is structured so
-  a real feed can replace it later.)
+### 8. Warehousing: more listings + booking wizard — ✅ done (live E2E green 2026-06-13)
+- ✅ Expanded `src/lib/warehouse-data.ts` to **~36 facilities** across all regions
+  (Europe, Asia, North America, Middle East, Oceania).
+- ✅ **No-payment booking wizard** at `/warehousing/book?facility=…`
+  (`warehouse-booking-wizard.tsx`, 3 steps: requirements → company → review) →
+  Supabase `bookings` (type=warehouse) via `submitWarehouseBooking` → team + customer
+  ack emails (Resend, best-effort). "Request this space" in the explorer links here.
+- ✅ Admin review at **`/admin/bookings`** (new `bookings` menu permission): status-filtered
+  table with one-click **approve/reject** (`setBookingStatus`) that emails the customer the
+  decision. Pure libs (`src/lib/bookings/refs.ts`, `validate.ts`) unit-tested.
+- ✅ Live E2E `scripts/verify-bookings-e2e.mjs` — seed → authed `/admin/bookings` renders →
+  status flip + filter → public page 200/404 → **ALL GREEN**.
+- (No free public warehouse-inventory API exists; dataset is structured so a real feed can
+  replace it later.)
 
 ### 9. Company content: About story + leadership + insights — ⏳
 - Rewrite About — `src/app/about/page.tsx`: founding story **Houston, TX, 1998**, started as
@@ -197,7 +205,11 @@ analytics/auditing of AI-agent interactions.
 3b. ~~Tracking (13) + portal map (14)~~ ✅ done 2026-06-12 on real data (core E2E green;
    `branch feat/public-tracking`). ⛔ one manual step: paste `supabase/tracking-migration.sql`
    for the full route line.
-4. **Bookings (6, 8)** — per-service quote forms + warehouse wizard → Supabase. ◀ NEXT
+4. ~~Warehouse booking (8)~~ ✅ done 2026-06-13 (dataset → ~36; `/warehousing/book` wizard
+   → `bookings`; admin `/admin/bookings` approve/reject + email; live E2E green;
+   `branch feat/warehouse-booking`).
+4b. **Service-aware quote forms (rest of 6)** — make `quote-wizard.tsx` per-service field sets;
+   each service detail page preselects the service. ◀ NEXT
 5. **Real AI (5)** + **voice (16)**.
 6. **i18n (15)** rollout.
 7. **Company content (9)** with supplied photos.
@@ -215,7 +227,7 @@ analytics/auditing of AI-agent interactions.
 - Deploy to Vercel; re-verify geo/email/AI in production.
 
 ## Completed so far
-- Items **1, 2, 4, 7, 10, 11, 12, 13, 14** done.
+- Items **1, 2, 4, 7, 8, 10, 11, 12, 13, 14** done.
 - **Item 3 Checkpoint 2** done (Variant 1 Cobalt Duotone, productized; rollout to remaining pages pending).
 - **Backend sub-projects merged to `main`** (specs/plans in `docs/superpowers/`):
   real forms → Supabase + Resend (2026-06-10) · live Groq AI advisor (2026-06-10) ·
@@ -225,4 +237,8 @@ analytics/auditing of AI-agent interactions.
   3s loader, `GET /api/track/[number]`, admin geocode assist. Live core E2E green
   (`scripts/verify-tracking-e2e.mjs`, demo `BRL-TEST0001`). ⛔ paste `tracking-migration.sql`
   for the route line.
-- Build green (73 Vitest tests, tsc, eslint, 32 routes). NOT yet pushed to origin / deployed.
+- **Warehouse booking (8)** built on branch `feat/warehouse-booking` (2026-06-13,
+  spec+plan in `docs/superpowers/`): ~36-facility dataset, 3-step `/warehousing/book` wizard
+  → Supabase `bookings` + Resend emails, admin `/admin/bookings` approve/reject. Live E2E
+  green (`scripts/verify-bookings-e2e.mjs`).
+- Build green (84 Vitest tests, tsc, eslint). NOT yet pushed to origin / deployed.
