@@ -73,16 +73,18 @@ truth for the upgrade. Status is tracked per item.
   trust signals (licensed & bonded, insured end-to-end, 24/7 monitoring, 180+ countries) —
   `src/components/home/trust-strip.tsx`.
 
-### 5. Make AI Edge real + clickable cards — 🟡 (assistant is live)
+### 5. Make AI Edge real + clickable cards — ✅ done (2026-06-13)
 - ✅ Site-wide AI assistant runs on **real Groq** (`src/app/actions/advisor.ts`, grounded
   system prompt, per-IP rate limit, CTA allowlist). Mock "thinking steps" removed.
-- Make all 4 cards clickable — `src/components/home/ai-edge.tsx`: the AI Assistant banner
-  opens the assistant + links to `/ai-edge`; create and link **`/ai-edge/predictive-insights`**,
-  **`/ai-edge/route-optimizer`**, **`/ai-edge/proactive-resolution`**.
-- Implement real, interactive workflows using free resources (Groq + Open-Meteo weather +
-  the existing haversine engine): Predictive Insights (delay-probability/ETA forecast),
-  Route Optimizer (weather-aware lane optimizer), Proactive Resolution (exception detection
-  → auto-reroute suggestion). Detailed, exploratory pages.
+- ✅ All 4 capability cards are clickable (`src/components/home/ai-edge.tsx` + `/ai-edge`): the
+  AI Assistant card opens the advisor (`br-open-assistant` event); the other three link to
+  **`/ai-edge/predictive-insights`**, **`/ai-edge/route-optimizer`**, **`/ai-edge/proactive-resolution`**.
+- ✅ Three real, interactive tool pages built on Groq JSON-mode + Open-Meteo weather + the
+  haversine engine: Predictive Insights (delay-probability/ETA/cost-trend), Route Optimizer
+  (cost/time/carbon balance + backup lane), Proactive Resolution (scenario → auto-fix). A shared
+  `<AiToolConsole>` drives a PORTS lane picker; figures are labeled "AI estimate · grounded in
+  live weather + distance". Tool actions log to `ai_interactions`. Live E2E green
+  (`scripts/verify-ai-edge-e2e.mjs`).
 
 ### 6. Unique per-service quote/booking forms — ✅ done (live E2E green 2026-06-13)
 - ✅ Quote "Request booking" + contact form persist to Supabase (`quote_requests`,
@@ -214,7 +216,9 @@ analytics/auditing of AI-agent interactions.
 4b. ~~Service-aware quote forms (rest of 6)~~ ✅ done 2026-06-13 (`/quote?service=` routing;
    air/land/project-cargo/cold-chain/customs request forms → `bookings` (type='service') →
    `/admin/bookings`; CTAs preselect; live E2E green; `branch feat/warehouse-booking`).
-5. **Real AI (5)** + **voice (16)**. ◀ NEXT
+5. ~~Real AI (5)~~ ✅ done 2026-06-13 — AI-Edge tool pages live (predictive-insights,
+   route-optimizer, proactive-resolution) on Groq + Open-Meteo; `branch feat/warehouse-booking`.
+   **Voice (16)** next. ◀ NEXT
 6. **i18n (15)** rollout.
 7. **Company content (9)** with supplied photos.
 8. **Deploy to Vercel** + full end-to-end verification.
@@ -231,7 +235,7 @@ analytics/auditing of AI-agent interactions.
 - Deploy to Vercel; re-verify geo/email/AI in production.
 
 ## Completed so far
-- Items **1, 2, 4, 6, 7, 8, 10, 11, 12, 13, 14** done.
+- Items **1, 2, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14** done.
 - **Item 3 Checkpoint 2** done (Variant 1 Cobalt Duotone, productized; rollout to remaining pages pending).
 - **Backend sub-projects merged to `main`** (specs/plans in `docs/superpowers/`):
   real forms → Supabase + Resend (2026-06-10) · live Groq AI advisor (2026-06-10) ·
@@ -249,4 +253,9 @@ analytics/auditing of AI-agent interactions.
   spec+plan in `docs/superpowers/`): `/quote?service=` routing, config-driven request forms for
   air/land/project-cargo/cold-chain/customs → Supabase `bookings` (type='service') + Resend
   emails, surfaced in `/admin/bookings`. Live E2E green (`scripts/verify-service-quotes-e2e.mjs`).
-- Build green (95 Vitest tests, tsc, eslint). NOT yet pushed to origin / deployed.
+- **Real AI Edge (item 5)** built on branch `feat/warehouse-booking` (2026-06-13, spec+plan in
+  `docs/superpowers/`): clickable capability cards + three Groq/Open-Meteo/haversine tool pages
+  (`/ai-edge/{predictive-insights,route-optimizer,proactive-resolution}`) on a shared
+  `<AiToolConsole>`; AI figures labeled estimates; logged to `ai_interactions`. Live E2E green
+  (`scripts/verify-ai-edge-e2e.mjs`).
+- Build green (115 Vitest tests, tsc, eslint). NOT yet pushed to origin / deployed.
