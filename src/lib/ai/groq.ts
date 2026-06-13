@@ -37,3 +37,10 @@ export async function chatJSON<T>(messages: ChatMsg[]): Promise<T | null> {
   });
   return safeParseJSON<T>(res.choices[0]?.message?.content ?? "");
 }
+
+/** Transcribe an audio file via Groq Whisper. Returns the recognized text. */
+export async function transcribe(file: File): Promise<string> {
+  const model = process.env.GROQ_WHISPER_MODEL || "whisper-large-v3-turbo";
+  const res = await client().audio.transcriptions.create({ file, model });
+  return (res.text ?? "").trim();
+}
