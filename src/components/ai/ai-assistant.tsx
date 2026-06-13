@@ -3,10 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import { Sparkles, Send, Mic, X, ArrowRight, Bot } from "lucide-react";
+import { Sparkles, Send, Mic, MicOff, Loader2, Volume2, VolumeX, X, ArrowRight, Bot } from "lucide-react";
 import { EASE_OUT_EXPO } from "@/lib/motion";
 import { askAdvisor } from "@/app/actions/advisor";
 import type { AdvisorMessage } from "@/lib/ai/types";
+import { useSpeech } from "@/components/ai/use-speech";
+import { useSpeechToText } from "@/components/ai/use-speech-to-text";
 
 type Msg = {
   id: number;
@@ -34,8 +36,11 @@ export function AiAssistant() {
   const [messages, setMessages] = useState<Msg[]>([GREETING]);
   const [input, setInput] = useState("");
   const [thinking, setThinking] = useState(false);
+  const [spokenRepliesOn, setSpokenRepliesOn] = useState(true);
   const idRef = useRef(1);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  const tts = useSpeech();
 
   // Allow any CTA on the site to open the advisor.
   useEffect(() => {
@@ -48,7 +53,7 @@ export function AiAssistant() {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, thinking, open]);
 
-  const send = async (text: string) => {
+  const send = async (text: string, viaVoice = false) => {
     const value = text.trim();
     if (!value || thinking) return;
     const userMsg: Msg = { id: idRef.current++, role: "user", content: value };
@@ -70,7 +75,22 @@ export function AiAssistant() {
         ? { id: idRef.current++, role: "assistant", content: res.content, cta: res.cta }
         : { id: idRef.current++, role: "assistant", content: res.error },
     ]);
+    if (viaVoice && res.ok && spokenRepliesOn && tts.supported) {
+      tts.speak(res.content);
+    }
   };
+
+  const stt = useSpeechToText({ onTranscript: (text) => send(text, true) });
+
+  // Stop audio + listening whenever the panel closes.
+  const cancelSpeech = tts.cancel;
+  const stopListening = stt.stop;
+  useEffect(() => {
+    if (!open) {
+      cancelSpeech();
+      stopListening();
+    }
+  }, [open, cancelSpeech, stopListening]);
 
   return (
     <>
@@ -113,13 +133,25 @@ export function AiAssistant() {
                   </p>
                 </div>
               </div>
-              <button
-                onClick={() => setOpen(false)}
-                aria-label="Close"
-                className="grid h-8 w-8 place-items-center rounded-full text-white/90 hover:bg-white/15"
-              >
-                <X className="h-4.5 w-4.5" />
-              </button>
+              <div className="flex items-center gap-1">
+                {tts.supported && (
+                  <button
+                    type="button"
+                    onClick={() => (tts.speaking ? tts.cancel() : setSpokenRepliesOn((v) => !v))}
+                    aria-label={tts.speaking ? "Stop speaking" : spokenRepliesOn ? "Mute spoken replies" : "Unmute spoken replies"}
+                    className="grid h-8 w-8 place-items-center rounded-full text-white/90 hover:bg-white/15"
+                  >
+                    {spokenRepliesOn || tts.speaking ? <Volume2 className="h-4.5 w-4.5" /> : <VolumeX className="h-4.5 w-4.5" />}
+                  </button>
+                )}
+                <button
+                  onClick={() => setOpen(false)}
+                  aria-label="Close"
+                  className="grid h-8 w-8 place-items-center rounded-full text-white/90 hover:bg-white/15"
+                >
+                  <X className="h-4.5 w-4.5" />
+                </button>
+              </div>
             </div>
 
             {/* Messages */}
@@ -145,6 +177,11 @@ export function AiAssistant() {
               </div>
             )}
 
+            {/* Voice error hint */}
+            {stt.error && (
+              <p className="bg-white px-3 pt-2 text-center text-[0.7rem] text-rose">{stt.error}</p>
+            )}
+
             {/* Input */}
             <form
               onSubmit={(e) => {
@@ -153,13 +190,27 @@ export function AiAssistant() {
               }}
               className="flex items-center gap-2 bg-white p-3"
             >
-              <button
-                type="button"
-                aria-label="Voice input"
-                className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-steel/70 text-mist transition-colors hover:border-cyan/40 hover:text-cyan"
-              >
-                <Mic className="h-4.5 w-4.5" />
-              </button>
+              {stt.mode !== "unsupported" && (
+                <button
+                  type="button"
+                  onClick={() => (stt.listening ? stt.stop() : stt.start())}
+                  disabled={thinking || stt.transcribing}
+                  aria-label={stt.listening ? "Stop listening" : "Voice input"}
+                  className={`grid h-10 w-10 shrink-0 place-items-center rounded-full border transition-colors disabled:opacity-40 ${
+                    stt.listening
+                      ? "border-rose/60 bg-rose/10 text-rose"
+                      : "border-steel/70 text-mist hover:border-cyan/40 hover:text-cyan"
+                  }`}
+                >
+                  {stt.transcribing ? (
+                    <Loader2 className="h-4.5 w-4.5 animate-spin" />
+                  ) : stt.listening ? (
+                    <MicOff className="h-4.5 w-4.5" />
+                  ) : (
+                    <Mic className="h-4.5 w-4.5" />
+                  )}
+                </button>
+              )}
               <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
