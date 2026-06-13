@@ -1,5 +1,7 @@
 import type { EmailBody } from "@/lib/email/templates";
 import type { WarehouseBookingInput } from "@/lib/bookings/validate";
+import type { ServiceQuoteConfig } from "@/lib/quote/service-fields";
+import type { ServiceQuoteInput } from "@/lib/quote/validate";
 
 type Facility = { name: string; city: string; country: string };
 const firstName = (name: string) => name.trim().split(/\s+/)[0] || "there";
@@ -80,6 +82,48 @@ export function warehouseDecisionEmail(
         : `<p style="font-size:14px">After review, we're unable to confirm
             <strong>${facilityName}</strong> for request <strong>${booking.booking_ref}</strong>
             right now. Our team will follow up with alternative facilities that fit your needs.</p>`,
+    ),
+  };
+}
+
+export function serviceQuoteTeamEmail(
+  config: ServiceQuoteConfig,
+  input: ServiceQuoteInput,
+  ref: string,
+): EmailBody {
+  const fieldRows = config.fields
+    .map((f) => {
+      const v = input.values[f.name];
+      const val = Array.isArray(v) ? v.join(", ") : v;
+      return val && val.trim() ? row(f.label, val) : "";
+    })
+    .join("");
+  return {
+    subject: `New ${config.title} ${ref}`,
+    html: wrap(
+      `New ${config.title.toLowerCase()} (${ref})`,
+      `<table style="font-size:14px">
+        ${row("Company", input.company || "—")}
+        ${row("Contact", `${input.name} · ${input.email}`)}
+        ${row("Phone", input.phone || "—")}
+        ${fieldRows}
+      </table>`,
+    ),
+  };
+}
+
+export function serviceQuoteAckEmail(
+  config: ServiceQuoteConfig,
+  input: ServiceQuoteInput,
+  ref: string,
+): EmailBody {
+  return {
+    subject: `We received your ${config.title} (${ref})`,
+    html: wrap(
+      `Thanks, ${firstName(input.name)}!`,
+      `<p style="font-size:14px">We've received your ${config.title.toLowerCase()} and logged it as
+        <strong>${ref}</strong>. No payment is taken now — our team will review the details and
+        follow up with options and pricing shortly.</p>`,
     ),
   };
 }
