@@ -91,7 +91,7 @@ export default async function ServiceDetailPage({
                 {s.tagline}
               </p>
               <div className="mt-7 flex flex-wrap gap-3">
-                <Button href="/quote" variant="primary" size="lg">
+                <Button href={`/quote?service=${s.slug}`} variant="primary" size="lg">
                   Get a quote
                 </Button>
                 <Button href="/contact" variant="outline" size="lg">

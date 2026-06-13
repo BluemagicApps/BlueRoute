@@ -35,13 +35,13 @@ import type { BookingState } from "@/lib/leads/types";
 
 const STEPS = ["Route", "Cargo", "Rates", "Confirm"];
 
-export function QuoteWizard() {
+export function QuoteWizard({ initialMode = "door-to-door" }: { initialMode?: CargoMode }) {
   const [step, setStep] = useState(0);
 
   // Form state
   const [originCode, setOriginCode] = useState("CNSHA");
   const [destCode, setDestCode] = useState("NLRTM");
-  const [mode, setMode] = useState<CargoMode>("door-to-door");
+  const [mode, setMode] = useState<CargoMode>(initialMode);
   const [containerId, setContainerId] = useState("40hc");
   const [weight, setWeight] = useState("18000");
   const [readyDate, setReadyDate] = useState("");
