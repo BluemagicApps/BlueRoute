@@ -73,16 +73,22 @@ export async function runPredictiveInsights(
   const distanceKm = Math.round(estimateDistanceKm({ origin, destination, container, mode: "port-to-port" }));
 
   const started = Date.now();
-  const [originWx, destWx] = await Promise.all([fetchWeather(origin.lat, origin.lng), fetchWeather(destination.lat, destination.lng)]);
-  const raw = await chatJSON<unknown>(buildPredictivePrompt({ origin, destination, distanceKm, readyDate, originWx, destWx }));
-  const result = normalizePredictive(raw);
   const label = `predictive-insights: ${origin.code}->${destination.code}`;
-  if (!result) {
+  try {
+    const [originWx, destWx] = await Promise.all([fetchWeather(origin.lat, origin.lng), fetchWeather(destination.lat, destination.lng)]);
+    const raw = await chatJSON<unknown>(buildPredictivePrompt({ origin, destination, distanceKm, readyDate, originWx, destWx }));
+    const result = normalizePredictive(raw);
+    if (!result) {
+      await logTool(label, "", Date.now() - started, false);
+      return { status: "error", error: GEN_ERR };
+    }
+    await logTool(label, result.summary, Date.now() - started, true);
+    return { status: "success", result, weatherUsed: !!originWx && !!destWx };
+  } catch (err) {
+    console.error("[ai-tools] predictive-insights failed:", err);
     await logTool(label, "", Date.now() - started, false);
     return { status: "error", error: GEN_ERR };
   }
-  await logTool(label, result.summary, Date.now() - started, true);
-  return { status: "success", result, weatherUsed: !!originWx && !!destWx };
 }
 
 export async function runRouteOptimizer(
@@ -102,16 +108,22 @@ export async function runRouteOptimizer(
   }));
 
   const started = Date.now();
-  const [originWx, destWx] = await Promise.all([fetchWeather(origin.lat, origin.lng), fetchWeather(destination.lat, destination.lng)]);
-  const raw = await chatJSON<unknown>(buildOptimizerPrompt({ origin, destination, candidates, originWx, destWx }));
-  const result = normalizeOptimizer(raw);
   const label = `route-optimizer: ${origin.code}->${destination.code}`;
-  if (!result) {
+  try {
+    const [originWx, destWx] = await Promise.all([fetchWeather(origin.lat, origin.lng), fetchWeather(destination.lat, destination.lng)]);
+    const raw = await chatJSON<unknown>(buildOptimizerPrompt({ origin, destination, candidates, originWx, destWx }));
+    const result = normalizeOptimizer(raw);
+    if (!result) {
+      await logTool(label, "", Date.now() - started, false);
+      return { status: "error", error: GEN_ERR };
+    }
+    await logTool(label, result.rationale, Date.now() - started, true);
+    return { status: "success", result, weatherUsed: !!originWx && !!destWx };
+  } catch (err) {
+    console.error("[ai-tools] route-optimizer failed:", err);
     await logTool(label, "", Date.now() - started, false);
     return { status: "error", error: GEN_ERR };
   }
-  await logTool(label, result.rationale, Date.now() - started, true);
-  return { status: "success", result, weatherUsed: !!originWx && !!destWx };
 }
 
 export async function runProactiveResolution(
@@ -127,14 +139,20 @@ export async function runProactiveResolution(
   const distanceKm = Math.round(estimateDistanceKm({ origin, destination, container, mode: "port-to-port" }));
 
   const started = Date.now();
-  const destWx = await fetchWeather(destination.lat, destination.lng);
-  const raw = await chatJSON<unknown>(buildResolutionPrompt({ origin, destination, distanceKm, disruption, destWx }));
-  const result = normalizeResolution(raw);
   const label = `proactive-resolution: ${origin.code}->${destination.code} (${disruption})`;
-  if (!result) {
+  try {
+    const destWx = await fetchWeather(destination.lat, destination.lng);
+    const raw = await chatJSON<unknown>(buildResolutionPrompt({ origin, destination, distanceKm, disruption, destWx }));
+    const result = normalizeResolution(raw);
+    if (!result) {
+      await logTool(label, "", Date.now() - started, false);
+      return { status: "error", error: GEN_ERR };
+    }
+    await logTool(label, result.recommendedFix, Date.now() - started, true);
+    return { status: "success", result, weatherUsed: !!destWx };
+  } catch (err) {
+    console.error("[ai-tools] proactive-resolution failed:", err);
     await logTool(label, "", Date.now() - started, false);
     return { status: "error", error: GEN_ERR };
   }
-  await logTool(label, result.recommendedFix, Date.now() - started, true);
-  return { status: "success", result, weatherUsed: !!destWx };
 }

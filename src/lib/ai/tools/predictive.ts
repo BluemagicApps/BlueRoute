@@ -35,7 +35,7 @@ export function buildPredictivePrompt(input: PredictiveInput): ChatMsg[] {
     {
       role: "user",
       content: `Lane: ${origin.city}, ${origin.country} (${origin.code}) → ${destination.city}, ${destination.country} (${destination.code}).
-Great-circle distance: ${distanceKm} km.
+Estimated sea distance: ${distanceKm} km.
 Cargo ready date: ${readyDate || "not specified"}.
 Origin weather: ${wx(originWx)}.
 Destination weather: ${wx(destWx)}.
