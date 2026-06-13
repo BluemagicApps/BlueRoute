@@ -96,9 +96,15 @@ export default async function AdminBookingsPage({
                     <span className="block text-xs text-mist">{b.email}</span>
                   </td>
                   <td className="px-4 py-3 text-xs text-mist">
-                    {d.sqftRequested ? `${Number(d.sqftRequested).toLocaleString()} ft²` : "—"}
-                    {d.moveIn ? ` · ${String(d.moveIn)}` : ""}
-                    {d.termMonths ? ` · ${String(d.termMonths)}mo` : ""}
+                    {typeof d.summary === "string" && d.summary ? (
+                      d.summary
+                    ) : (
+                      <>
+                        {d.sqftRequested ? `${Number(d.sqftRequested).toLocaleString()} ft²` : "—"}
+                        {d.moveIn ? ` · ${String(d.moveIn)}` : ""}
+                        {d.termMonths ? ` · ${String(d.termMonths)}mo` : ""}
+                      </>
+                    )}
                   </td>
                   <td className="px-4 py-3">
                     <BookingActions id={b.id} status={b.status} />
