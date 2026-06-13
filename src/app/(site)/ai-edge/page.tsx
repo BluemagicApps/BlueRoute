@@ -12,6 +12,7 @@ import {
 import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { OpenAdvisorButton } from "@/components/ai/open-advisor-button";
+import { OpenAdvisorCard } from "@/components/ai/open-advisor-card";
 import { PredictiveDashboard } from "@/components/ai/predictive-dashboard";
 
 export const metadata: Metadata = {
@@ -28,39 +29,11 @@ const CHIP: Record<string, string> = {
 };
 
 const CAPABILITIES = [
-  {
-    id: "assistant",
-    icon: Bot,
-    color: "cyan",
-    title: "BlueRoute AI Assistant",
-    body: "An agentic chat & voice copilot that doesn't just answer — it acts. Ask it to plan a multi-leg shipment, run a 'what-if' on the Red Sea, or compare warehouse options, and it executes the steps for you.",
-    bullets: ["Chat + voice", "Multi-step agentic planning", "Quotes, tracking & risk in one place"],
-  },
-  {
-    id: "predictive",
-    icon: LineChart,
-    color: "indigo",
-    title: "Predictive Insights",
-    body: "Delay probabilities, cost forecasts, and route alternatives computed from 40+ live signals per lane — so you decide ahead of disruptions instead of reacting to them.",
-    bullets: ["Delay probability scoring", "8-week cost forecasting", "Ranked route alternatives"],
-  },
-  {
-    id: "optimizer",
-    icon: RouteIcon,
-    color: "teal",
-    title: "AI Route Optimizer",
-    body: "Every shipment is optimized across cost, transit time, and emissions using live ocean, port, and weather data — with a congestion-avoiding backup lane always on standby.",
-    bullets: ["Cost vs. time vs. carbon", "Live congestion avoidance", "−26% emissions options"],
-  },
-  {
-    id: "radar",
-    icon: Radar,
-    color: "emerald",
-    title: "Proactive Resolution",
-    body: "Exceptions are detected early and resolved automatically — re-routing, re-booking, or pre-clearing customs — so you get a fix in your inbox, not just an alert.",
-    bullets: ["Early exception detection", "Auto re-route & re-book", "Customs pre-clearance"],
-  },
-];
+  { id: "assistant", icon: Bot, color: "cyan", href: null, title: "BlueRoute AI Assistant", body: "An agentic chat & voice copilot that doesn't just answer — it acts. Ask it to plan a multi-leg shipment, run a 'what-if' on the Red Sea, or compare warehouse options, and it executes the steps for you.", bullets: ["Chat + voice", "Multi-step agentic planning", "Quotes, tracking & risk in one place"] },
+  { id: "predictive", icon: LineChart, color: "indigo", href: "/ai-edge/predictive-insights", title: "Predictive Insights", body: "Delay probabilities, cost forecasts, and route alternatives computed from 40+ live signals per lane — so you decide ahead of disruptions instead of reacting to them.", bullets: ["Delay probability scoring", "8-week cost forecasting", "Ranked route alternatives"] },
+  { id: "optimizer", icon: RouteIcon, color: "teal", href: "/ai-edge/route-optimizer", title: "AI Route Optimizer", body: "Every shipment is optimized across cost, transit time, and emissions using live ocean, port, and weather data — with a congestion-avoiding backup lane always on standby.", bullets: ["Cost vs. time vs. carbon", "Live congestion avoidance", "−26% emissions options"] },
+  { id: "radar", icon: Radar, color: "emerald", href: "/ai-edge/proactive-resolution", title: "Proactive Resolution", body: "Exceptions are detected early and resolved automatically — re-routing, re-booking, or pre-clearing customs — so you get a fix in your inbox, not just an alert.", bullets: ["Early exception detection", "Auto re-route & re-book", "Customs pre-clearance"] },
+] as const;
 
 const STATS = [
   { v: "3.5d", l: "Avg. delay avoided" },
@@ -116,30 +89,38 @@ export default function AiEdgePage() {
           <div className="mt-12 grid gap-4 md:grid-cols-2">
             {CAPABILITIES.map((c, i) => {
               const Icon = c.icon;
+              const inner = (
+                <article
+                  id={c.id}
+                  className="group h-full scroll-mt-28 cursor-pointer rounded-3xl border border-steel/70 bg-deep p-7 text-left shadow-soft transition-all duration-500 hover:-translate-y-1 hover:border-cyan/40"
+                >
+                  <span className={`grid h-12 w-12 place-items-center rounded-2xl ${CHIP[c.color]}`}>
+                    <Icon className="h-6 w-6" />
+                  </span>
+                  <h3 className="mt-5 text-xl font-semibold text-foam" style={{ fontFamily: "var(--font-display)" }}>
+                    {c.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-mist">{c.body}</p>
+                  <ul className="mt-4 space-y-1.5">
+                    {c.bullets.map((b) => (
+                      <li key={b} className="flex items-center gap-2 text-sm text-foam">
+                        <Check className="h-4 w-4 text-cyan" /> {b}
+                      </li>
+                    ))}
+                  </ul>
+                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-cyan">
+                    {c.href ? "Open the tool" : "Open the assistant"}
+                    <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                  </span>
+                </article>
+              );
               return (
                 <Reveal key={c.id} delay={i * 0.06}>
-                  <article
-                    id={c.id}
-                    className="group h-full scroll-mt-28 rounded-3xl border border-steel/70 bg-deep p-7 shadow-soft transition-all duration-500 hover:-translate-y-1 hover:border-cyan/40"
-                  >
-                    <span className={`grid h-12 w-12 place-items-center rounded-2xl ${CHIP[c.color]}`}>
-                      <Icon className="h-6 w-6" />
-                    </span>
-                    <h3
-                      className="mt-5 text-xl font-semibold text-foam"
-                      style={{ fontFamily: "var(--font-display)" }}
-                    >
-                      {c.title}
-                    </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-mist">{c.body}</p>
-                    <ul className="mt-4 space-y-1.5">
-                      {c.bullets.map((b) => (
-                        <li key={b} className="flex items-center gap-2 text-sm text-foam">
-                          <Check className="h-4 w-4 text-cyan" /> {b}
-                        </li>
-                      ))}
-                    </ul>
-                  </article>
+                  {c.href ? (
+                    <Link href={c.href} className="block">{inner}</Link>
+                  ) : (
+                    <OpenAdvisorCard className="block w-full">{inner}</OpenAdvisorCard>
+                  )}
                 </Reveal>
               );
             })}

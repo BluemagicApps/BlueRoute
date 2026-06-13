@@ -36,12 +36,14 @@ const FEATURES = [
     title: "Predictive Insights",
     body: "Delay probabilities, cost forecasts, and route alternatives — before disruptions hit your cargo.",
     color: "cyan" as const,
+    href: "/ai-edge/predictive-insights",
   },
   {
     icon: Route,
     title: "AI Route Optimizer",
     body: "Lowest-risk, lowest-carbon routing computed across live ocean, port, and weather signals.",
     color: "teal" as const,
+    href: "/ai-edge/route-optimizer",
   },
   {
     icon: Radar,
@@ -49,6 +51,7 @@ const FEATURES = [
     body: "Exceptions are detected and re-routed automatically — you get a fix, not just an alert.",
     span: "lg:col-span-2",
     color: "emerald" as const,
+    href: "/ai-edge/proactive-resolution",
   },
 ];
 
@@ -104,25 +107,26 @@ export function AiEdge() {
 
             return (
               <Reveal key={f.title} delay={i * 0.07} className={f.span ?? ""}>
-                <article className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-steel/70 bg-deep p-7 shadow-soft transition-all duration-500 hover:-translate-y-1 hover:border-cyan/40">
-                  <div
-                    className={`absolute -right-12 -top-12 h-40 w-40 rounded-full blur-2xl transition-all duration-500 ${GLOWS[f.color]}`}
-                  />
-                  <span
-                    className={`grid h-12 w-12 place-items-center rounded-2xl transition-colors ${ACCENTS[f.color]}`}
-                  >
-                    <Icon className="h-6 w-6" />
-                  </span>
-                  <h3
-                    className="mt-5 text-xl font-semibold text-foam"
-                    style={{ fontFamily: "var(--font-display)" }}
-                  >
-                    {f.title}
-                  </h3>
-                  <p className="mt-2 max-w-md text-sm leading-relaxed text-mist">
-                    {f.body}
-                  </p>
-                </article>
+                <Link href={f.href ?? "/ai-edge"} className="group block h-full">
+                  <article className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-steel/70 bg-deep p-7 shadow-soft transition-all duration-500 hover:-translate-y-1 hover:border-cyan/40">
+                    <div
+                      className={`absolute -right-12 -top-12 h-40 w-40 rounded-full blur-2xl transition-all duration-500 ${GLOWS[f.color]}`}
+                    />
+                    <span
+                      className={`grid h-12 w-12 place-items-center rounded-2xl transition-colors ${ACCENTS[f.color]}`}
+                    >
+                      <Icon className="h-6 w-6" />
+                    </span>
+                    <h3 className="mt-5 text-xl font-semibold text-foam" style={{ fontFamily: "var(--font-display)" }}>
+                      {f.title}
+                    </h3>
+                    <p className="mt-2 max-w-md text-sm leading-relaxed text-mist">{f.body}</p>
+                    <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-cyan">
+                      Open the tool
+                      <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                    </span>
+                  </article>
+                </Link>
               </Reveal>
             );
           })}
