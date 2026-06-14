@@ -1,5 +1,322 @@
 {
   "Common": {
-    "getQuote": "Get Quote"
+    "getQuote": "Obter Cotação"
+  },
+  "Nav": {
+    "services": {
+      "label": "Serviços",
+      "featuredTitle": "A Inteligência de Ponta",
+      "featuredBlurb": "Veja como a inteligência preditiva supera a logística reativa.",
+      "groups": {
+        "freightModes": {
+          "heading": "Modos de Frete",
+          "oceanFreight": {
+            "label": "Frete Marítimo (FCL/LCL)",
+            "description": "Cargas completas e menores que o contêiner em todas as principais rotas."
+          },
+          "airFreight": {
+            "label": "Frete Aéreo",
+            "description": "Frete aéreo de tempo crítico com elevação garantida."
+          },
+          "landFreight": {
+            "label": "Frete Terrestre (Rodovia e Ferrovia)",
+            "description": "Rodovia, ferrovia e drayage com entregas conectadas em tempo real."
+          },
+          "doorToDoor": {
+            "label": "Porta a Porta",
+            "description": "Um contrato, desde a coleta de origem até a entrega final."
+          }
+        },
+        "specialized": {
+          "heading": "Especializados",
+          "projectCargo": {
+            "label": "Carga de Projeto e Pesada",
+            "description": "Engenharia de carga sobredimensionada, breakbulk e fora de especificação."
+          },
+          "coldChain": {
+            "label": "Cadeia de Frio",
+            "description": "Controle de temperatura, monitorado por IoT de ponta a ponta."
+          },
+          "customs": {
+            "label": "Aduanas e Conformidade",
+            "description": "Liberação automatizada com verificações de direitos preditivos."
+          },
+          "warehouseLeasing": {
+            "label": "Locação de Armazéns",
+            "description": "Instalações inteligentes, mapa pesquisável, combinação de IA."
+          }
+        }
+      }
+    },
+    "aiEdge": {
+      "label": "Inteligência de Ponta",
+      "groups": {
+        "intelligence": {
+          "heading": "Inteligência",
+          "assistant": {
+            "label": "Assistente de IA BlueRoute",
+            "description": "Chat e voz agênticos para cotações, riscos e planejamento."
+          },
+          "predictiveInsights": {
+            "label": "Perspectivas Preditivas",
+            "description": "Probabilidades de atrasos, alternativas e previsões de custos."
+          },
+          "routeOptimizer": {
+            "label": "Otimizador de Rotas",
+            "description": "Roteamento de baixo risco e baixo carbono em segundos."
+          },
+          "exceptionRadar": {
+            "label": "Radar de Exceções",
+            "description": "Resolução proativa de problemas antes que eles custem."
+          }
+        }
+      }
+    },
+    "tracking": {
+      "label": "Rastreamento"
+    },
+    "warehousing": {
+      "label": "Armazenamento"
+    },
+    "company": {
+      "label": "Empresa",
+      "groups": {
+        "company": {
+          "heading": "Empresa",
+          "about": {
+            "label": "Sobre a Blue Route",
+            "description": "Nossa missão de tornar o transporte inteligente."
+          },
+          "insights": {
+            "label": "Perspectivas e Blog",
+            "description": "Inteligência de mercado e tendências logísticas."
+          },
+          "sustainability": {
+            "label": "Sustentabilidade",
+            "description": "Desenvolvimento de comércio global, rota por rota."
+          },
+          "careers": {
+            "label": "Carreiras",
+            "description": "Construa o futuro da logística conosco."
+          }
+        }
+      }
+    },
+    "differentiator": "Diferenciador",
+    "explore": "Explore"
+  },
+  "Header": {
+    "track": "Rastrear",
+    "getQuote": "Obter Cotação",
+    "openMenu": "Abrir menu",
+    "closeMenu": "Fechar menu",
+    "mobileSearchPlaceholder": "Rastrear, cotação ou procurar…"
+  },
+  "Footer": {
+    "ctaHeading": "Envie com inteligência.",
+    "ctaHeadingAccent": "A partir de hoje.",
+    "ctaBody": "Obtenha uma cotação otimizada por IA em menos de 60 segundos — ou converse com o Consultor de IA da BlueRoute sobre sua próxima remessa.",
+    "instantQuote": "Obtenha Cotação Imediata",
+    "talkToExpert": "Converse com um Especialista",
+    "tagline": "Envio global inteligente. Precisão impulsionada por IA. Logística de contêineres porta a porta e aluguel de armazém inteligente para e de qualquer país.",
+    "social": {
+      "linkedin": "LinkedIn",
+      "x": "X",
+      "github": "GitHub"
+    },
+    "columns": {
+      "services": {
+        "heading": "Serviços",
+        "oceanFreight": "Frete Marítimo",
+        "airFreight": "Frete Aéreo",
+        "landFreight": "Frete Terrestre",
+        "doorToDoor": "Porta a Porta",
+        "coldChain": "Cadeia de Frio",
+        "customs": "Aduanas e Conformidade",
+        "projectCargo": "Carga de Projeto"
+      },
+      "platform": {
+        "heading": "Plataforma",
+        "liveTracking": "Rastreamento em Tempo Real",
+        "getQuote": "Obtenha uma Cotação",
+        "warehouseLeasing": "Aluguel de Armazém",
+        "aiEdge": "Borda de IA",
+        "customerPortal": "Portal do Cliente"
+      },
+      "company": {
+        "heading": "Empresa",
+        "about": "Sobre",
+        "insights": "Perspectivas",
+        "sustainability": "Sustentabilidade",
+        "careers": "Carreiras",
+        "contact": "Contato"
+      }
+    },
+    "rights": "Blue Route Logistics. Todos os direitos reservados.",
+    "privacy": "Privacidade",
+    "terms": "Termos",
+    "sustainability": "Sustentabilidade"
+  },
+  "Home": {
+    "hero": {
+      "headline": "Envio global inteligente,",
+      "headlineAccent": "projetado para nunca surpreender você.",
+      "sub": "Envio de contêineres de porta a porta para e de qualquer país — com ETAs previsíveis, mitigação proativa de riscos e aluguel de armazéns inteligentes, para que sua cadeia de suprimentos continue em movimento e surpresas fiquem de fora.",
+      "trackPlaceholder": "Rastrear por número de contêiner, B/L ou referência de reserva",
+      "trackAriaLabel": "Referência de rastreamento",
+      "trackButton": "Rastrear",
+      "ctaPrimary": "Obter Cotação Instantânea",
+      "ctaSecondary": "Pergunte ao Consultor de IA",
+      "trustOnTime": "94% no prazo, verificado por IA",
+      "trustRiskAlerts": "Alertas de risco proativos",
+      "trustVisibility": "Visibilidade em tempo real",
+      "etaCard": {
+        "label": "ETA Previsível",
+        "route": "Xangai → Rotterdão",
+        "status": "No prazo · 99,2% de confiança"
+      },
+      "riskCard": {
+        "label": "Vigilância de Risco de IA",
+        "status": "Reencaminhado para evitar congestionamento",
+        "detail": "Economizado um estimado de 3,5 dias"
+      }
+    },
+    "trust": {
+      "stats": {
+        "countries": "Países atendidos",
+        "containers": "Contêineres movidos/ano",
+        "onTime": "No prazo, verificado por IA",
+        "quote": "Para uma cotação otimizada"
+      },
+      "signalsHeading": "Confiado por embarcadores e equipes de frete em todo o mundo",
+      "signals": {
+        "licensed": "Operações de frete licenciadas e vinculadas",
+        "insured": "Carga segurada de ponta a ponta",
+        "monitoring": "Monitoramento de envio 24/7",
+        "coverage": "Cobertura em 180+ países"
+      }
+    },
+    "aiEdge": {
+      "eyebrow": "A Borda de IA",
+      "title": "Logística previsível.",
+      "titleAccent": "Não desculpas reativas.",
+      "subtitle": "Transportadoras tradicionais lhe dizem que um contêiner está atrasado depois que ele está atrasado. A IA da Blue Route vê isso acontecendo, avalia as alternativas e age — para que sua cadeia de suprimentos permaneça em movimento.",
+      "features": {
+        "assistant": {
+          "title": "Assistente de IA da BlueRoute",
+          "body": "Um copiloto de chat e voz agente que fornece cotações, explica o rastreamento, executa análise de risco \"e se\" e planeja envios de múltiplas pernas de ponta a ponta.",
+          "cta": "Conheça o assistente"
+        },
+        "predictiveInsights": {
+          "title": "Perspectivas Previsíveis",
+          "body": "Probabilidades de atraso, previsões de custo e alternativas de rota — antes que interrupções atinjam sua carga."
+        },
+        "routeOptimizer": {
+          "title": "Otimizador de Rota de IA",
+          "body": "Roteamento de baixo risco e baixo carbono computado em sinais de oceano, porto e clima em tempo real."
+        },
+        "proactiveResolution": {
+          "title": "Resolução Proativa",
+          "body": "Exceções são detectadas e reencaminhadas automaticamente — você obtém uma solução, não apenas um alerta."
+        },
+        "openTool": "Abrir a ferramenta"
+      }
+    },
+    "services": {
+      "eyebrow": "O que movemos",
+      "title": "Uma rede logística completa, orquestrada inteligentemente",
+      "subtitle": "Cada serviço é executado na mesma estrutura previsível — para que visibilidade, risco e otimização sigam sua carga em diferentes modos.",
+      "items": {
+        "oceanFreight": {
+          "title": "Frete de Oceano (FCL/LCL)",
+          "body": "Cargas de contêineres completos e parciais confiáveis em todas as principais rotas comerciais."
+        },
+        "airFreight": {
+          "title": "Frete Aéreo",
+          "body": "Frete aéreo crítico com garantia de elevação e rastreamento de voo em tempo real."
+        },
+        "landFreight": {
+          "title": "Frete Terrestre (Rodovia e Ferrovia)",
+          "body": "Transporte rodoviário, ferroviário e de drayage com entregas conectadas em tempo real."
+        },
+        "doorToDoor": {
+          "title": "Porta a Porta",
+          "body": "Um contrato responsável de ponta a ponta, desde a coleta de origem até a entrega de última milha."
+        },
+        "warehouseLeasing": {
+          "title": "Aluguel de Armazém",
+          "body": "Instalações inteligentes e pesquisáveis com correspondência de IA e visitas virtuais."
+        },
+        "coldChain": {
+          "title": "Cadeia de Frio",
+          "body": "Integridade controlada por temperatura, monitorada por IoT, desde o cais até a porta."
+        },
+        "customs": {
+          "title": "Aduanas e Conformidade",
+          "body": "Liberação automática com previsões e verificações de impostos e documentação."
+        },
+        "projectCargo": {
+          "title": "Carga de Projeto e Pesada",
+          "body": "Manuseio projetado para cargas sobredimensionadas, quebradas e fora de especificação."
+        }
+      }
+    },
+    "advantage": {
+      "eyebrow": "Por que Blue Route",
+      "title": "A lacuna entre",
+      "titleLegacy": "transportadoras tradicionais",
+      "titleAnd": "e",
+      "titleAccent": "a Borda de IA",
+      "subtitle": "As mesmas rotas. Uma maneira fundamentalmente mais inteligente de executá-las.",
+      "headerCapability": "Capacidade",
+      "headerLegacy": "Transportadoras tradicionais",
+      "headerBlue": "Blue Route",
+      "rows": {
+        "eta": {
+          "label": "Precisão de ETA",
+          "legacy": "Horários estáticos, atualizados após atrasos",
+          "blue": "ETAs previsíveis com pontuação de confiança em tempo real"
+        },
+        "disruptions": {
+          "label": "Interrupções",
+          "legacy": "E-mails reativos após a carga ficar presa",
+          "blue": "Detectado cedo e reencaminhado automaticamente"
+        },
+        "quoting": {
+          "label": "Cotação",
+          "legacy": "Horas a dias, troca manual",
+          "blue": "Taxas otimizadas por IA em menos de 60 segundos"
+        },
+        "visibility": {
+          "label": "Visibilidade",
+          "legacy": "Portais desajeitados, atualizações atrasadas",
+          "blue": "Mapa em tempo real, sensores IoT, primeiro para dispositivos móveis"
+        },
+        "warehousing": {
+          "label": "Armazenamento",
+          "legacy": "Fornecedores desconectados e separados",
+          "blue": "Instalações inteligentes correspondidas por IA, totalmente integradas"
+        }
+      }
+    },
+    "warehouse": {
+      "badge": "Aluguel de Armazém",
+      "title": "Espaço inteligente,",
+      "titleAccent": "correspondido por IA",
+      "titleSuffix": "à forma como você envia",
+      "body": "Pesquise um mapa ao vivo de instalações inteligentes, filtre por localização, tamanho e recursos, então deixe nossa IA recomendar a pegada certa perto de sua demanda — com calendários de disponibilidade e um calculador de aluguel integrado.",
+      "specs": {
+        "size": "12.000–250.000 pés quadrados",
+        "power": "Alta potência + solar",
+        "crossDock": "Cross-dock e baías de VE",
+        "ports": "Próximo a portos principais"
+      },
+      "cta": "Explorar instalações",
+      "map": {
+        "facilityName": "Hub Inteligente de Rotterdão A",
+        "facilityDetail": "84.000 pés quadrados · 12m de altura · 18 docas",
+        "available": "Disponível"
+      }
+    }
   }
 }

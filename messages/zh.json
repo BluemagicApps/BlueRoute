@@ -1,5 +1,322 @@
 {
   "Common": {
-    "getQuote": "Get Quote"
+    "getQuote": "获取便记"
+  },
+  "Nav": {
+    "services": {
+      "label": "服务",
+      "featuredTitle": "AI 边缘",
+      "featuredBlurb": "了解预测智能如何超越反应性物流。",
+      "groups": {
+        "freightModes": {
+          "heading": "货运方式",
+          "oceanFreight": {
+            "label": "海运 (FCL/LCL)",
+            "description": "每条主要航线的整柜和散柜货运。"
+          },
+          "airFreight": {
+            "label": "空运",
+            "description": "具有保证起飞的时间关键空运。"
+          },
+          "landFreight": {
+            "label": "陆运 (公路和铁路)",
+            "description": "公路、铁路和拖车运输，具有实时连接的交接。"
+          },
+          "doorToDoor": {
+            "label": "门到门",
+            "description": "一份合同，从起始地取货到最终交货。"
+          }
+        },
+        "specialized": {
+          "heading": "专业化",
+          "projectCargo": {
+            "label": "项目和重型货物",
+            "description": "超大型、散货和非标准工程。"
+          },
+          "coldChain": {
+            "label": "冷链",
+            "description": "温度控制、物联网监测的端到端服务。"
+          },
+          "customs": {
+            "label": "海关和合规",
+            "description": "具有预测关税检查的自动化清关。"
+          },
+          "warehouseLeasing": {
+            "label": "仓库租赁",
+            "description": "智能设施、可搜索的地图、AI 匹配。"
+          }
+        }
+      }
+    },
+    "aiEdge": {
+      "label": "AI 边缘",
+      "groups": {
+        "intelligence": {
+          "heading": "智能",
+          "assistant": {
+            "label": "BlueRoute AI 助手",
+            "description": "代理聊天和语音报价、风险和规划。"
+          },
+          "predictiveInsights": {
+            "label": "预测洞察",
+            "description": "延迟概率、替代方案和成本预测。"
+          },
+          "routeOptimizer": {
+            "label": "路线优化器",
+            "description": "最低风险、最低碳排放路线，仅需几秒钟。"
+          },
+          "exceptionRadar": {
+            "label": "异常雷达",
+            "description": "在问题产生成本之前的主动问题解决。"
+          }
+        }
+      }
+    },
+    "tracking": {
+      "label": "跟踪"
+    },
+    "warehousing": {
+      "label": "仓储"
+    },
+    "company": {
+      "label": "公司",
+      "groups": {
+        "company": {
+          "heading": "公司",
+          "about": {
+            "label": "关于 Blue Route",
+            "description": "我们的使命是让运输变得智能。"
+          },
+          "insights": {
+            "label": "洞察和博客",
+            "description": "市场智能和物流趋势。"
+          },
+          "sustainability": {
+            "label": "可持续性",
+            "description": "每条路线、每次运输，减少全球贸易的碳排放。"
+          },
+          "careers": {
+            "label": "职业",
+            "description": "与我们一起打造物流的未来。"
+          }
+        }
+      }
+    },
+    "differentiator": "区别",
+    "explore": "探索"
+  },
+  "Header": {
+    "track": "跟踪",
+    "getQuote": "获取报价",
+    "openMenu": "打开菜单",
+    "closeMenu": "关闭菜单",
+    "mobileSearchPlaceholder": "跟踪、报价或搜索…"
+  },
+  "Footer": {
+    "ctaHeading": "更聪明地发货。",
+    "ctaHeadingAccent": "从今天开始。",
+    "ctaBody": "在60秒内获得AI优化的报价 —— 或与BlueRoute AI顾问讨论您的下一个货运。",
+    "instantQuote": "立即获取报价",
+    "talkToExpert": "与专家交谈",
+    "tagline": "智能全球运输。AI驱动的精度。门到门的集装箱物流和智能仓库租赁，前往或来自任何国家。",
+    "social": {
+      "linkedin": "领英",
+      "x": "X",
+      "github": "GitHub"
+    },
+    "columns": {
+      "services": {
+        "heading": "服务",
+        "oceanFreight": "海运",
+        "airFreight": "空运",
+        "landFreight": "陆运",
+        "doorToDoor": "门到门",
+        "coldChain": "冷链",
+        "customs": "海关和合规",
+        "projectCargo": "项目货物"
+      },
+      "platform": {
+        "heading": "平台",
+        "liveTracking": "实时跟踪",
+        "getQuote": "获取报价",
+        "warehouseLeasing": "仓库租赁",
+        "aiEdge": "AI边缘",
+        "customerPortal": "客户门户"
+      },
+      "company": {
+        "heading": "公司",
+        "about": "关于",
+        "insights": "洞察",
+        "sustainability": "可持续性",
+        "careers": "职业",
+        "contact": "联系"
+      }
+    },
+    "rights": "Blue Route Logistics. 保留所有权利。",
+    "privacy": "隐私",
+    "terms": "条款",
+    "sustainability": "可持续性"
+  },
+  "Home": {
+    "hero": {
+      "headline": "全球智能物流，",
+      "headlineAccent": "设计为永远不会让您感到惊讶。",
+      "sub": "从任何国家到任何国家的门到门集装箱运输，具有预测的ETA、主动的风险缓解和智能仓库租赁，因此您的供应链保持运行，惊喜保持在外。",
+      "trackPlaceholder": "按集装箱#、B/L或预订参考号跟踪",
+      "trackAriaLabel": "跟踪参考",
+      "trackButton": "跟踪",
+      "ctaPrimary": "获取即时报价",
+      "ctaSecondary": "询问AI顾问",
+      "trustOnTime": "94%准时，AI验证",
+      "trustRiskAlerts": "主动风险警报",
+      "trustVisibility": "实时可见性",
+      "etaCard": {
+        "label": "预测ETA",
+        "route": "上海 → 鹿特丹",
+        "status": "准时 · 99.2%置信度"
+      },
+      "riskCard": {
+        "label": "AI风险监控",
+        "status": "绕过拥堵重新路由",
+        "detail": "估计节省3.5天"
+      }
+    },
+    "trust": {
+      "stats": {
+        "countries": "服务国家",
+        "containers": "每年运输的集装箱",
+        "onTime": "准时，AI验证",
+        "quote": "优化报价"
+      },
+      "signalsHeading": "全球各地的发货人和货运团队信任",
+      "signals": {
+        "licensed": "获得许可和保释的货运运营",
+        "insured": "货物全程保险",
+        "monitoring": "24/7实时货物监控",
+        "coverage": "覆盖180+个国家"
+      }
+    },
+    "aiEdge": {
+      "eyebrow": "AI优势",
+      "title": "预测物流。",
+      "titleAccent": "不是反应性道歉。",
+      "subtitle": "传统承运商在集装箱晚了之后才会告诉您。Blue Route的AI可以预见到问题，权衡替代方案，并采取行动，因此您的供应链保持运行。",
+      "features": {
+        "assistant": {
+          "title": "BlueRoute AI助手",
+          "body": "一个具有代理功能的聊天和语音协助工具，可以报价、解释跟踪、运行“假设”风险分析，并规划多段航程的货物运输。",
+          "cta": "认识助手"
+        },
+        "predictiveInsights": {
+          "title": "预测洞察",
+          "body": "延迟概率、成本预测和路线替代方案，在中断影响您的货物之前。"
+        },
+        "routeOptimizer": {
+          "title": "AI路线优化器",
+          "body": "根据实时海洋、港口和天气信号计算出最低风险、最低碳排放的路线。"
+        },
+        "proactiveResolution": {
+          "title": "主动解决",
+          "body": "异常情况会被自动检测和重新路由，您会得到解决方案，而不是只是警报。"
+        },
+        "openTool": "打开工具"
+      }
+    },
+    "services": {
+      "eyebrow": "我们运输的货物",
+      "title": "一个完整的物流网络，智能协调",
+      "subtitle": "每个服务都运行在相同的预测基础上，因此可见性、风险和优化都会跟随您的货物跨越不同的运输方式。",
+      "items": {
+        "oceanFreight": {
+          "title": "海上货运（FCL/LCL）",
+          "body": "在每个主要贸易航线上提供可靠的整箱和散箱货运服务。"
+        },
+        "airFreight": {
+          "title": "空运",
+          "body": "具有保证起飞和实时航班跟踪的时间关键空运服务。"
+        },
+        "landFreight": {
+          "title": "陆运（公路和铁路）",
+          "body": "具有实时连接交接的公路、铁路和拖车运输服务。"
+        },
+        "doorToDoor": {
+          "title": "门到门",
+          "body": "从起始地接货到最终交货的单一负责合同。"
+        },
+        "warehouseLeasing": {
+          "title": "仓库租赁",
+          "body": "智能、可搜索的设施，具有AI匹配和虚拟游览功能。"
+        },
+        "coldChain": {
+          "title": "冷链",
+          "body": "从码头到门口的温度控制、IoT监控的完整性。"
+        },
+        "customs": {
+          "title": "海关和合规",
+          "body": "具有预测关税和文档检查的自动化清关服务。"
+        },
+        "projectCargo": {
+          "title": "项目和重型货物",
+          "body": "为超大型、散货和超大货物提供工程化的处理服务。"
+        }
+      }
+    },
+    "advantage": {
+      "eyebrow": "为什么选择Blue Route",
+      "title": "传统承运商和",
+      "titleLegacy": "传统承运商",
+      "titleAnd": "和",
+      "titleAccent": "AI优势",
+      "subtitle": "相同的航线。一个根本上更智能的运行方式。",
+      "headerCapability": "能力",
+      "headerLegacy": "传统承运商",
+      "headerBlue": "Blue Route",
+      "rows": {
+        "eta": {
+          "label": "ETA准确性",
+          "legacy": "静态时间表，在延迟后更新",
+          "blue": "具有实时置信度评分的预测ETA"
+        },
+        "disruptions": {
+          "label": "中断",
+          "legacy": "货物延迟后才发送的反应性电子邮件",
+          "blue": "提前检测并自动重新路由"
+        },
+        "quoting": {
+          "label": "报价",
+          "legacy": "需要数小时到数天的时间，需要手动来回",
+          "blue": "在60秒内提供AI优化的报价"
+        },
+        "visibility": {
+          "label": "可见性",
+          "legacy": "笨重的门户，延迟更新",
+          "blue": "实时地图、IoT传感器、移动优先"
+        },
+        "warehousing": {
+          "label": "仓库",
+          "legacy": "断开连接的、独立的供应商",
+          "blue": "AI匹配的智能设施，完全集成"
+        }
+      }
+    },
+    "warehouse": {
+      "badge": "仓库租赁",
+      "title": "智能空间，",
+      "titleAccent": "由AI匹配",
+      "titleSuffix": "以适应您的运输方式",
+      "body": "在实时地图上搜索智能设施，按位置、大小和功能进行筛选，然后让我们的AI推荐适合您需求的合适空间，包括可用性日历和内置租赁计算器。",
+      "specs": {
+        "size": "12,000–250,000平方英尺",
+        "power": "重型电力+太阳能",
+        "crossDock": "交叉码头和电动车库",
+        "ports": "靠近主要港口"
+      },
+      "cta": "探索设施",
+      "map": {
+        "facilityName": "鹿特丹智能中心A",
+        "facilityDetail": "84,000平方英尺 · 12米高 · 18个码头",
+        "available": "可用"
+      }
+    }
   }
 }
