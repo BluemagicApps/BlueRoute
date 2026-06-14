@@ -1,8 +1,6 @@
 {
   "Common": {
-    "getQuote": "Obtenir un devis",
-    "differentiator": "Différenciateur",
-    "explore": "Explorer"
+    "getQuote": "Obtenir un devis"
   },
   "Nav": {
     "services": {
@@ -103,7 +101,9 @@
           }
         }
       }
-    }
+    },
+    "differentiator": "Differentiator",
+    "explore": "Explore"
   },
   "Header": {
     "track": "Suivi",

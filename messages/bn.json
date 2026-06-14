@@ -260,6 +260,63 @@
           "body": "অতিরিক্ত-আকার, ব্রেকবাল্ক এবং আউট-অফ-গেজ লোডগুলির জন্য প্রকৌশলী হ্যান্ডলিং।"
         }
       }
+    },
+    "advantage": {
+      "eyebrow": "Why Blue Route",
+      "title": "The gap between",
+      "titleLegacy": "legacy carriers",
+      "titleAnd": "and",
+      "titleAccent": "the AI Edge",
+      "subtitle": "The same lanes. A fundamentally smarter way to run them.",
+      "headerCapability": "Capability",
+      "headerLegacy": "Legacy carriers",
+      "headerBlue": "Blue Route",
+      "rows": {
+        "eta": {
+          "label": "ETA accuracy",
+          "legacy": "Static schedules, updated after delays",
+          "blue": "Predictive ETAs with live confidence scoring"
+        },
+        "disruptions": {
+          "label": "Disruptions",
+          "legacy": "Reactive emails once cargo is stuck",
+          "blue": "Detected early & auto-re-routed"
+        },
+        "quoting": {
+          "label": "Quoting",
+          "legacy": "Hours to days, manual back-and-forth",
+          "blue": "AI-optimized rates in under 60 seconds"
+        },
+        "visibility": {
+          "label": "Visibility",
+          "legacy": "Clunky portals, delayed updates",
+          "blue": "Real-time map, IoT sensors, mobile-first"
+        },
+        "warehousing": {
+          "label": "Warehousing",
+          "legacy": "Disconnected, separate vendors",
+          "blue": "AI-matched smart facilities, fully integrated"
+        }
+      }
+    },
+    "warehouse": {
+      "badge": "Warehouse Leasing",
+      "title": "Smart space,",
+      "titleAccent": "matched by AI",
+      "titleSuffix": "to how you ship",
+      "body": "Search a live map of smart facilities, filter by location, size, and features, then let our AI recommend the right footprint near your demand — with availability calendars and a built-in leasing calculator.",
+      "specs": {
+        "size": "12,000–250,000 ft²",
+        "power": "Heavy power + solar",
+        "crossDock": "Cross-dock & EV bays",
+        "ports": "Near major ports"
+      },
+      "cta": "Explore facilities",
+      "map": {
+        "facilityName": "Rotterdam Smart Hub A",
+        "facilityDetail": "84,000 ft² · 12m clear · 18 docks",
+        "available": "Available"
+      }
     }
   }
 }
