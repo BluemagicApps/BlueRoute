@@ -5,7 +5,7 @@
 //        node --env-file=.env.local scripts/translate-messages.mjs --normalize (no Groq;
 //          re-merge every existing messages/<code>.json onto the en.json template,
 //          filling missing keys with English and dropping stray keys)
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import Groq from "groq-sdk";
@@ -18,7 +18,12 @@ const TARGETS = {
 };
 const model = process.env.GROQ_MODEL || "llama-3.3-70b-versatile";
 
-const en = JSON.parse(readFileSync(resolve(root, "messages/en.json"), "utf8"));
+const enPath = resolve(root, "messages/en.json");
+if (!existsSync(enPath)) {
+  console.error("messages/en.json not found — nothing to translate from.");
+  process.exit(1);
+}
+const en = JSON.parse(readFileSync(enPath, "utf8"));
 
 // Recursively walk `template` (en.json or a namespace fragment of it) and
 // produce an object with the EXACT same key structure. For each leaf string
@@ -54,6 +59,10 @@ if (args.includes("--normalize")) {
   process.exit(0);
 }
 
+if (!process.env.GROQ_API_KEY) {
+  console.error("GROQ_API_KEY is not set. Run with: node --env-file=.env.local scripts/translate-messages.mjs");
+  process.exit(1);
+}
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 const picked = args.filter((c) => c in TARGETS);
@@ -76,7 +85,9 @@ for (const code of locales) {
       response_format: { type: "json_object" },
       messages: [{ role: "user", content: prompt(TARGETS[code], namespace, en[namespace]) }],
     });
-    out[namespace] = JSON.parse(res.choices[0].message.content);
+    const content = res.choices[0]?.message?.content;
+    if (!content) throw new Error(`Empty Groq response for ${code} namespace "${namespace}"`);
+    out[namespace] = JSON.parse(content);
   }
   const merged = mergeOntoTemplate(en, out);
   writeFileSync(resolve(root, `messages/${code}.json`), JSON.stringify(merged, null, 2) + "\n", "utf8");
