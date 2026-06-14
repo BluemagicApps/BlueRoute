@@ -9,6 +9,7 @@ import { Logo } from "@/components/brand/logo";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { EASE_OUT_EXPO } from "@/lib/motion";
+import { LocaleSwitcher } from "@/components/i18n/locale-switcher";
 
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
@@ -65,6 +66,7 @@ export function SiteHeader() {
             +1 (323) 484-8030
           </a>
           <div className="flex items-center gap-2">
+            <LocaleSwitcher />
             <Button href="/tracking" variant="ghost" size="sm">
               <MapPin className="h-4 w-4" />
               Track
@@ -283,13 +285,16 @@ function MobileMenu({ onClose }: { onClose: () => void }) {
           ))}
         </nav>
 
-        <div className="mt-4 grid grid-cols-2 gap-3">
-          <Button href="/tracking" variant="outline" size="md">
-            Track
-          </Button>
-          <Button href="/quote" variant="primary" size="md">
-            Get Quote
-          </Button>
+        <div className="mt-4 flex items-center justify-between gap-3">
+          <LocaleSwitcher />
+          <div className="grid flex-1 grid-cols-2 gap-3">
+            <Button href="/tracking" variant="outline" size="md">
+              Track
+            </Button>
+            <Button href="/quote" variant="primary" size="md">
+              Get Quote
+            </Button>
+          </div>
         </div>
       </motion.div>
     </motion.div>

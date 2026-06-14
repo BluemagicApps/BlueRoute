@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { ArrowUpRight, Globe } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
 import { FOOTER_COLUMNS } from "@/lib/navigation";
+import { LocaleSwitcher } from "@/components/i18n/locale-switcher";
 
 /* Brand glyphs (lucide dropped its brand icons) */
 function IconLinkedIn(props: React.SVGProps<SVGSVGElement>) {
@@ -118,9 +119,7 @@ export function SiteFooter() {
         <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-steel/50 pt-6 text-sm text-mist md:flex-row md:items-center">
           <p>© {new Date().getFullYear()} Blue Route Logistics. All rights reserved.</p>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-            <button className="inline-flex items-center gap-1.5 transition-colors hover:text-foam">
-              <Globe className="h-3.5 w-3.5" /> English (Global)
-            </button>
+            <LocaleSwitcher />
             <Link href="/privacy" className="hover:text-foam">
               Privacy
             </Link>
