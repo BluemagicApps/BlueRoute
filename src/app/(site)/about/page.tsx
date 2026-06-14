@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Target,
   Leaf,
@@ -14,19 +15,13 @@ import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Button } from "@/components/ui/button";
 import { TransportPhoto } from "@/components/ui/transport-photo";
+import { STATS, TIMELINE, LEADERS } from "@/lib/about-data";
 
 export const metadata: Metadata = {
   title: "About",
   description:
     "Blue Route Logistics is on a mission to make global shipping intelligent — AI-powered door-to-door container logistics and smart warehouse leasing across 180+ countries.",
 };
-
-const STATS = [
-  { v: "180+", l: "Countries served" },
-  { v: "2.4M", l: "Containers / year" },
-  { v: "9", l: "Smart warehouse hubs" },
-  { v: "94%", l: "On-time, AI-verified" },
-];
 
 const VALUES = [
   {
@@ -53,21 +48,6 @@ const VALUES = [
     title: "Radically transparent",
     body: "Live visibility, honest ETAs with confidence scores, and no surprises buried in fine print.",
   },
-];
-
-const TIMELINE = [
-  { year: "2019", title: "Founded in Rotterdam", body: "Two freight veterans set out to fix reactive logistics." },
-  { year: "2021", title: "Door-to-door network", body: "Expanded to full origin-to-destination coverage across Asia–Europe." },
-  { year: "2023", title: "The AI Edge launches", body: "Predictive ETAs and agentic planning go live for every customer." },
-  { year: "2025", title: "Smart warehousing", body: "Launched AI-matched leasing across 9 global smart hubs." },
-  { year: "2026", title: "180+ countries", body: "Now moving 2.4M containers a year on the world's smartest network." },
-];
-
-const LEADERS = [
-  { name: "Lena Vos", role: "Co-founder & CEO", initials: "LV", color: "from-cyan to-indigo" },
-  { name: "Marcus Aiyer", role: "Co-founder & CTO", initials: "MA", color: "from-indigo to-rose" },
-  { name: "Sofia Marin", role: "Chief Operations Officer", initials: "SM", color: "from-teal to-cyan" },
-  { name: "Tomas Berg", role: "Head of AI", initials: "TB", color: "from-emerald to-teal" },
 ];
 
 const CHIP: Record<string, string> = {
@@ -129,10 +109,10 @@ export default function AboutPage() {
               The industry runs on hope. We run on foresight.
             </h2>
             <p className="mt-4 text-mist">
-              Global trade still moves on static schedules and reactive emails.
-              When something slips, you find out last. We started Blue Route to
-              flip that — to give every shipper the predictive intelligence the
-              biggest carriers keep locked away or do poorly.
+              Blue Route started in Houston in 1998 with a single van and a simple
+              promise: every package arrives exactly as expected. That promise grew
+              into regional freight, then global ocean lanes, and finally a
+              door-to-door network reaching 180+ countries — but it never changed.
             </p>
             <p className="mt-3 text-mist">
               Today our platform fuses live ocean, port, and weather signals with
@@ -153,12 +133,16 @@ export default function AboutPage() {
                 the standard we&apos;re building.&rdquo;
               </p>
               <div className="mt-6 flex items-center gap-3">
-                <span className="grid h-11 w-11 place-items-center rounded-full bg-gradient-to-br from-cyan to-indigo text-sm font-bold text-white">
-                  LV
-                </span>
+                <Image
+                  src={LEADERS[0].photo}
+                  alt={LEADERS[0].name}
+                  width={44}
+                  height={44}
+                  className="h-11 w-11 rounded-full object-cover"
+                />
                 <div>
-                  <p className="text-sm font-semibold text-foam">Lena Vos</p>
-                  <p className="text-xs text-mist">Co-founder & CEO</p>
+                  <p className="text-sm font-semibold text-foam">{LEADERS[0].name}</p>
+                  <p className="text-xs text-mist">{LEADERS[0].role}</p>
                 </div>
               </div>
             </div>
@@ -219,7 +203,7 @@ export default function AboutPage() {
       {/* Timeline */}
       <section className="relative py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
-          <SectionHeading eyebrow="Our journey" title="From a Rotterdam idea to a global network" />
+          <SectionHeading eyebrow="Our journey" title="From a Houston van to a global network" />
           <div className="mt-12 grid gap-4 md:grid-cols-5">
             {TIMELINE.map((t, i) => (
               <Reveal key={t.year} delay={i * 0.06}>
@@ -244,18 +228,22 @@ export default function AboutPage() {
       <section className="relative py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <SectionHeading eyebrow="Leadership" title="The people steering Blue Route" />
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-12 grid gap-5 sm:grid-cols-2">
             {LEADERS.map((p, i) => (
               <Reveal key={p.name} delay={i * 0.06}>
-                <article className="rounded-3xl border border-steel/70 bg-deep p-6 text-center shadow-soft transition-all duration-500 hover:-translate-y-1 hover:border-cyan/40">
-                  <span
-                    className={`mx-auto grid h-20 w-20 place-items-center rounded-full bg-gradient-to-br ${p.color} text-xl font-bold text-white`}
-                    style={{ fontFamily: "var(--font-display)" }}
-                  >
-                    {p.initials}
-                  </span>
-                  <h3 className="mt-4 text-base font-semibold text-foam">{p.name}</h3>
-                  <p className="text-sm text-mist">{p.role}</p>
+                <article className="flex h-full gap-5 rounded-3xl border border-steel/70 bg-deep p-6 shadow-soft transition-all duration-500 hover:-translate-y-1 hover:border-cyan/40">
+                  <Image
+                    src={p.photo}
+                    alt={p.name}
+                    width={96}
+                    height={96}
+                    className="h-24 w-24 shrink-0 rounded-2xl object-cover"
+                  />
+                  <div>
+                    <h3 className="text-base font-semibold text-foam">{p.name}</h3>
+                    <p className="text-sm text-cyan">{p.role}</p>
+                    <p className="mt-2 text-sm leading-relaxed text-mist">{p.bio}</p>
+                  </div>
                 </article>
               </Reveal>
             ))}
