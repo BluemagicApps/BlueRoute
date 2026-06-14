@@ -1,22 +1,14 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Clock, Mail, Check } from "lucide-react";
 import { EASE_OUT_EXPO } from "@/lib/motion";
 import { cn } from "@/lib/utils";
+import { ARTICLES, type ArticleCategory } from "@/lib/insights-data";
 
-type Category = "Market" | "AI & Tech" | "Sustainability" | "Operations";
-
-type Article = {
-  title: string;
-  excerpt: string;
-  category: Category;
-  date: string;
-  readMin: number;
-  color: string;
-  featured?: boolean;
-};
+const MotionLink = motion.create(Link);
 
 const COLOR: Record<string, string> = {
   cyan: "from-cyan to-indigo",
@@ -25,78 +17,17 @@ const COLOR: Record<string, string> = {
   emerald: "from-emerald to-teal",
   amber: "from-amber to-rose",
 };
-const TAG: Record<Category, string> = {
+const TAG: Record<ArticleCategory, string> = {
   Market: "bg-indigo/10 text-indigo",
   "AI & Tech": "bg-cyan/10 text-cyan",
   Sustainability: "bg-emerald/10 text-emerald",
   Operations: "bg-amber/10 text-amber",
 };
 
-const ARTICLES: Article[] = [
-  {
-    title: "Why predictive ETAs are replacing static schedules in 2026",
-    excerpt:
-      "The shift from published timetables to live, confidence-scored arrivals is reshaping how shippers plan inventory and cash flow.",
-    category: "AI & Tech",
-    date: "Jun 4, 2026",
-    readMin: 6,
-    color: "cyan",
-    featured: true,
-  },
-  {
-    title: "Red Sea volatility: building resilience into your lanes",
-    excerpt: "A practical framework for pricing risk and pre-staging reroutes before disruption hits.",
-    category: "Market",
-    date: "May 28, 2026",
-    readMin: 5,
-    color: "indigo",
-  },
-  {
-    title: "Green corridors are finally scaling — here's what it means",
-    excerpt: "Low-emission lanes are moving from pilot to mainstream. The cost gap is closing fast.",
-    category: "Sustainability",
-    date: "May 21, 2026",
-    readMin: 4,
-    color: "emerald",
-  },
-  {
-    title: "Cutting demurrage with smarter inland scheduling",
-    excerpt: "How appointment optimization quietly removes one of logistics' most avoidable costs.",
-    category: "Operations",
-    date: "May 14, 2026",
-    readMin: 7,
-    color: "amber",
-  },
-  {
-    title: "Agentic AI in logistics: beyond the chatbot",
-    excerpt: "When AI can execute multi-step plans, the operating model of a freight desk changes entirely.",
-    category: "AI & Tech",
-    date: "May 7, 2026",
-    readMin: 8,
-    color: "teal",
-  },
-  {
-    title: "Container rates outlook: H2 2026 scenarios",
-    excerpt: "Three forward curves for the major east–west trades and what could bend them.",
-    category: "Market",
-    date: "Apr 30, 2026",
-    readMin: 6,
-    color: "indigo",
-  },
-  {
-    title: "The smart warehouse: sensors, solar, and AI matching",
-    excerpt: "What separates a modern logistics hub from a plain big box — and why it matters to your TCO.",
-    category: "Operations",
-    date: "Apr 23, 2026",
-    readMin: 5,
-    color: "cyan",
-  },
-];
-
-const CATEGORIES: ("All" | Category)[] = ["All", "Market", "AI & Tech", "Sustainability", "Operations"];
+const CATEGORIES: ("All" | ArticleCategory)[] = ["All", "Market", "AI & Tech", "Sustainability", "Operations"];
 
 export function InsightsList() {
-  const [active, setActive] = useState<"All" | Category>("All");
+  const [active, setActive] = useState<"All" | ArticleCategory>("All");
   const featured = ARTICLES.find((a) => a.featured)!;
   const rest = useMemo(
     () => ARTICLES.filter((a) => !a.featured && (active === "All" || a.category === active)),
@@ -130,9 +61,12 @@ export function InsightsList() {
               <Clock className="h-3.5 w-3.5" /> {featured.readMin} min read
             </span>
           </div>
-          <button className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-cyan">
+          <Link
+            href={`/insights/${featured.slug}`}
+            className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-cyan"
+          >
             Read article <ArrowUpRight className="h-4 w-4" />
-          </button>
+          </Link>
         </div>
       </div>
 
@@ -157,8 +91,9 @@ export function InsightsList() {
       {/* Grid */}
       <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {rest.map((a, i) => (
-          <motion.button
+          <MotionLink
             key={a.title}
+            href={`/insights/${a.slug}`}
             layout
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -181,7 +116,7 @@ export function InsightsList() {
                 </span>
               </div>
             </div>
-          </motion.button>
+          </MotionLink>
         ))}
       </div>
 
@@ -191,7 +126,7 @@ export function InsightsList() {
   );
 }
 
-function Newsletter() {
+export function Newsletter() {
   const [email, setEmail] = useState("");
   const [done, setDone] = useState(false);
   const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
