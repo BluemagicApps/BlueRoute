@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Search, Sparkles, ShieldCheck, Zap } from "lucide-react";
 import type { Variants } from "framer-motion";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { RouteGlobe } from "./route-globe";
 import { TransportPhoto } from "@/components/ui/transport-photo";
@@ -18,6 +19,8 @@ const item: Variants = {
 };
 
 export function Hero() {
+  const t = useTranslations("Home.hero");
+
   return (
     <section className="relative overflow-hidden pt-32 pb-20 lg:pt-40 lg:pb-28">
       {/* Backdrop — Cobalt Duotone Full-Bleed transport photography */}
@@ -31,18 +34,15 @@ export function Hero() {
             className="mt-6 text-balance text-4xl font-semibold leading-[1.02] tracking-tight text-foam sm:text-5xl lg:text-6xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Intelligent global shipping,{" "}
-            <span className="text-gradient">engineered to never surprise you.</span>
+            {t("headline")}{" "}
+            <span className="text-gradient">{t("headlineAccent")}</span>
           </motion.h1>
 
           <motion.p
             variants={item}
             className="mt-5 max-w-xl text-lg leading-relaxed text-mist"
           >
-            Door-to-door container shipping to and from any country — with
-            predictive ETAs, proactive risk mitigation, and smart warehouse
-            leasing, so your supply chain keeps moving and surprises stay out
-            of it.
+            {t("sub")}
           </motion.p>
 
           {/* Track bar */}
@@ -54,12 +54,12 @@ export function Hero() {
               <Search className="h-5 w-5 shrink-0 text-cyan" />
               <input
                 name="ref"
-                placeholder="Track by container #, B/L, or booking reference"
+                placeholder={t("trackPlaceholder")}
                 className="h-11 w-full bg-transparent text-sm text-foam placeholder:text-mist/70 focus:outline-none"
-                aria-label="Tracking reference"
+                aria-label={t("trackAriaLabel")}
               />
               <Button size="md" className="shrink-0">
-                Track
+                {t("trackButton")}
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </form>
@@ -68,7 +68,7 @@ export function Hero() {
           {/* Secondary CTAs */}
           <motion.div variants={item} className="mt-5 flex flex-wrap items-center gap-3">
             <Button href="/quote" variant="outline" size="md">
-              Get Instant Quote
+              {t("ctaPrimary")}
             </Button>
             <button
               type="button"
@@ -78,7 +78,7 @@ export function Hero() {
               <span className="grid h-9 w-9 place-items-center rounded-full bg-cyan/15 text-cyan transition-colors group-hover:bg-cyan group-hover:text-white">
                 <Sparkles className="h-4 w-4" />
               </span>
-              Ask the AI Advisor
+              {t("ctaSecondary")}
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </button>
           </motion.div>
@@ -89,13 +89,13 @@ export function Hero() {
             className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-mist"
           >
             <span className="inline-flex items-center gap-2">
-              <Zap className="h-4 w-4 text-cyan" /> 94% on-time, AI-verified
+              <Zap className="h-4 w-4 text-cyan" /> {t("trustOnTime")}
             </span>
             <span className="inline-flex items-center gap-2">
-              <ShieldCheck className="h-4 w-4 text-cyan" /> Proactive risk alerts
+              <ShieldCheck className="h-4 w-4 text-cyan" /> {t("trustRiskAlerts")}
             </span>
             <span className="inline-flex items-center gap-2">
-              <Search className="h-4 w-4 text-cyan" /> Real-time visibility
+              <Search className="h-4 w-4 text-cyan" /> {t("trustVisibility")}
             </span>
           </motion.div>
         </motion.div>
@@ -117,12 +117,12 @@ export function Hero() {
             className="glass absolute left-0 top-10 rounded-2xl border-l-4 border-l-indigo p-3.5 shadow-xl"
           >
             <p className="text-[0.65rem] uppercase tracking-[0.2em] text-indigo">
-              Predicted ETA
+              {t("etaCard.label")}
             </p>
             <p className="mt-1 text-sm font-semibold text-foam">
-              Shanghai → Rotterdam
+              {t("etaCard.route")}
             </p>
-            <p className="text-xs text-mist">On time · 99.2% confidence</p>
+            <p className="text-xs text-mist">{t("etaCard.status")}</p>
           </motion.div>
 
           {/* Floating risk card */}
@@ -133,13 +133,13 @@ export function Hero() {
             className="glass absolute bottom-12 right-0 rounded-2xl border-l-4 border-l-teal p-3.5 shadow-xl"
           >
             <p className="text-[0.65rem] uppercase tracking-[0.2em] text-teal">
-              AI Risk Watch
+              {t("riskCard.label")}
             </p>
             <p className="mt-1 flex items-center gap-2 text-sm font-semibold text-foam">
               <span className="h-2 w-2 rounded-full bg-teal animate-float" />
-              Re-routed around congestion
+              {t("riskCard.status")}
             </p>
-            <p className="text-xs text-mist">Saved an est. 3.5 days</p>
+            <p className="text-xs text-mist">{t("riskCard.detail")}</p>
           </motion.div>
         </motion.div>
       </div>

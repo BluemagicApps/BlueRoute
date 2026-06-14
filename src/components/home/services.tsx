@@ -10,6 +10,7 @@ import {
   Boxes,
   ArrowUpRight,
 } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 
@@ -26,69 +27,63 @@ const CHIPS = [
 const SERVICES = [
   {
     icon: Ship,
-    title: "Ocean Freight (FCL/LCL)",
-    body: "Reliable full- and less-than-container loads across every major trade lane.",
+    key: "oceanFreight",
     href: "/services/ocean-freight",
   },
   {
     icon: Plane,
-    title: "Air Freight",
-    body: "Time-critical airfreight with guaranteed lift and live flight tracking.",
+    key: "airFreight",
     href: "/services/air-freight",
   },
   {
     icon: Truck,
-    title: "Land Freight (Road & Rail)",
-    body: "Road, rail, and drayage line-haul with live, connected handoffs.",
+    key: "landFreight",
     href: "/services/land-freight",
   },
   {
     icon: Route,
-    title: "Door-to-Door",
-    body: "One accountable contract from origin pickup to final-mile delivery.",
+    key: "doorToDoor",
     href: "/services/door-to-door",
   },
   {
     icon: Warehouse,
-    title: "Warehouse Leasing",
-    body: "Smart, searchable facilities with AI matching and virtual tours.",
+    key: "warehouseLeasing",
     href: "/warehousing",
   },
   {
     icon: Snowflake,
-    title: "Cold Chain",
-    body: "Temperature-controlled, IoT-monitored integrity from dock to door.",
+    key: "coldChain",
     href: "/services/cold-chain",
   },
   {
     icon: FileCheck2,
-    title: "Customs & Compliance",
-    body: "Automated clearance with predictive duty and documentation checks.",
+    key: "customs",
     href: "/services/customs",
   },
   {
     icon: Boxes,
-    title: "Project & Heavy Cargo",
-    body: "Engineered handling for oversized, breakbulk, and out-of-gauge loads.",
+    key: "projectCargo",
     href: "/services/project-cargo",
   },
-];
+] as const;
 
-export function Services() {
+export async function Services() {
+  const t = await getTranslations("Home.services");
+
   return (
     <section className="relative py-24 lg:py-28">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <SectionHeading
-          eyebrow="What we move"
-          title="A complete logistics network, intelligently orchestrated"
-          subtitle="Every service runs on the same predictive backbone — so visibility, risk, and optimization follow your cargo across modes."
+          eyebrow={t("eyebrow")}
+          title={t("title")}
+          subtitle={t("subtitle")}
         />
 
         <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {SERVICES.map((s, i) => {
             const Icon = s.icon;
             return (
-              <Reveal key={s.title} delay={i * 0.06}>
+              <Reveal key={s.key} delay={i * 0.06}>
                 <Link
                   href={s.href}
                   className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-steel/70 bg-deep p-7 shadow-soft transition-all duration-500 hover:-translate-y-1 hover:border-cyan/40"
@@ -105,9 +100,9 @@ export function Services() {
                     className="mt-5 text-lg font-semibold text-foam"
                     style={{ fontFamily: "var(--font-display)" }}
                   >
-                    {s.title}
+                    {t(`items.${s.key}.title`)}
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-mist">{s.body}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-mist">{t(`items.${s.key}.body`)}</p>
                 </Link>
               </Reveal>
             );

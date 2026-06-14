@@ -6,6 +6,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 
@@ -25,59 +26,59 @@ const GLOWS = {
 const FEATURES = [
   {
     icon: Bot,
-    title: "BlueRoute AI Assistant",
-    body: "An agentic chat & voice copilot that quotes, explains tracking, runs “what-if” risk analysis, and plans multi-leg shipments end to end.",
+    key: "assistant",
     span: "lg:col-span-2",
     accent: true as const,
     color: "cyan" as const,
   },
   {
     icon: LineChart,
-    title: "Predictive Insights",
-    body: "Delay probabilities, cost forecasts, and route alternatives — before disruptions hit your cargo.",
+    key: "predictiveInsights",
     color: "cyan" as const,
     href: "/ai-edge/predictive-insights",
   },
   {
     icon: Route,
-    title: "AI Route Optimizer",
-    body: "Lowest-risk, lowest-carbon routing computed across live ocean, port, and weather signals.",
+    key: "routeOptimizer",
     color: "teal" as const,
     href: "/ai-edge/route-optimizer",
   },
   {
     icon: Radar,
-    title: "Proactive Resolution",
-    body: "Exceptions are detected and re-routed automatically — you get a fix, not just an alert.",
+    key: "proactiveResolution",
     span: "lg:col-span-2",
     color: "emerald" as const,
     href: "/ai-edge/proactive-resolution",
   },
 ];
 
-export function AiEdge() {
+export async function AiEdge() {
+  const t = await getTranslations("Home.aiEdge");
+
   return (
     <section id="ai-edge" className="relative py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <SectionHeading
-          eyebrow="The AI Edge"
+          eyebrow={t("eyebrow")}
           title={
             <>
-              Predictive logistics.{" "}
-              <span className="text-gradient">Not reactive apologies.</span>
+              {t("title")}{" "}
+              <span className="text-gradient">{t("titleAccent")}</span>
             </>
           }
-          subtitle="Legacy carriers tell you a container is late after it&apos;s late. Blue Route&apos;s AI sees it coming, weighs the alternatives, and acts — so your supply chain stays in motion."
+          subtitle={t("subtitle")}
         />
 
         <div className="mt-14 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {FEATURES.map((f, i) => {
             const Icon = f.icon;
+            const title = t(`features.${f.key}.title`);
+            const body = t(`features.${f.key}.body`);
 
             // The lead card is a vibrant gradient panel with white text.
             if (f.accent) {
               return (
-                <Reveal key={f.title} delay={i * 0.07} className={f.span ?? ""}>
+                <Reveal key={f.key} delay={i * 0.07} className={f.span ?? ""}>
                   <article className="group bg-aurora-gradient relative flex h-full flex-col overflow-hidden rounded-3xl p-7 text-white shadow-soft transition-all duration-500 hover:-translate-y-1">
                     <div className="absolute -right-10 -top-10 h-44 w-44 rounded-full bg-white/20 blur-2xl" />
                     <div className="absolute -bottom-16 -left-10 h-44 w-44 rounded-full bg-white/10 blur-2xl" />
@@ -88,16 +89,16 @@ export function AiEdge() {
                       className="relative mt-5 text-xl font-semibold"
                       style={{ fontFamily: "var(--font-display)" }}
                     >
-                      {f.title}
+                      {title}
                     </h3>
                     <p className="relative mt-2 max-w-md text-sm leading-relaxed text-white/85">
-                      {f.body}
+                      {body}
                     </p>
                     <Link
                       href="/ai-edge"
                       className="relative mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-white"
                     >
-                      Meet the assistant
+                      {t("features.assistant.cta")}
                       <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </Link>
                   </article>
@@ -106,7 +107,7 @@ export function AiEdge() {
             }
 
             return (
-              <Reveal key={f.title} delay={i * 0.07} className={f.span ?? ""}>
+              <Reveal key={f.key} delay={i * 0.07} className={f.span ?? ""}>
                 <Link href={f.href ?? "/ai-edge"} className="group block h-full">
                   <article className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-steel/70 bg-deep p-7 shadow-soft transition-all duration-500 hover:-translate-y-1 hover:border-cyan/40">
                     <div
@@ -118,11 +119,11 @@ export function AiEdge() {
                       <Icon className="h-6 w-6" />
                     </span>
                     <h3 className="mt-5 text-xl font-semibold text-foam" style={{ fontFamily: "var(--font-display)" }}>
-                      {f.title}
+                      {title}
                     </h3>
-                    <p className="mt-2 max-w-md text-sm leading-relaxed text-mist">{f.body}</p>
+                    <p className="mt-2 max-w-md text-sm leading-relaxed text-mist">{body}</p>
                     <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-cyan">
-                      Open the tool
+                      {t("features.openTool")}
                       <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                     </span>
                   </article>
