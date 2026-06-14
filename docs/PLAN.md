@@ -185,13 +185,25 @@ analytics/auditing of AI-agent interactions.
   Portal still runs on mock data (`portal-data.ts` gained per-lane coords) — wiring it to real
   Supabase shipments is a later effort, but the shared map component is done.
 
-### 15. Auto-translate by IP on first load — ⏳
-- `next-intl`, **top 10 languages** (English, Mandarin, Hindi, Spanish, French, Arabic,
-  Bengali, Portuguese, Russian, Urdu). Detect the visitor's language by IP on first load
-  (Vercel geo header in prod, `ipapi.co` free fallback in dev) and translate automatically;
-  header/footer switcher to change to English or any other; choice persisted in a cookie so
-  it only auto-forces on the genuine first visit. Static UI from pre-built catalogs; dynamic
-  data via `api/ai/translate` (Groq).
+### 15. Auto-translate by IP on first load — ✅ done (foundation + pilot, 2026-06-14)
+- `next-intl` 4.13 in **cookie-based "without i18n routing"** mode (no `/fr/` URL prefix — chosen
+  to avoid restructuring every route under `[locale]` and to compose with the existing Next 16
+  Proxy instead of a next-intl middleware). **Top 10 languages** (en, zh, hi, es, fr, ar, bn, pt,
+  ru, ur; ar+ur RTL via `<html dir>`). First-visit detection in `src/proxy.ts` (Vercel
+  `x-vercel-ip-country` in prod, `ipapi.co` dev fallback) sets the `NEXT_LOCALE` cookie once;
+  `src/i18n/request.ts` resolves locale from the cookie and loads `messages/<locale>.json`;
+  header+footer `LocaleSwitcher` flips it via the `setLocale` server action. Static catalogs
+  generated from `messages/en.json` by `scripts/translate-messages.mjs` (Groq, per-namespace,
+  deep-merged onto the English template so every catalog is structurally complete → no
+  MISSING_MESSAGE); dynamic data via `POST /api/ai/translate` (best-effort, falls back to source).
+- **Pilot scope localized:** global chrome (nav/header/footer) + home page, all 10 languages.
+  Remaining ~30 pages are Phase 2 (same per-page extraction pattern → regenerate catalogs).
+  135 Vitest tests, tsc/eslint/`next build` green; live E2E `scripts/verify-i18n-e2e.mjs` ALL GREEN
+  (CN geo→zh cookie, fr cookie→lang=fr, ar→dir=rtl, no MISSING_MESSAGE, translate 200 + 400 on bad locale).
+- ⏳ **Quality follow-up:** a few keys are English-fallback in bn (`Home.advantage`/`Home.warehouse`)
+  and fr/ar (`Nav.differentiator`/`Nav.explore`) — dropped by Groq during a daily-token-limit window;
+  re-run `node --env-file=.env.local scripts/translate-messages.mjs bn fr ar` to fill them (structure
+  stays correct regardless). Plus Phase-2 page rollout + an RTL CSS polish pass.
 
 ### 16. Voice mode in the AI Advisor — ✅ done (2026-06-13)
 - Wired the mic button — `src/components/ai/ai-assistant.tsx`: native Web Speech API via
@@ -225,8 +237,10 @@ analytics/auditing of AI-agent interactions.
    route-optimizer, proactive-resolution) on Groq + Open-Meteo; `branch feat/warehouse-booking`.
 5b. ~~Voice (16)~~ ✅ done 2026-06-13 — mic + spoken replies wired into the advisor
    (Web Speech + Groq Whisper fallback); `branch feat/warehouse-booking`.
-6. **i18n (15)** rollout. ◀ NEXT
-7. **Company content (9)** with supplied photos.
+6. ~~i18n (15)~~ ✅ done 2026-06-14 (foundation + pilot: chrome + home in 10 langs; cookie-based,
+   IP detect, Groq catalogs, /api/ai/translate; `branch feat/warehouse-booking`). Phase-2 page
+   rollout + RTL polish remain.
+7. **Company content (9)** with supplied photos. ◀ NEXT
 8. **Deploy to Vercel** + full end-to-end verification.
 
 ## Verification (per phase)
@@ -241,7 +255,7 @@ analytics/auditing of AI-agent interactions.
 - Deploy to Vercel; re-verify geo/email/AI in production.
 
 ## Completed so far
-- Items **1, 2, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 16** done.
+- Items **1, 2, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16** done (15 = i18n foundation + pilot).
 - **Item 3 Checkpoint 2** done (Variant 1 Cobalt Duotone, productized; rollout to remaining pages pending).
 - **Backend sub-projects merged to `main`** (specs/plans in `docs/superpowers/`):
   real forms → Supabase + Resend (2026-06-10) · live Groq AI advisor (2026-06-10) ·
