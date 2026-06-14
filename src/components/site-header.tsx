@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, Menu, X, Search, MapPin, ArrowRight, Phone } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { NAV, type NavLink } from "@/lib/navigation";
 import { Logo } from "@/components/brand/logo";
 import { Button } from "@/components/ui/button";
@@ -12,6 +13,7 @@ import { EASE_OUT_EXPO } from "@/lib/motion";
 import { LocaleSwitcher } from "@/components/i18n/locale-switcher";
 
 export function SiteHeader() {
+  const t = useTranslations();
   const [scrolled, setScrolled] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -48,10 +50,10 @@ export function SiteHeader() {
         <nav className="hidden items-center gap-1 lg:flex">
           {NAV.map((item) => (
             <NavItem
-              key={item.label}
+              key={item.labelKey}
               item={item}
-              open={openMenu === item.label}
-              onOpen={() => setOpenMenu(item.mega ? item.label : null)}
+              open={openMenu === item.labelKey}
+              onOpen={() => setOpenMenu(item.mega ? item.labelKey : null)}
             />
           ))}
         </nav>
@@ -69,10 +71,10 @@ export function SiteHeader() {
             <LocaleSwitcher />
             <Button href="/tracking" variant="ghost" size="sm">
               <MapPin className="h-4 w-4" />
-              Track
+              {t("Header.track")}
             </Button>
             <Button href="/quote" variant="primary" size="sm">
-              Get Quote
+              {t("Header.getQuote")}
               <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
@@ -81,7 +83,7 @@ export function SiteHeader() {
         {/* Mobile toggle */}
         <button
           className="grid h-11 w-11 place-items-center rounded-full glass text-foam lg:hidden"
-          aria-label="Open menu"
+          aria-label={t("Header.openMenu")}
           onClick={() => setMobileOpen(true)}
         >
           <Menu className="h-5 w-5" />
@@ -92,7 +94,7 @@ export function SiteHeader() {
       <AnimatePresence>
         {openMenu && (
           <MegaPanel
-            item={NAV.find((n) => n.label === openMenu)!}
+            item={NAV.find((n) => n.labelKey === openMenu)!}
             onClose={() => setOpenMenu(null)}
           />
         )}
@@ -115,13 +117,15 @@ function NavItem({
   open: boolean;
   onOpen: () => void;
 }) {
+  const t = useTranslations();
+
   if (!item.mega) {
     return (
       <Link
         href={item.href}
         className="rounded-full px-3.5 py-2 text-sm font-medium text-mist transition-colors hover:text-foam"
       >
-        {item.label}
+        {t(item.labelKey)}
       </Link>
     );
   }
@@ -134,7 +138,7 @@ function NavItem({
         open ? "text-foam" : "text-mist hover:text-foam"
       )}
     >
-      {item.label}
+      {t(item.labelKey)}
       <ChevronDown
         className={cn(
           "h-3.5 w-3.5 transition-transform duration-300",
@@ -146,6 +150,7 @@ function NavItem({
 }
 
 function MegaPanel({ item, onClose }: { item: NavLink; onClose: () => void }) {
+  const t = useTranslations();
   return (
     <motion.div
       initial={{ opacity: 0, y: -8 }}
@@ -158,15 +163,15 @@ function MegaPanel({ item, onClose }: { item: NavLink; onClose: () => void }) {
         <div className="overflow-hidden rounded-3xl border border-steel bg-deep p-6 shadow-2xl ring-1 ring-foam/5">
           <div className="grid gap-8 md:grid-cols-[1fr_1fr_0.8fr]">
             {item.mega!.map((group) => (
-              <div key={group.heading}>
+              <div key={group.headingKey}>
                 <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-cyan/80">
-                  {group.heading}
+                  {t(group.headingKey)}
                 </p>
                 <ul className="space-y-1">
                   {group.items.map((sub) => {
                     const Icon = sub.icon;
                     return (
-                      <li key={sub.label}>
+                      <li key={sub.labelKey}>
                         <Link
                           href={sub.href}
                           onClick={onClose}
@@ -177,10 +182,10 @@ function MegaPanel({ item, onClose }: { item: NavLink; onClose: () => void }) {
                           </span>
                           <span>
                             <span className="block text-sm font-medium text-foam">
-                              {sub.label}
+                              {t(sub.labelKey)}
                             </span>
                             <span className="block text-xs leading-snug text-mist">
-                              {sub.description}
+                              {t(sub.descriptionKey)}
                             </span>
                           </span>
                         </Link>
@@ -200,20 +205,20 @@ function MegaPanel({ item, onClose }: { item: NavLink; onClose: () => void }) {
                 <div className="absolute -right-8 -top-8 h-28 w-28 rounded-full bg-cyan/20 blur-2xl transition-all group-hover:bg-cyan/30" />
                 <div>
                   <span className="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-cyan">
-                    Differentiator
+                    {t("Nav.differentiator")}
                   </span>
                   <h4
                     className="mt-2 text-lg font-semibold text-foam"
                     style={{ fontFamily: "var(--font-display)" }}
                   >
-                    {item.featured.title}
+                    {t(item.featured.titleKey)}
                   </h4>
                   <p className="mt-1 text-xs leading-relaxed text-mist">
-                    {item.featured.blurb}
+                    {t(item.featured.blurbKey)}
                   </p>
                 </div>
                 <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-cyan">
-                  Explore <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  {t("Nav.explore")} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </span>
               </Link>
             )}
@@ -225,6 +230,7 @@ function MegaPanel({ item, onClose }: { item: NavLink; onClose: () => void }) {
 }
 
 function MobileMenu({ onClose }: { onClose: () => void }) {
+  const t = useTranslations();
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -244,7 +250,7 @@ function MobileMenu({ onClose }: { onClose: () => void }) {
           <Logo />
           <button
             className="grid h-11 w-11 place-items-center rounded-full glass text-foam"
-            aria-label="Close menu"
+            aria-label={t("Header.closeMenu")}
             onClick={onClose}
           >
             <X className="h-5 w-5" />
@@ -253,15 +259,15 @@ function MobileMenu({ onClose }: { onClose: () => void }) {
 
         <div className="mt-6 flex items-center gap-2 rounded-2xl bg-steel/40 px-4 py-3 text-mist">
           <Search className="h-4 w-4" />
-          <span className="text-sm">Track, quote, or search…</span>
+          <span className="text-sm">{t("Header.mobileSearchPlaceholder")}</span>
         </div>
 
         <nav className="mt-6 flex-1 space-y-1 overflow-y-auto">
           {NAV.map((item) => (
-            <details key={item.label} className="group rounded-2xl">
+            <details key={item.labelKey} className="group rounded-2xl">
               <summary className="flex cursor-pointer items-center justify-between rounded-2xl px-3 py-3 text-base font-medium text-foam marker:content-['']">
                 <Link href={item.href} onClick={onClose}>
-                  {item.label}
+                  {t(item.labelKey)}
                 </Link>
                 {item.mega && (
                   <ChevronDown className="h-4 w-4 text-mist transition-transform group-open:rotate-180" />
@@ -271,12 +277,12 @@ function MobileMenu({ onClose }: { onClose: () => void }) {
                 <div className="space-y-0.5 pb-2 pl-3">
                   {item.mega.flatMap((g) => g.items).map((sub) => (
                     <Link
-                      key={sub.label}
+                      key={sub.labelKey}
                       href={sub.href}
                       onClick={onClose}
                       className="block rounded-xl px-3 py-2 text-sm text-mist hover:bg-steel/40 hover:text-foam"
                     >
-                      {sub.label}
+                      {t(sub.labelKey)}
                     </Link>
                   ))}
                 </div>
@@ -289,10 +295,10 @@ function MobileMenu({ onClose }: { onClose: () => void }) {
           <LocaleSwitcher />
           <div className="grid flex-1 grid-cols-2 gap-3">
             <Button href="/tracking" variant="outline" size="md">
-              Track
+              {t("Header.track")}
             </Button>
             <Button href="/quote" variant="primary" size="md">
-              Get Quote
+              {t("Header.getQuote")}
             </Button>
           </div>
         </div>

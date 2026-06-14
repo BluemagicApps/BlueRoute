@@ -18,160 +18,160 @@ import {
 } from "lucide-react";
 
 export type MegaItem = {
-  label: string;
+  labelKey: string;
   href: string;
-  description: string;
+  descriptionKey: string;
   icon: LucideIcon;
 };
 
 export type MegaGroup = {
-  heading: string;
+  headingKey: string;
   items: MegaItem[];
 };
 
 export type NavLink = {
-  label: string;
+  labelKey: string;
   href: string;
   mega?: MegaGroup[];
-  featured?: { title: string; blurb: string; href: string };
+  featured?: { titleKey: string; blurbKey: string; href: string };
 };
 
 export const NAV: NavLink[] = [
   {
-    label: "Services",
+    labelKey: "Nav.services.label",
     href: "/services",
     mega: [
       {
-        heading: "Freight modes",
+        headingKey: "Nav.services.groups.freightModes.heading",
         items: [
           {
-            label: "Ocean Freight (FCL/LCL)",
+            labelKey: "Nav.services.groups.freightModes.oceanFreight.label",
             href: "/services/ocean-freight",
-            description: "Full & less-than-container loads on every major lane.",
+            descriptionKey: "Nav.services.groups.freightModes.oceanFreight.description",
             icon: Ship,
           },
           {
-            label: "Air Freight",
+            labelKey: "Nav.services.groups.freightModes.airFreight.label",
             href: "/services/air-freight",
-            description: "Time-critical airfreight with guaranteed lift.",
+            descriptionKey: "Nav.services.groups.freightModes.airFreight.description",
             icon: Plane,
           },
           {
-            label: "Land Freight (Road & Rail)",
+            labelKey: "Nav.services.groups.freightModes.landFreight.label",
             href: "/services/land-freight",
-            description: "Road, rail & drayage with live, connected handoffs.",
+            descriptionKey: "Nav.services.groups.freightModes.landFreight.description",
             icon: Truck,
           },
           {
-            label: "Door-to-Door",
+            labelKey: "Nav.services.groups.freightModes.doorToDoor.label",
             href: "/services/door-to-door",
-            description: "One contract, origin pickup to final delivery.",
+            descriptionKey: "Nav.services.groups.freightModes.doorToDoor.description",
             icon: Route,
           },
         ],
       },
       {
-        heading: "Specialized",
+        headingKey: "Nav.services.groups.specialized.heading",
         items: [
           {
-            label: "Project & Heavy Cargo",
+            labelKey: "Nav.services.groups.specialized.projectCargo.label",
             href: "/services/project-cargo",
-            description: "Oversized, breakbulk & out-of-gauge engineering.",
+            descriptionKey: "Nav.services.groups.specialized.projectCargo.description",
             icon: Boxes,
           },
           {
-            label: "Cold Chain",
+            labelKey: "Nav.services.groups.specialized.coldChain.label",
             href: "/services/cold-chain",
-            description: "Temperature-controlled, IoT-monitored end to end.",
+            descriptionKey: "Nav.services.groups.specialized.coldChain.description",
             icon: Snowflake,
           },
           {
-            label: "Customs & Compliance",
+            labelKey: "Nav.services.groups.specialized.customs.label",
             href: "/services/customs",
-            description: "Automated clearance with predictive duty checks.",
+            descriptionKey: "Nav.services.groups.specialized.customs.description",
             icon: FileCheck2,
           },
           {
-            label: "Warehouse Leasing",
+            labelKey: "Nav.services.groups.specialized.warehouseLeasing.label",
             href: "/warehousing",
-            description: "Smart facilities, searchable map, AI matching.",
+            descriptionKey: "Nav.services.groups.specialized.warehouseLeasing.description",
             icon: Warehouse,
           },
         ],
       },
     ],
     featured: {
-      title: "The AI Edge",
-      blurb: "See how predictive intelligence beats reactive logistics.",
+      titleKey: "Nav.services.featuredTitle",
+      blurbKey: "Nav.services.featuredBlurb",
       href: "/ai-edge",
     },
   },
   {
-    label: "AI Edge",
+    labelKey: "Nav.aiEdge.label",
     href: "/ai-edge",
     mega: [
       {
-        heading: "Intelligence",
+        headingKey: "Nav.aiEdge.groups.intelligence.heading",
         items: [
           {
-            label: "BlueRoute AI Assistant",
+            labelKey: "Nav.aiEdge.groups.intelligence.assistant.label",
             href: "/ai-edge#assistant",
-            description: "Agentic chat & voice for quotes, risk & planning.",
+            descriptionKey: "Nav.aiEdge.groups.intelligence.assistant.description",
             icon: Bot,
           },
           {
-            label: "Predictive Insights",
+            labelKey: "Nav.aiEdge.groups.intelligence.predictiveInsights.label",
             href: "/ai-edge#predictive",
-            description: "Delay probabilities, alternates & cost forecasts.",
+            descriptionKey: "Nav.aiEdge.groups.intelligence.predictiveInsights.description",
             icon: LineChart,
           },
           {
-            label: "Route Optimizer",
+            labelKey: "Nav.aiEdge.groups.intelligence.routeOptimizer.label",
             href: "/ai-edge#optimizer",
-            description: "Lowest-risk, lowest-carbon routing in seconds.",
+            descriptionKey: "Nav.aiEdge.groups.intelligence.routeOptimizer.description",
             icon: Route,
           },
           {
-            label: "Exception Radar",
+            labelKey: "Nav.aiEdge.groups.intelligence.exceptionRadar.label",
             href: "/tracking",
-            description: "Proactive issue resolution before it costs you.",
+            descriptionKey: "Nav.aiEdge.groups.intelligence.exceptionRadar.description",
             icon: Radar,
           },
         ],
       },
     ],
   },
-  { label: "Tracking", href: "/tracking" },
-  { label: "Warehousing", href: "/warehousing" },
+  { labelKey: "Nav.tracking.label", href: "/tracking" },
+  { labelKey: "Nav.warehousing.label", href: "/warehousing" },
   {
-    label: "Company",
+    labelKey: "Nav.company.label",
     href: "/about",
     mega: [
       {
-        heading: "Company",
+        headingKey: "Nav.company.groups.company.heading",
         items: [
           {
-            label: "About Blue Route",
+            labelKey: "Nav.company.groups.company.about.label",
             href: "/about",
-            description: "Our mission to make shipping intelligent.",
+            descriptionKey: "Nav.company.groups.company.about.description",
             icon: Building2,
           },
           {
-            label: "Insights & Blog",
+            labelKey: "Nav.company.groups.company.insights.label",
             href: "/insights",
-            description: "Market intelligence and logistics trends.",
+            descriptionKey: "Nav.company.groups.company.insights.description",
             icon: Newspaper,
           },
           {
-            label: "Sustainability",
+            labelKey: "Nav.company.groups.company.sustainability.label",
             href: "/sustainability",
-            description: "Decarbonizing global trade, route by route.",
+            descriptionKey: "Nav.company.groups.company.sustainability.description",
             icon: Leaf,
           },
           {
-            label: "Careers",
+            labelKey: "Nav.company.groups.company.careers.label",
             href: "/careers",
-            description: "Build the future of logistics with us.",
+            descriptionKey: "Nav.company.groups.company.careers.description",
             icon: Briefcase,
           },
         ],
@@ -180,38 +180,38 @@ export const NAV: NavLink[] = [
   },
 ];
 
-export const FOOTER_COLUMNS: { heading: string; links: { label: string; href: string }[] }[] =
+export const FOOTER_COLUMNS: { headingKey: string; links: { labelKey: string; href: string }[] }[] =
   [
     {
-      heading: "Services",
+      headingKey: "Footer.columns.services.heading",
       links: [
-        { label: "Ocean Freight", href: "/services/ocean-freight" },
-        { label: "Air Freight", href: "/services/air-freight" },
-        { label: "Land Freight", href: "/services/land-freight" },
-        { label: "Door-to-Door", href: "/services/door-to-door" },
-        { label: "Cold Chain", href: "/services/cold-chain" },
-        { label: "Customs & Compliance", href: "/services/customs" },
-        { label: "Project Cargo", href: "/services/project-cargo" },
+        { labelKey: "Footer.columns.services.oceanFreight", href: "/services/ocean-freight" },
+        { labelKey: "Footer.columns.services.airFreight", href: "/services/air-freight" },
+        { labelKey: "Footer.columns.services.landFreight", href: "/services/land-freight" },
+        { labelKey: "Footer.columns.services.doorToDoor", href: "/services/door-to-door" },
+        { labelKey: "Footer.columns.services.coldChain", href: "/services/cold-chain" },
+        { labelKey: "Footer.columns.services.customs", href: "/services/customs" },
+        { labelKey: "Footer.columns.services.projectCargo", href: "/services/project-cargo" },
       ],
     },
     {
-      heading: "Platform",
+      headingKey: "Footer.columns.platform.heading",
       links: [
-        { label: "Live Tracking", href: "/tracking" },
-        { label: "Get a Quote", href: "/quote" },
-        { label: "Warehouse Leasing", href: "/warehousing" },
-        { label: "AI Edge", href: "/ai-edge" },
-        { label: "Customer Portal", href: "/portal" },
+        { labelKey: "Footer.columns.platform.liveTracking", href: "/tracking" },
+        { labelKey: "Footer.columns.platform.getQuote", href: "/quote" },
+        { labelKey: "Footer.columns.platform.warehouseLeasing", href: "/warehousing" },
+        { labelKey: "Footer.columns.platform.aiEdge", href: "/ai-edge" },
+        { labelKey: "Footer.columns.platform.customerPortal", href: "/portal" },
       ],
     },
     {
-      heading: "Company",
+      headingKey: "Footer.columns.company.heading",
       links: [
-        { label: "About", href: "/about" },
-        { label: "Insights", href: "/insights" },
-        { label: "Sustainability", href: "/sustainability" },
-        { label: "Careers", href: "/careers" },
-        { label: "Contact", href: "/contact" },
+        { labelKey: "Footer.columns.company.about", href: "/about" },
+        { labelKey: "Footer.columns.company.insights", href: "/insights" },
+        { labelKey: "Footer.columns.company.sustainability", href: "/sustainability" },
+        { labelKey: "Footer.columns.company.careers", href: "/careers" },
+        { labelKey: "Footer.columns.company.contact", href: "/contact" },
       ],
     },
   ];

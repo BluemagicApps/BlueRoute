@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 import { Logo } from "@/components/brand/logo";
 import { FOOTER_COLUMNS } from "@/lib/navigation";
 import { LocaleSwitcher } from "@/components/i18n/locale-switcher";
@@ -27,7 +28,8 @@ function IconGitHub(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-export function SiteFooter() {
+export async function SiteFooter() {
+  const t = await getTranslations();
   return (
     <footer className="relative z-[2] mt-24 border-t border-steel/50 bg-deep/60">
       {/* CTA band */}
@@ -41,11 +43,10 @@ export function SiteFooter() {
                 className="text-3xl font-semibold tracking-tight text-white md:text-4xl"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                Ship smarter. <span className="text-white/85">Starting today.</span>
+                {t("Footer.ctaHeading")} <span className="text-white/85">{t("Footer.ctaHeadingAccent")}</span>
               </h2>
               <p className="mt-3 text-white/80">
-                Get an AI-optimized quote in under 60 seconds — or talk to the
-                BlueRoute AI Advisor about your next shipment.
+                {t("Footer.ctaBody")}
               </p>
             </div>
             <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
@@ -53,13 +54,13 @@ export function SiteFooter() {
                 href="/quote"
                 className="inline-flex h-[3.25rem] items-center justify-center rounded-full bg-white px-7 text-base font-semibold text-cyan shadow-lg transition-transform hover:-translate-y-0.5 active:scale-95"
               >
-                Get Instant Quote
+                {t("Footer.instantQuote")}
               </Link>
               <Link
                 href="/contact"
                 className="inline-flex h-[3.25rem] items-center justify-center rounded-full border border-white/50 px-7 text-base font-medium text-white transition-colors hover:bg-white/10"
               >
-                Talk to an Expert
+                {t("Footer.talkToExpert")}
               </Link>
             </div>
           </div>
@@ -72,15 +73,13 @@ export function SiteFooter() {
           <div>
             <Logo />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-mist">
-              Intelligent global shipping. AI-powered precision. Door-to-door
-              container logistics and smart warehouse leasing to and from any
-              country.
+              {t("Footer.tagline")}
             </p>
             <div className="mt-5 flex items-center gap-3">
               {[
-                { icon: IconLinkedIn, label: "LinkedIn" },
-                { icon: IconX, label: "X" },
-                { icon: IconGitHub, label: "GitHub" },
+                { icon: IconLinkedIn, label: t("Footer.social.linkedin") },
+                { icon: IconX, label: t("Footer.social.x") },
+                { icon: IconGitHub, label: t("Footer.social.github") },
               ].map(({ icon: Icon, label }) => (
                 <a
                   key={label}
@@ -95,18 +94,18 @@ export function SiteFooter() {
           </div>
 
           {FOOTER_COLUMNS.map((col) => (
-            <div key={col.heading}>
+            <div key={col.headingKey}>
               <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-foam/80">
-                {col.heading}
+                {t(col.headingKey)}
               </h3>
               <ul className="mt-4 space-y-2.5">
                 {col.links.map((link) => (
-                  <li key={link.label}>
+                  <li key={link.labelKey}>
                     <Link
                       href={link.href}
                       className="group inline-flex items-center gap-1 text-sm text-mist transition-colors hover:text-foam"
                     >
-                      {link.label}
+                      {t(link.labelKey)}
                       <ArrowUpRight className="h-3 w-3 opacity-0 transition-all group-hover:opacity-100" />
                     </Link>
                   </li>
@@ -117,17 +116,17 @@ export function SiteFooter() {
         </div>
 
         <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-steel/50 pt-6 text-sm text-mist md:flex-row md:items-center">
-          <p>© {new Date().getFullYear()} Blue Route Logistics. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} {t("Footer.rights")}</p>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             <LocaleSwitcher />
             <Link href="/privacy" className="hover:text-foam">
-              Privacy
+              {t("Footer.privacy")}
             </Link>
             <Link href="/terms" className="hover:text-foam">
-              Terms
+              {t("Footer.terms")}
             </Link>
             <Link href="/sustainability" className="hover:text-foam">
-              Sustainability
+              {t("Footer.sustainability")}
             </Link>
           </div>
         </div>

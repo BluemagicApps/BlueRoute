@@ -1,5 +1,160 @@
 {
   "Common": {
     "getQuote": "Get Quote"
+  },
+  "Nav": {
+    "services": {
+      "label": "Services",
+      "featuredTitle": "The AI Edge",
+      "featuredBlurb": "See how predictive intelligence beats reactive logistics.",
+      "groups": {
+        "freightModes": {
+          "heading": "Freight modes",
+          "oceanFreight": {
+            "label": "Ocean Freight (FCL/LCL)",
+            "description": "Full & less-than-container loads on every major lane."
+          },
+          "airFreight": {
+            "label": "Air Freight",
+            "description": "Time-critical airfreight with guaranteed lift."
+          },
+          "landFreight": {
+            "label": "Land Freight (Road & Rail)",
+            "description": "Road, rail & drayage with live, connected handoffs."
+          },
+          "doorToDoor": {
+            "label": "Door-to-Door",
+            "description": "One contract, origin pickup to final delivery."
+          }
+        },
+        "specialized": {
+          "heading": "Specialized",
+          "projectCargo": {
+            "label": "Project & Heavy Cargo",
+            "description": "Oversized, breakbulk & out-of-gauge engineering."
+          },
+          "coldChain": {
+            "label": "Cold Chain",
+            "description": "Temperature-controlled, IoT-monitored end to end."
+          },
+          "customs": {
+            "label": "Customs & Compliance",
+            "description": "Automated clearance with predictive duty checks."
+          },
+          "warehouseLeasing": {
+            "label": "Warehouse Leasing",
+            "description": "Smart facilities, searchable map, AI matching."
+          }
+        }
+      }
+    },
+    "aiEdge": {
+      "label": "AI Edge",
+      "groups": {
+        "intelligence": {
+          "heading": "Intelligence",
+          "assistant": {
+            "label": "BlueRoute AI Assistant",
+            "description": "Agentic chat & voice for quotes, risk & planning."
+          },
+          "predictiveInsights": {
+            "label": "Predictive Insights",
+            "description": "Delay probabilities, alternates & cost forecasts."
+          },
+          "routeOptimizer": {
+            "label": "Route Optimizer",
+            "description": "Lowest-risk, lowest-carbon routing in seconds."
+          },
+          "exceptionRadar": {
+            "label": "Exception Radar",
+            "description": "Proactive issue resolution before it costs you."
+          }
+        }
+      }
+    },
+    "tracking": {
+      "label": "Tracking"
+    },
+    "warehousing": {
+      "label": "Warehousing"
+    },
+    "company": {
+      "label": "Company",
+      "groups": {
+        "company": {
+          "heading": "Company",
+          "about": {
+            "label": "About Blue Route",
+            "description": "Our mission to make shipping intelligent."
+          },
+          "insights": {
+            "label": "Insights & Blog",
+            "description": "Market intelligence and logistics trends."
+          },
+          "sustainability": {
+            "label": "Sustainability",
+            "description": "Decarbonizing global trade, route by route."
+          },
+          "careers": {
+            "label": "Careers",
+            "description": "Build the future of logistics with us."
+          }
+        }
+      }
+    },
+    "differentiator": "Differentiator",
+    "explore": "Explore"
+  },
+  "Header": {
+    "track": "Track",
+    "getQuote": "Get Quote",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "mobileSearchPlaceholder": "Track, quote, or search…"
+  },
+  "Footer": {
+    "ctaHeading": "Ship smarter.",
+    "ctaHeadingAccent": "Starting today.",
+    "ctaBody": "Get an AI-optimized quote in under 60 seconds — or talk to the BlueRoute AI Advisor about your next shipment.",
+    "instantQuote": "Get Instant Quote",
+    "talkToExpert": "Talk to an Expert",
+    "tagline": "Intelligent global shipping. AI-powered precision. Door-to-door container logistics and smart warehouse leasing to and from any country.",
+    "social": {
+      "linkedin": "LinkedIn",
+      "x": "X",
+      "github": "GitHub"
+    },
+    "columns": {
+      "services": {
+        "heading": "Services",
+        "oceanFreight": "Ocean Freight",
+        "airFreight": "Air Freight",
+        "landFreight": "Land Freight",
+        "doorToDoor": "Door-to-Door",
+        "coldChain": "Cold Chain",
+        "customs": "Customs & Compliance",
+        "projectCargo": "Project Cargo"
+      },
+      "platform": {
+        "heading": "Platform",
+        "liveTracking": "Live Tracking",
+        "getQuote": "Get a Quote",
+        "warehouseLeasing": "Warehouse Leasing",
+        "aiEdge": "AI Edge",
+        "customerPortal": "Customer Portal"
+      },
+      "company": {
+        "heading": "Company",
+        "about": "About",
+        "insights": "Insights",
+        "sustainability": "Sustainability",
+        "careers": "Careers",
+        "contact": "Contact"
+      }
+    },
+    "rights": "Blue Route Logistics. All rights reserved.",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "sustainability": "Sustainability"
   }
 }
