@@ -119,13 +119,18 @@ truth for the upgrade. Status is tracked per item.
 - (No free public warehouse-inventory API exists; dataset is structured so a real feed can
   replace it later.)
 
-### 9. Company content: About story + leadership + insights — ⏳
-- Rewrite About — `src/app/about/page.tsx`: founding story **Houston, TX, 1998**, started as
-  door-to-door parcel delivery → grew into a global shipping company; fix the timeline.
-- Leadership: a compelling per-person narrative (family + work background, their impact, and
-  prospects for the company's future) with the **real photos you supplied** (replace the
-  gradient-initial avatars): CEO=23.jpg, CTO=20.jpg, COO=24.jpg, Head of AI=21.jpg.
-- Enrich every Company dropdown destination; expand the Insights page with detailed articles.
+### 9. Company content: About story + leadership + insights — ✅ done (2026-06-14)
+- About rewritten (`src/app/(site)/about/page.tsx`) around the real **Houston, TX, 1998**
+  founding story (door-to-door parcel courier → global line); timeline rebuilt 1998→2026.
+- Leadership: real photos + per-person bios (replaced gradient-initial avatars), 2-up cards.
+  New names fitting the Houston story (CEO is the 1998 founder): Carol Briggs (CEO, 23.jpg),
+  Michael Reyes (CTO, 20.jpg), Rachel Donovan (COO, 24.jpg), Arjun Mehta (Head of AI, 21.jpg).
+  Data in `src/lib/about-data.ts`.
+- Insights made real: `src/lib/insights-data.ts` (7 articles with full written bodies + authors
+  tied to leaders), listing links to new `/insights/[slug]` detail pages (generateStaticParams +
+  notFound + metadata, mirrors `services/[slug]`). 142 Vitest tests, tsc/eslint/build green.
+- Sustainability/Careers/Contact already substantive — left as-is. These pages are English-only
+  (i18n Phase 2 covers them). Spec/plan: `docs/superpowers/{specs,plans}/2026-06-14-company-content*`.
 
 ### 10. Fix two stacked CTA banners site-wide — ✅ done
 - Removed the page-level bottom CTA bands that stacked against the global footer CTA, on
@@ -240,8 +245,9 @@ analytics/auditing of AI-agent interactions.
 6. ~~i18n (15)~~ ✅ done 2026-06-14 (foundation + pilot: chrome + home in 10 langs; cookie-based,
    IP detect, Groq catalogs, /api/ai/translate; `branch feat/warehouse-booking`). Phase-2 page
    rollout + RTL polish remain.
-7. **Company content (9)** with supplied photos. ◀ NEXT
-8. **Deploy to Vercel** + full end-to-end verification.
+7. ~~Company content (9)~~ ✅ done 2026-06-14 (About Houston-1998 rewrite + leadership photos/bios
+   + real /insights/[slug] article pages; `branch feat/warehouse-booking`).
+8. **Deploy to Vercel** + full end-to-end verification. ◀ NEXT
 
 ## Verification (per phase)
 - `npm run build` green (tsc + eslint) after each phase; every route serves.
@@ -255,7 +261,9 @@ analytics/auditing of AI-agent interactions.
 - Deploy to Vercel; re-verify geo/email/AI in production.
 
 ## Completed so far
-- Items **1, 2, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16** done (15 = i18n foundation + pilot).
+- Items **1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16** done (15 = i18n foundation + pilot).
+- **Only remaining: item 3 rollout polish (delete `/transport-lab` throwaway) + item 15 Phase-2
+  page rollout + deploy (8).** Item 3 Checkpoint is done; the throwaway lab can be removed anytime.
 - **Item 3 Checkpoint 2** done (Variant 1 Cobalt Duotone, productized; rollout to remaining pages pending).
 - **Backend sub-projects merged to `main`** (specs/plans in `docs/superpowers/`):
   real forms → Supabase + Resend (2026-06-10) · live Groq AI advisor (2026-06-10) ·
