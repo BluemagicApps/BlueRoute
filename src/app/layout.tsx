@@ -1,5 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Manrope } from "next/font/google";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale } from "next-intl/server";
+import { dirFor } from "@/lib/i18n/locales";
 import "./globals.css";
 
 // Nordic Frost uses Manrope for both display and body.
@@ -51,14 +54,21 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
   return (
-    <html lang="en" className={`${manrope.variable} h-full antialiased`}>
-      <body className="grain min-h-full flex flex-col">{children}</body>
+    <html
+      lang={locale}
+      dir={dirFor(locale)}
+      className={`${manrope.variable} h-full antialiased`}
+    >
+      <body className="grain min-h-full flex flex-col">
+        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+      </body>
     </html>
   );
 }
