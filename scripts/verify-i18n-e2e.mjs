@@ -45,4 +45,5 @@ const r6 = await fetch(`${BASE}/api/ai/translate`, {
 });
 ok("translate rejects invalid locale (400)", r6.status === 400, `status=${r6.status}`);
 
+console.log(failed ? "RESULT: FAIL" : "RESULT: ALL GREEN");
 process.exit(failed ? 1 : 0);
