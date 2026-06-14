@@ -6,11 +6,11 @@ import { motion } from "framer-motion";
 import { ArrowUpRight, Clock, Mail, Check } from "lucide-react";
 import { EASE_OUT_EXPO } from "@/lib/motion";
 import { cn } from "@/lib/utils";
-import { ARTICLES, type ArticleCategory } from "@/lib/insights-data";
+import { ARTICLES, type ArticleCategory, type ArticleColor } from "@/lib/insights-data";
 
 const MotionLink = motion.create(Link);
 
-const COLOR: Record<string, string> = {
+const COLOR: Record<ArticleColor, string> = {
   cyan: "from-cyan to-indigo",
   indigo: "from-indigo to-rose",
   teal: "from-teal to-cyan",
