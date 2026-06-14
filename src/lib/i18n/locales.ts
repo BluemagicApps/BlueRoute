@@ -32,3 +32,7 @@ export function dirFor(locale: string): "ltr" | "rtl" {
   const meta = LOCALES.find((l) => l.code === locale);
   return meta?.rtl ? "rtl" : "ltr";
 }
+
+export function resolveRequestLocale(cookieValue: string | undefined): Locale {
+  return isLocale(cookieValue) ? cookieValue : DEFAULT_LOCALE;
+}
