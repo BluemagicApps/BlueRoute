@@ -6,7 +6,7 @@ import { buildTranslatePrompt, normalizeTranslation } from "@/lib/i18n/translate
 
 export async function POST(request: Request) {
   const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "anon";
-  if (!checkRateLimit(ip)) {
+  if (!checkRateLimit(`translate:${ip}`)) {
     return NextResponse.json({ error: "Too many requests." }, { status: 429 });
   }
   let body: { text?: unknown; targetLocale?: unknown };
