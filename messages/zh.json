@@ -1,7 +1,4 @@
 {
-  "Common": {
-    "getQuote": "获取便记"
-  },
   "Nav": {
     "services": {
       "label": "服务",

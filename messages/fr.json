@@ -1,7 +1,4 @@
 {
-  "Common": {
-    "getQuote": "Obtenir un devis"
-  },
   "Nav": {
     "services": {
       "label": "Services",

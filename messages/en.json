@@ -1,7 +1,4 @@
 {
-  "Common": {
-    "getQuote": "Get Quote"
-  },
   "Nav": {
     "services": {
       "label": "Services",

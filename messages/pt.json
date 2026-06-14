@@ -1,7 +1,4 @@
 {
-  "Common": {
-    "getQuote": "Obter Cotação"
-  },
   "Nav": {
     "services": {
       "label": "Serviços",
